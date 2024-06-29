@@ -20,32 +20,55 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Transaction
+import com.finius.features.transaction.presentation.type.TransactionTypeScreen
 import com.finius.ui.components.FiniusShortcutButton
 import com.finius.ui.components.TransactionComponent
 import com.finius.ui.theme.FiniusTheme
 
 object HomeScreen : Screen {
+
+    override val key: ScreenKey = uniqueScreenKey
+
     @Composable
     override fun Content() {
+
+        val navigator = LocalNavigator.currentOrThrow
+        val homeStrings = strings.homeStrings
         val transactions = Transaction.fakeTransactions()
+
         HomeScreenContent(
-            transactions = transactions
+            strings = homeStrings,
+            transactions = transactions,
+            onClickNewTransaction = { navigator.push(TransactionTypeScreen()) }
         )
     }
 }
 
 @Composable
-fun HomeScreenContent(transactions: List<Transaction>, modifier: Modifier = Modifier) {
+fun HomeScreenContent(
+    strings: HomeStrings,
+    transactions: List<Transaction>,
+    modifier: Modifier = Modifier,
+    onClickNewTransaction: () -> Unit
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        HomeScreenHeader()
+        HomeScreenHeader(
+            strings = strings,
+            onClickNewTransaction = onClickNewTransaction
+        )
         HomeScreenTransactions(transactions = transactions)
     }
 }
@@ -54,15 +77,20 @@ fun HomeScreenContent(transactions: List<Transaction>, modifier: Modifier = Modi
 @Composable
 private fun HomeScreenContentPreview() {
     FiniusTheme {
+
         val transactions = Transaction.fakeTransactions()
+        val homeStrings = strings.homeStrings
+
         HomeScreenContent(
-            transactions = transactions
+            strings = homeStrings,
+            transactions = transactions,
+            onClickNewTransaction = {}
         )
     }
 }
 
 @Composable
-fun HomeScreenHeader(modifier: Modifier = Modifier) {
+fun HomeScreenHeader(strings: HomeStrings, onClickNewTransaction: () -> Unit, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
@@ -76,7 +104,7 @@ fun HomeScreenHeader(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(horizontal = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(text = "Saldo", style = MaterialTheme.typography.labelSmall)
+                Text(text = strings.balance, style = MaterialTheme.typography.labelSmall)
                 Text(text = "R$ 1.827,00", style = MaterialTheme.typography.headlineSmall)
             }
 
@@ -89,22 +117,26 @@ fun HomeScreenHeader(modifier: Modifier = Modifier) {
             ) {
                 FiniusShortcutButton(
                     icon = painterResource(id = R.drawable.plus_light),
-                    title = "Nova transação"
+                    title = strings.newTransactionLabel,
+                    onClick = onClickNewTransaction
                 )
 
                 FiniusShortcutButton(
                     icon = painterResource(id = R.drawable.piggy_light),
-                    title = "Contas"
+                    title = strings.accountsLabel,
+                    onClick = {}
                 )
 
                 FiniusShortcutButton(
                     icon = painterResource(id = R.drawable.credit_card_light),
-                    title = "Cartões"
+                    title = strings.cardsLabel,
+                    onClick = {}
                 )
 
                 FiniusShortcutButton(
                     icon = painterResource(id = R.drawable.chart_donut_light),
-                    title = "Resumo de transações"
+                    title = strings.transactionsOverviewLabel,
+                    onClick = {}
                 )
             }
         }

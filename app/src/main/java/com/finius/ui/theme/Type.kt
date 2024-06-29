@@ -9,29 +9,31 @@ import androidx.compose.ui.unit.sp
 import com.finius.R
 
 val mulishFontFamily = FontFamily(
-    Font(R.font.mulish_regular, FontWeight.Normal)
+    Font(R.font.mulish_regular, FontWeight.Normal),
+    Font(R.font.mulish_medium, FontWeight.Medium),
+    Font(R.font.mulish_bold, FontWeight.Bold),
 )
 val Typography = Typography(
     bodySmall = TextStyle(
         fontFamily = mulishFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        lineHeight = 24.sp,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
         fontFamily = mulishFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = mulishFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.4.sp
     ),
     titleSmall = TextStyle(
         fontFamily = mulishFontFamily,
@@ -63,7 +65,7 @@ val Typography = Typography(
     ),
     labelMedium = TextStyle(
         fontFamily = mulishFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
@@ -84,7 +86,7 @@ val Typography = Typography(
     ),
     headlineMedium = TextStyle(
         fontFamily = mulishFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 28.sp,
         lineHeight = 34.sp,
         letterSpacing = 0.5.sp

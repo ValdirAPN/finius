@@ -82,4 +82,16 @@ dependencies {
     implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
     implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
     implementation("cafe.adriel.voyager:voyager-kodein:$voyagerVersion")
+    implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+
+    val lyricistVersion = "1.7.0"
+    implementation("cafe.adriel.lyricist:lyricist:$lyricistVersion")
+    ksp("cafe.adriel.lyricist:lyricist-processor:$lyricistVersion")
+
+    val wheelPickerComposeVersion = "1.1.11"
+    implementation("com.github.commandiron:WheelPickerCompose:$wheelPickerComposeVersion")
+}
+
+ksp {
+    arg("lyricist.generateStringsProperty", "true")
 }
