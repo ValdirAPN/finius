@@ -1,0 +1,25 @@
+import com.finius.core.domain.AccountBrand;
+import com.finius.core.domain.AccountType;
+
+CREATE TABLE AccountEntity (
+    id TEXT PRIMARY KEY,
+    type TEXT AS AccountType NOT NULL,
+    name TEXT NOT NULL,
+    brand TEXT AS AccountBrand NOT NULL,
+    balance REAL NOT NULL,
+    totalLimit REAL,
+    dueDay INTEGER
+);
+
+INSERT INTO AccountEntity
+VALUES ("default_account", "BankAccount", "Carteira", "Wallet", 982.99, NULL, NULL);
+
+getAll:
+SELECT * FROM AccountEntity;
+
+getByType:
+SELECT * FROM AccountEntity WHERE type = ?;
+
+insert:
+INSERT INTO AccountEntity(id, type, name, brand, balance, totalLimit, dueDay)
+VALUES(?, ?, ?, ?, ?, ?, ?);

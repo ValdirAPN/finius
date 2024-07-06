@@ -1,57 +1,89 @@
 package com.finius.core.domain
 
-import com.finius.R
+import com.finius.core.AccountEntity
+import java.util.UUID
 
 enum class AccountType {
-    BANK_ACCOUNT, CREDIT_CARD
+    BankAccount, CreditCard
 }
-data class Account(
-    val id: String,
-    val type: AccountType,
-    val name: String,
-    val iconRes: Int,
-) {
-    companion object {
-        fun fakeAccount(
-            id: String = "id",
-            type: AccountType = AccountType.CREDIT_CARD,
-            name: String = "Nubank",
-            iconRes: Int = R.drawable.nubank
-        ) = Account(
-            id = id,
-            type = type,
-            name = name,
-            iconRes = iconRes
-        )
 
-        fun fakeAccounts() = listOf(
-            fakeAccount(
-                id = "1",
+interface Account {
+    val id: String
+    val name: String
+    val brand: AccountBrand
+    val balance: Double
+
+    companion object {
+        fun createFakeAccount(
+            id: String = UUID.randomUUID().toString(),
+            name: String = "Nubank",
+            brand: AccountBrand = AccountBrand.Nubank,
+            balance: Double = 1871.82
+        ) =
+            BankAccount(
+                id = id,
+                name = name,
+                brand = brand,
+                balance = balance
+            )
+
+        fun createFakeAccounts() = listOf(
+            BankAccount(
+                id = UUID.randomUUID().toString(),
+                name = "Nubank",
+                brand = AccountBrand.Nubank,
+                balance = 100.0
             ),
-            fakeAccount(
-                id = "2",
-                type = AccountType.BANK_ACCOUNT,
-                name = "Banco do Brasil",
-                iconRes = R.drawable.banco_do_brasil
+            CreditCard(
+                id = UUID.randomUUID().toString(),
+                name = "Nubank",
+                brand = AccountBrand.Nubank,
+                balance = 2871.82,
+                totalLimit = 3000.0,
+                dueDay = 4
             ),
-            fakeAccount(
-                id = "3",
-                type = AccountType.BANK_ACCOUNT,
-                name = "Itaú",
-                iconRes = R.drawable.itau
-            ),
-            fakeAccount(
-                id = "4",
-                type = AccountType.BANK_ACCOUNT,
-                name = "C6",
-                iconRes = R.drawable.c6
-            ),
-            fakeAccount(
-                id = "5",
-                type = AccountType.CREDIT_CARD,
-                name = "C6",
-                iconRes = R.drawable.c6
+            BankAccount(
+                id = UUID.randomUUID().toString(),
+                name = "Caixa Econômica",
+                brand = AccountBrand.CaixaEconomica,
+                balance = 2920.38
             ),
         )
     }
+}
+
+data class BankAccount(
+    override val id: String,
+    override val name: String,
+    override val brand: AccountBrand,
+    override val balance: Double,
+) : Account
+
+data class CreditCard(
+    override val id: String,
+    override val name: String,
+    override val brand: AccountBrand,
+    override val balance: Double,
+    val totalLimit: Double,
+    val dueDay: Int,
+) : Account
+
+fun AccountEntity.toAccount() = when(type) {
+    AccountType.BankAccount ->
+        BankAccount(
+            id = id,
+            name = name,
+            brand = brand,
+            balance = balance,
+        )
+
+    AccountType.CreditCard ->
+        CreditCard(
+            id = id,
+            name = name,
+            brand = brand,
+            balance = balance,
+            totalLimit = totalLimit ?: 0.0,
+            dueDay = dueDay?.toInt() ?: 1,
+        )
 }

@@ -1,6 +1,5 @@
 package com.finius.features.transaction.presentation.account
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +35,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Account
 import com.finius.core.domain.AccountType
+import com.finius.core.domain.BankAccount
+import com.finius.core.domain.CreditCard
 import com.finius.core.domain.TransactionType
 import com.finius.features.transaction.presentation.title.TransactionTitleScreen
 import com.finius.ui.components.FiniusButton
@@ -114,7 +115,7 @@ fun TransactionAccountScreenContent(
                 FiniusButton(
                     text = strings.btnLabel,
                     onClick = onClickContinue,
-                    state = if (selectedAccount != null) FiniusButtonState.DEFAULT else FiniusButtonState.DISABLED,
+                    state = if (selectedAccount != null) FiniusButtonState.Default else FiniusButtonState.Disabled,
                     modifier = Modifier.fillMaxWidth(),
                     trailingIconRes = R.drawable.arrow_right_light
                 )
@@ -133,11 +134,11 @@ private fun AccountsContainer(
 ) {
 
     val bankAccounts = remember(accounts) {
-        accounts.filter { it.type == AccountType.BANK_ACCOUNT }
+        accounts.filterIsInstance<BankAccount>()
     }
 
     val cardAccounts = remember(accounts) {
-        accounts.filter { it.type == AccountType.CREDIT_CARD }
+        accounts.filterIsInstance<CreditCard>()
     }
 
     Column(
@@ -186,7 +187,7 @@ fun AccountsList(
                 FiniusListItem(
                     label = account.name,
                     onClick = { onClickAccount(account) },
-                    state = if (account.id == selectedAccount?.id) FiniusListItemState.SELECTED else FiniusListItemState.DEFAULT,
+                    state = if (account.id == selectedAccount?.id) FiniusListItemState.Selected else FiniusListItemState.Default,
                     leadingContent = {
                         Box(
                             modifier = Modifier
@@ -195,7 +196,7 @@ fun AccountsList(
                                 .padding(4.dp)
                         ) {
                             Icon(
-                                painter = painterResource(id = account.iconRes),
+                                painter = painterResource(id = account.brand.iconRes),
                                 contentDescription = null,
                                 tint = Color.Unspecified
                             )
@@ -219,7 +220,7 @@ private fun TransactionAccountScreenContentIncomePreview() {
     FiniusTheme {
 
         val transactionAccountStrings = strings.transactionStrings.accountStrings
-        val accounts = remember { Account.fakeAccounts() }
+        val accounts = remember { Account.createFakeAccounts() }
 
         Surface(color = MaterialTheme.colorScheme.background) {
             TransactionAccountScreenContent(
@@ -239,7 +240,7 @@ private fun TransactionAccountScreenContentExpensePreview() {
     FiniusTheme {
 
         val transactionAccountStrings = strings.transactionStrings.accountStrings
-        val accounts = remember { Account.fakeAccounts() }
+        val accounts = remember { Account.createFakeAccounts() }
 
         Surface(color = MaterialTheme.colorScheme.background) {
             TransactionAccountScreenContent(

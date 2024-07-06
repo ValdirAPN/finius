@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -91,7 +90,7 @@ fun TransactionCounterPartyScreenContent(
                     onClick = onClickContinue,
                     modifier = Modifier.fillMaxWidth(),
                     trailingIconRes = R.drawable.arrow_right_light,
-                    state = if (counterPartyState.text.isBlank()) FiniusButtonState.DISABLED else FiniusButtonState.DEFAULT
+                    state = if (counterPartyState.text.isBlank()) FiniusButtonState.Disabled else FiniusButtonState.Default
                 )
             }
         }

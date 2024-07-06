@@ -84,7 +84,7 @@ fun TransactionTitleScreenContent(
                     onClick = onClickContinue,
                     modifier = Modifier.fillMaxWidth(),
                     trailingIconRes = R.drawable.arrow_right_light,
-                    state = if (titleState.text.isBlank()) FiniusButtonState.DISABLED else FiniusButtonState.DEFAULT
+                    state = if (titleState.text.isBlank()) FiniusButtonState.Disabled else FiniusButtonState.Default
                 )
             }
         }

@@ -3,6 +3,7 @@ package com.finius.features.transaction.presentation.account
 import cafe.adriel.voyager.core.model.ScreenModel
 import com.finius.core.domain.Account
 import com.finius.core.domain.AccountType
+import com.finius.core.domain.BankAccount
 import com.finius.core.domain.TransactionType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,9 +19,9 @@ class TransactionAccountScreenModel : ScreenModel {
     val state = _state.asStateFlow()
 
     fun assemble(transactionType: TransactionType) {
-        val accounts = Account.fakeAccounts().run {
+        val accounts = Account.createFakeAccounts().run {
             if (transactionType == TransactionType.INCOME) {
-                filter { it.type != AccountType.CREDIT_CARD }
+                filterIsInstance<BankAccount>()
             } else { this }
         }
 

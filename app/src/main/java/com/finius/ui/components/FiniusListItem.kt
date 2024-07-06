@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,10 +30,10 @@ import com.finius.ui.theme.FiniusTheme
 enum class FiniusListItemState(
     val color: @Composable () -> Color,
 ) {
-    DEFAULT(
+    Default(
         color = { Color.Unspecified }
     ),
-    SELECTED(
+    Selected(
         color = { MaterialTheme.colorScheme.primaryContainer }
     )
 }
@@ -42,7 +44,7 @@ fun FiniusListItem(
     modifier: Modifier = Modifier,
     description: String? = null,
     onClick: (() -> Unit)? = null,
-    state: FiniusListItemState = FiniusListItemState.DEFAULT,
+    state: FiniusListItemState = FiniusListItemState.Default,
     leadingContent: @Composable ColumnScope.() -> Unit = {},
     trailingContent: @Composable ColumnScope.() -> Unit = {}
 ) {
@@ -50,6 +52,7 @@ fun FiniusListItem(
         onClick = { onClick?.invoke() },
         enabled = onClick != null,
         modifier = modifier
+            .height(56.dp)
             .clip(
                 RoundedCornerShape(8.dp)
             ),
@@ -57,8 +60,8 @@ fun FiniusListItem(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+                .fillMaxSize()
+                .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -91,6 +94,11 @@ private fun FiniusListItemPreview() {
             Column {
                 FiniusListItem(
                     label = "Label",
+                    state = FiniusListItemState.Selected
+                )
+
+                FiniusListItem(
+                    label = "Label",
                     description = "Some description",
                     leadingContent = {
                         Box(
@@ -115,7 +123,7 @@ private fun FiniusListItemPreview() {
                 FiniusListItem(
                     label = "Label",
                     description = "Some description",
-                    state = FiniusListItemState.SELECTED,
+                    state = FiniusListItemState.Selected,
                     leadingContent = {
                         Box(
                             modifier = Modifier

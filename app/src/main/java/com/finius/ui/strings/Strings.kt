@@ -1,6 +1,8 @@
 package com.finius.ui.strings
 
 import cafe.adriel.lyricist.LyricistStrings
+import com.finius.features.bankAccounts.presentation.AccountsStrings
+import com.finius.features.bankAccounts.presentation.AccountsStringsPt
 import com.finius.features.home.presentation.HomeStrings
 import com.finius.features.home.presentation.HomeStringsPt
 import com.finius.features.transaction.presentation.TransactionStrings
@@ -8,11 +10,13 @@ import com.finius.features.transaction.presentation.TransactionStringsPt
 
 data class Strings(
     val homeStrings: HomeStrings,
-    val transactionStrings: TransactionStrings
+    val transactionStrings: TransactionStrings,
+    val accountsStrings: AccountsStrings
 )
 
 @LyricistStrings(languageTag = Locales.PT, default = true)
 val StringsPt = Strings(
     homeStrings = HomeStringsPt,
-    transactionStrings = TransactionStringsPt
+    transactionStrings = TransactionStringsPt,
+    accountsStrings = AccountsStringsPt
 )

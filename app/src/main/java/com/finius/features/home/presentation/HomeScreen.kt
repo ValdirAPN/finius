@@ -28,6 +28,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Transaction
+import com.finius.features.bankAccounts.presentation.home.AccountsHomeScreen
 import com.finius.features.transaction.presentation.type.TransactionTypeScreen
 import com.finius.ui.components.FiniusShortcutButton
 import com.finius.ui.components.TransactionComponent
@@ -47,7 +48,8 @@ object HomeScreen : Screen {
         HomeScreenContent(
             strings = homeStrings,
             transactions = transactions,
-            onClickNewTransaction = { navigator.push(TransactionTypeScreen()) }
+            onClickNewTransaction = { navigator.push(TransactionTypeScreen()) },
+            onClickAccounts = { navigator.push(AccountsHomeScreen()) }
         )
     }
 }
@@ -57,7 +59,8 @@ fun HomeScreenContent(
     strings: HomeStrings,
     transactions: List<Transaction>,
     modifier: Modifier = Modifier,
-    onClickNewTransaction: () -> Unit
+    onClickNewTransaction: () -> Unit,
+    onClickAccounts: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -67,7 +70,8 @@ fun HomeScreenContent(
     ) {
         HomeScreenHeader(
             strings = strings,
-            onClickNewTransaction = onClickNewTransaction
+            onClickNewTransaction = onClickNewTransaction,
+            onClickAccounts = onClickAccounts
         )
         HomeScreenTransactions(transactions = transactions)
     }
@@ -84,13 +88,19 @@ private fun HomeScreenContentPreview() {
         HomeScreenContent(
             strings = homeStrings,
             transactions = transactions,
-            onClickNewTransaction = {}
+            onClickNewTransaction = {},
+            onClickAccounts = {}
         )
     }
 }
 
 @Composable
-fun HomeScreenHeader(strings: HomeStrings, onClickNewTransaction: () -> Unit, modifier: Modifier = Modifier) {
+fun HomeScreenHeader(
+    strings: HomeStrings,
+    onClickNewTransaction: () -> Unit,
+    onClickAccounts: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
@@ -124,7 +134,7 @@ fun HomeScreenHeader(strings: HomeStrings, onClickNewTransaction: () -> Unit, mo
                 FiniusShortcutButton(
                     icon = painterResource(id = R.drawable.piggy_light),
                     title = strings.accountsLabel,
-                    onClick = {}
+                    onClick = onClickAccounts
                 )
 
                 FiniusShortcutButton(

@@ -34,7 +34,7 @@ data class Transaction(
                 amount = 370.0,
                 type = TransactionType.EXPENSE,
                 counterParty = "Netshoes",
-                account = Account.fakeAccount(),
+                account = Account.createFakeAccount(),
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
                 recurrenceType = RecurrenceType.MONTHLY,
@@ -46,7 +46,7 @@ data class Transaction(
                 amount = 2710.0,
                 type = TransactionType.EXPENSE,
                 counterParty = "Mercado Livre",
-                account = Account.fakeAccount(),
+                account = Account.createFakeAccount(),
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
                 recurrenceType = RecurrenceType.MONTHLY,
@@ -58,7 +58,7 @@ data class Transaction(
                 amount = 1823.0,
                 type = TransactionType.EXPENSE,
                 counterParty = "Magazine Luiza",
-                account = Account.fakeAccount(),
+                account = Account.createFakeAccount(),
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
                 recurrenceType = RecurrenceType.MONTHLY,
@@ -70,11 +70,10 @@ data class Transaction(
                 amount = 6498.0,
                 type = TransactionType.INCOME,
                 counterParty = "Globant",
-                account = Account.fakeAccount(
+                account = Account.createFakeAccount(
                     id = "ContaItau",
-                    type = AccountType.BANK_ACCOUNT,
                     name = "Itaú",
-                    iconRes = 0
+                    brand = AccountBrand.Itau
                 ),
                 category = Category.fakeCategory(
                     id = "Salary",

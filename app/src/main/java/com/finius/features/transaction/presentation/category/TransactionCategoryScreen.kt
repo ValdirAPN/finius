@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
@@ -96,7 +95,7 @@ fun TransactionCategoryScreenContent(
                     onClick = onClickContinue,
                     modifier = Modifier.fillMaxWidth(),
                     trailingIconRes = R.drawable.arrow_right_light,
-                    state = if (selectedCategory == null) FiniusButtonState.DISABLED else FiniusButtonState.DEFAULT
+                    state = if (selectedCategory == null) FiniusButtonState.Disabled else FiniusButtonState.Default
                 )
             }
         }
@@ -115,7 +114,7 @@ fun CategoriesContainer(
             FiniusListItem(
                 label = category.title,
                 onClick = { onClickCategory(category) },
-                state = if (category.id == selectedCategory?.id) FiniusListItemState.SELECTED else FiniusListItemState.DEFAULT,
+                state = if (category.id == selectedCategory?.id) FiniusListItemState.Selected else FiniusListItemState.Default,
                 leadingContent = {
                     Box(
                         modifier = Modifier
