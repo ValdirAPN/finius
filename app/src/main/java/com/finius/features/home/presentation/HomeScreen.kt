@@ -28,7 +28,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Transaction
-import com.finius.features.bankAccounts.presentation.home.AccountsHomeScreen
+import com.finius.features.account.bankAccounts.presentation.home.AccountsHomeScreen
+import com.finius.features.account.creditCards.presentation.home.CreditCardsHomeScreen
 import com.finius.features.transaction.presentation.type.TransactionTypeScreen
 import com.finius.ui.components.FiniusShortcutButton
 import com.finius.ui.components.TransactionComponent
@@ -49,7 +50,8 @@ object HomeScreen : Screen {
             strings = homeStrings,
             transactions = transactions,
             onClickNewTransaction = { navigator.push(TransactionTypeScreen()) },
-            onClickAccounts = { navigator.push(AccountsHomeScreen()) }
+            onClickAccounts = { navigator.push(AccountsHomeScreen()) },
+            onClickCards = { navigator.push(CreditCardsHomeScreen())},
         )
     }
 }
@@ -61,6 +63,7 @@ fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onClickNewTransaction: () -> Unit,
     onClickAccounts: () -> Unit,
+    onClickCards: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -71,7 +74,8 @@ fun HomeScreenContent(
         HomeScreenHeader(
             strings = strings,
             onClickNewTransaction = onClickNewTransaction,
-            onClickAccounts = onClickAccounts
+            onClickAccounts = onClickAccounts,
+            onClickCards = onClickCards,
         )
         HomeScreenTransactions(transactions = transactions)
     }
@@ -89,7 +93,8 @@ private fun HomeScreenContentPreview() {
             strings = homeStrings,
             transactions = transactions,
             onClickNewTransaction = {},
-            onClickAccounts = {}
+            onClickAccounts = {},
+            onClickCards = {},
         )
     }
 }
@@ -99,6 +104,7 @@ fun HomeScreenHeader(
     strings: HomeStrings,
     onClickNewTransaction: () -> Unit,
     onClickAccounts: () -> Unit,
+    onClickCards: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -140,7 +146,7 @@ fun HomeScreenHeader(
                 FiniusShortcutButton(
                     icon = painterResource(id = R.drawable.credit_card_light),
                     title = strings.cardsLabel,
-                    onClick = {}
+                    onClick = onClickCards
                 )
 
                 FiniusShortcutButton(

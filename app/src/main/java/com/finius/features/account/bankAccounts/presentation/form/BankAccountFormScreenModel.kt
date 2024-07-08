@@ -1,10 +1,10 @@
-package com.finius.features.bankAccounts.presentation.form
+package com.finius.features.account.bankAccounts.presentation.form
 
 import androidx.compose.foundation.text.input.TextFieldState
 import cafe.adriel.voyager.core.model.ScreenModel
 import com.finius.core.domain.AccountBrand
 import com.finius.core.domain.AccountType
-import com.finius.features.bankAccounts.data.AccountRepository
+import com.finius.features.account.data.AccountRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -36,7 +36,7 @@ data class AccountFormScreenModel(
                 type = AccountType.BankAccount,
                 name = name.text.toString(),
                 brand = brand,
-                balance = balance.text.toString().toDouble(),
+                balance = balance.text.toString().toDouble() / 100,
             )
         }
     }

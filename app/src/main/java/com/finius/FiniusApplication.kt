@@ -6,9 +6,12 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.finius.core.AccountEntity
 import com.finius.core.domain.AccountBrand
 import com.finius.core.domain.AccountType
-import com.finius.features.bankAccounts.data.AccountRepository
-import com.finius.features.bankAccounts.presentation.form.AccountFormScreenModel
-import com.finius.features.bankAccounts.presentation.home.AccountsHomeScreenModel
+import com.finius.features.account.data.AccountRepository
+import com.finius.features.account.bankAccounts.presentation.form.AccountFormScreenModel
+import com.finius.features.account.bankAccounts.presentation.home.AccountsHomeScreenModel
+import com.finius.features.account.creditCards.presentation.form.CardFormScreenModel
+import com.finius.features.account.creditCards.presentation.home.CardsHomeScreenModel
+import com.finius.features.transaction.presentation.account.TransactionAccountScreenModel
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bindProvider
@@ -71,6 +74,24 @@ class FiniusApplication : Application(), DIAware {
 
         bindSingleton {
             AccountFormScreenModel(
+                accountRepository = instance()
+            )
+        }
+
+        bindSingleton {
+            CardsHomeScreenModel(
+                accountRepository = instance()
+            )
+        }
+
+        bindSingleton {
+            CardFormScreenModel(
+                accountRepository = instance()
+            )
+        }
+
+        bindSingleton {
+            TransactionAccountScreenModel(
                 accountRepository = instance()
             )
         }

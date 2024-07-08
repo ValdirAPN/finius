@@ -1,4 +1,4 @@
-package com.finius.features.bankAccounts.data
+package com.finius.features.account.data
 
 import com.finius.core.AccountEntityQueries
 import com.finius.core.domain.AccountBrand
@@ -11,6 +11,11 @@ class AccountRepository(
 
     fun getAll() = accountEntityQueries
         .getAll()
+        .executeAsList()
+        .map { it.toAccount() }
+
+    fun getAllByType(type: AccountType) = accountEntityQueries
+        .getByType(type = type)
         .executeAsList()
         .map { it.toAccount() }
 

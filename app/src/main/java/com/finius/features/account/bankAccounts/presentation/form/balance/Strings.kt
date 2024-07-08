@@ -1,4 +1,4 @@
-package com.finius.features.bankAccounts.presentation.form.balance
+package com.finius.features.account.bankAccounts.presentation.form.balance
 
 data class BankAccountBalanceStrings(
     val title:  String,

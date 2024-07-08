@@ -1,4 +1,4 @@
-package com.finius.features.bankAccounts.presentation.form.brand
+package com.finius.features.account.creditCards.presentation.form.brand
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,8 +29,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.AccountBrand
-import com.finius.features.bankAccounts.presentation.form.AccountFormScreenModel
-import com.finius.features.bankAccounts.presentation.form.balance.AccountBalanceScreen
+import com.finius.features.account.creditCards.presentation.form.limit.CardLimitScreen
+import com.finius.features.account.creditCards.presentation.form.CardFormScreenModel
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusButtonState
 import com.finius.ui.components.FiniusListItem
@@ -39,11 +39,11 @@ import com.finius.ui.components.FiniusNavigationBar
 import com.finius.ui.components.FiniusNavigationBarLeadingAction
 import com.finius.ui.theme.FiniusTheme
 
-class BankAccountBrandScreen : Screen {
+class CardBrandScreen : Screen {
     @Composable
     override fun Content() {
 
-        val screenModel = rememberScreenModel<AccountFormScreenModel>()
+        val screenModel = rememberScreenModel<CardFormScreenModel>()
         val state by screenModel.uiState.collectAsStateWithLifecycle()
 
         val navigator = LocalNavigator.currentOrThrow
@@ -52,22 +52,22 @@ class BankAccountBrandScreen : Screen {
             AccountBrand.entries
         }
 
-        val bankAccountBrandStrings = strings.accountsStrings.accountFormStrings.bankAccountBrandStrings
+        val cardBrandStrings = strings.creditCardStrings.formStrings.brandStrings
 
-        BankAccountBrandScreenContent(
-            strings = bankAccountBrandStrings,
+        CardBrandScreenContent(
+            strings = cardBrandStrings,
             accountBrands = accountBrands,
             selectedBrand = state.brand,
             onClickBrand = screenModel::setBrand,
             onClickNavigationIcon = { navigator.pop() },
-            onClickContinue = { navigator.push(AccountBalanceScreen()) }
+            onClickContinue = { navigator.push(CardLimitScreen()) }
         )
     }
 }
 
 @Composable
-fun BankAccountBrandScreenContent(
-    strings: BankAccountBrandStrings,
+fun CardBrandScreenContent(
+    strings: CardBrandStrings,
     accountBrands: List<AccountBrand>,
     selectedBrand: AccountBrand?,
     onClickBrand: (brand: AccountBrand) -> Unit,
@@ -91,6 +91,9 @@ fun BankAccountBrandScreenContent(
                 ) {
                     LazyColumn {
                         items(accountBrands) { brand ->
+
+                            if (brand == AccountBrand.Wallet) return@items
+
                             val state = remember(selectedBrand) {
                                 if (selectedBrand == brand) {
                                     FiniusListItemState.Selected
@@ -136,10 +139,10 @@ fun BankAccountBrandScreenContent(
 
 @Preview
 @Composable
-private fun BankAccountBrandScreenContentPreview() {
+private fun CardBrandScreenContentPreview() {
     FiniusTheme {
-        BankAccountBrandScreenContent(
-            strings = strings.accountsStrings.accountFormStrings.bankAccountBrandStrings,
+        CardBrandScreenContent(
+            strings = strings.creditCardStrings.formStrings.brandStrings,
             accountBrands = AccountBrand.entries,
             selectedBrand = null,
             onClickBrand = {},

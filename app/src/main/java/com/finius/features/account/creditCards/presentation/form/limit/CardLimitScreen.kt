@@ -1,4 +1,4 @@
-package com.finius.features.bankAccounts.presentation.form.balance
+package com.finius.features.account.creditCards.presentation.form.limit
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,46 +18,40 @@ import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
-import com.finius.core.presentation.FiniusSuccessScreen
-import com.finius.features.bankAccounts.presentation.form.AccountFormScreenModel
+import com.finius.features.account.bankAccounts.presentation.form.balance.AccountBalanceScreenContent
+import com.finius.features.account.creditCards.presentation.form.CardFormScreenModel
+import com.finius.features.account.creditCards.presentation.form.dueDay.CardDueDayScreen
 import com.finius.ui.components.FiniusButton
+import com.finius.ui.components.FiniusButtonState
 import com.finius.ui.components.FiniusInputField
 import com.finius.ui.components.FiniusNavigationBar
 import com.finius.ui.components.FiniusNavigationBarLeadingAction
 import com.finius.ui.components.FiniusNumberKeyboard
 import com.finius.ui.theme.FiniusTheme
 
-class AccountBalanceScreen : Screen {
+class CardLimitScreen : Screen {
     @Composable
     override fun Content() {
 
-        val screenModel = rememberScreenModel<AccountFormScreenModel>()
+        val screenModel = rememberScreenModel<CardFormScreenModel>()
         val state by screenModel.uiState.collectAsStateWithLifecycle()
 
         val navigator = LocalNavigator.currentOrThrow
-        val accountFormStrings = strings.accountsStrings.accountFormStrings
+        val cardLimitStrings = strings.creditCardStrings.formStrings.limitStrings
 
-        AccountBalanceScreenContent(
-            strings = accountFormStrings.bankAccountBalanceStrings,
-            balance = state.balance,
+        CardLimitScreenContent(
+            strings = cardLimitStrings,
+            limit = state.limit,
             onClickNavigationIcon = { navigator.pop() },
-            onClickContinue = {
-                screenModel.createAccount()
-                navigator.push(
-                    FiniusSuccessScreen(
-                        text = "Conta criada com sucesso!",
-                        onClickContinue = { navigator.popUntilRoot() }
-                    )
-                )
-            }
+            onClickContinue = { navigator.push(CardDueDayScreen()) }
         )
     }
 }
 
 @Composable
-fun AccountBalanceScreenContent(
-    strings: BankAccountBalanceStrings,
-    balance: TextFieldState,
+fun CardLimitScreenContent(
+    strings: CardLimitStrings,
+    limit: TextFieldState,
     onClickNavigationIcon: () -> Unit,
     onClickContinue: () -> Unit,
     modifier: Modifier = Modifier
@@ -74,7 +68,7 @@ fun AccountBalanceScreenContent(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     FiniusInputField(
-                        state = balance,
+                        state = limit,
                         readOnly = true,
                         outputTransformation = {
                             if (originalText.isNotEmpty()) {
@@ -92,11 +86,12 @@ fun AccountBalanceScreenContent(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.padding(bottom = 16.dp)
                 ) {
-                    FiniusNumberKeyboard(textFieldState = balance)
+                    FiniusNumberKeyboard(textFieldState = limit)
                     FiniusButton(
                         text = strings.btnLabel,
                         onClick = onClickContinue,
-                        trailingIconRes = R.drawable.check_light
+                        trailingIconRes = R.drawable.arrow_right_light,
+                        state = if (limit.text.isBlank()) FiniusButtonState.Disabled else FiniusButtonState.Default
                     )
                 }
             }
@@ -109,7 +104,7 @@ fun AccountBalanceScreenContent(
 private fun AccountBalanceScreenContentPreview() {
     FiniusTheme {
         AccountBalanceScreenContent(
-            strings = strings.accountsStrings.accountFormStrings.bankAccountBalanceStrings,
+            strings = strings.bankAccountStrings.bankAccountFormStrings.bankAccountBalanceStrings,
             balance = TextFieldState(),
             onClickNavigationIcon = {},
             onClickContinue = {}

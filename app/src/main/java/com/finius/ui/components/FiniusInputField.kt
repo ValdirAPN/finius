@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +30,7 @@ fun FiniusInputField(
     label: String? = null,
     readOnly: Boolean = false,
     outputTransformation: OutputTransformation? = null,
+    inputTransformation: InputTransformation? = null,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         label?.let {
@@ -51,6 +53,7 @@ fun FiniusInputField(
                 textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
                 outputTransformation = outputTransformation,
+                inputTransformation = inputTransformation,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)

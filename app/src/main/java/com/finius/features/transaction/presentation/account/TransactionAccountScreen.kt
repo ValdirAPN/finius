@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Account
-import com.finius.core.domain.AccountType
 import com.finius.core.domain.BankAccount
 import com.finius.core.domain.CreditCard
 import com.finius.core.domain.TransactionType
@@ -57,11 +58,11 @@ data class TransactionAccountScreen(
         val navigator = LocalNavigator.currentOrThrow
         val transactionAccountStrings = strings.transactionStrings.accountStrings
 
-        val model = rememberScreenModel { TransactionAccountScreenModel() }
-        val state by model.state.collectAsState()
+        val screenModel = rememberScreenModel<TransactionAccountScreenModel>()
+        val state by screenModel.state.collectAsState()
 
         LaunchedEffect(Unit) {
-            model.assemble(transactionType)
+            screenModel.assemble(transactionType)
         }
 
         TransactionAccountScreenContent(
@@ -198,7 +199,8 @@ fun AccountsList(
                             Icon(
                                 painter = painterResource(id = account.brand.iconRes),
                                 contentDescription = null,
-                                tint = Color.Unspecified
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                     }

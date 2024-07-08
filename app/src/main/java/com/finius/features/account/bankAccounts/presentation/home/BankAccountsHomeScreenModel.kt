@@ -1,8 +1,8 @@
-package com.finius.features.bankAccounts.presentation.home
+package com.finius.features.account.bankAccounts.presentation.home
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import com.finius.core.domain.Account
-import com.finius.features.bankAccounts.data.AccountRepository
+import com.finius.features.account.data.AccountRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

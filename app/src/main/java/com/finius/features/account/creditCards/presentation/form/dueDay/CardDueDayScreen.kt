@@ -1,4 +1,4 @@
-package com.finius.features.bankAccounts.presentation.form.name
+package com.finius.features.account.creditCards.presentation.form.dueDay
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,79 +18,92 @@ import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
-import com.finius.features.bankAccounts.presentation.form.AccountFormScreenModel
-import com.finius.features.bankAccounts.presentation.form.brand.BankAccountBrandScreen
+import com.finius.core.presentation.FiniusSuccessScreen
+import com.finius.features.account.creditCards.presentation.form.CardFormScreenModel
 import com.finius.ui.components.FiniusButton
+import com.finius.ui.components.FiniusButtonState
 import com.finius.ui.components.FiniusInputField
 import com.finius.ui.components.FiniusNavigationBar
 import com.finius.ui.components.FiniusNavigationBarLeadingAction
+import com.finius.ui.components.FiniusNumberKeyboard
 import com.finius.ui.theme.FiniusTheme
 
-class BankAccountNameScreen : Screen {
+class CardDueDayScreen : Screen {
     @Composable
     override fun Content() {
 
-        val screenModel = rememberScreenModel<AccountFormScreenModel>()
+        val screenModel = rememberScreenModel<CardFormScreenModel>()
         val state by screenModel.uiState.collectAsStateWithLifecycle()
 
         val navigator = LocalNavigator.currentOrThrow
+        val cardDueDayStrings = strings.creditCardStrings.formStrings.dueDayStrings
+        val successTitle = strings.creditCardStrings.successTitle
 
-        val bankAccountNameStrings = strings.accountsStrings.accountFormStrings.bankAccountNameStrings
-
-        BankAccountNameScreenContent(
-            strings = bankAccountNameStrings,
-            name = state.name,
+        CardDueDayScreenContent(
+            strings = cardDueDayStrings,
+            dueDay = state.dueDay,
             onClickNavigationIcon = { navigator.pop() },
-            onClickContinue = { navigator.push(BankAccountBrandScreen()) }
+            onClickContinue = {
+                screenModel.createAccount()
+                navigator.push(
+                    FiniusSuccessScreen(
+                        text = successTitle,
+                        onClickContinue = { navigator.popUntilRoot() }
+                    )
+                )
+            }
         )
     }
 }
 
 @Composable
-fun BankAccountNameScreenContent(
-    strings: BankAccountNameStrings,
-    name: TextFieldState,
+fun CardDueDayScreenContent(
+    strings: CardDueDayStrings,
+    dueDay: TextFieldState,
     onClickNavigationIcon: () -> Unit,
     onClickContinue: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(modifier = modifier, color = MaterialTheme.colorScheme.background) {
+    Surface(color = MaterialTheme.colorScheme.background, modifier = modifier) {
         Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
             FiniusNavigationBar(
                 title = strings.title,
                 leadingAction = FiniusNavigationBarLeadingAction.Back(action = onClickNavigationIcon)
             )
 
-            Column(modifier = Modifier.weight(1f)) {
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    FiniusInputField(state = name)
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    FiniusInputField(
+                        state = dueDay
+                    )
                 }
-                Column(modifier = Modifier.padding(16.dp)) {
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                ) {
+                    FiniusNumberKeyboard(textFieldState = dueDay)
                     FiniusButton(
                         text = strings.btnLabel,
                         onClick = onClickContinue,
-                        trailingIconRes = R.drawable.arrow_right_light
+                        trailingIconRes = R.drawable.check_light,
+                        state = if (dueDay.text.isBlank()) FiniusButtonState.Disabled else FiniusButtonState.Default
                     )
                 }
             }
-
-
         }
     }
 }
 
 @Preview
 @Composable
-private fun BankAccountNameScreenContentPreview() {
+private fun CardDueDayScreenContentPreview() {
     FiniusTheme {
-        BankAccountNameScreenContent(
-            strings = strings.accountsStrings.accountFormStrings.bankAccountNameStrings,
-            name = TextFieldState(),
+        CardDueDayScreenContent(
+            strings = strings.creditCardStrings.formStrings.dueDayStrings,
+            dueDay = TextFieldState(),
             onClickNavigationIcon = {},
             onClickContinue = {}
         )

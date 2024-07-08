@@ -1,4 +1,4 @@
-package com.finius.features.bankAccounts.presentation.home
+package com.finius.features.account.bankAccounts.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +30,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Account
-import com.finius.features.bankAccounts.presentation.form.name.BankAccountNameScreen
+import com.finius.features.account.bankAccounts.presentation.form.name.BankAccountNameScreen
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusButtonSize
 import com.finius.ui.components.FiniusButtonVariant
@@ -48,7 +48,7 @@ class AccountsHomeScreen : Screen {
 
         val navigator = LocalNavigator.currentOrThrow
 
-        val accountHomeStrings = strings.accountsStrings.accountHomeStrings
+        val accountHomeStrings = strings.bankAccountStrings.bankAccountsHomeStrings
 
         AccountsHomeScreenContent(
             strings = accountHomeStrings,
@@ -61,7 +61,7 @@ class AccountsHomeScreen : Screen {
 
 @Composable
 fun AccountsHomeScreenContent(
-    strings: AccountHomeStrings,
+    strings: BankAccountsHomeStrings,
     accounts: List<Account>,
     onClickNavigationIcon: () -> Unit,
     onClickNewAccount: () -> Unit,
@@ -122,7 +122,7 @@ private fun AccountsHomeScreenContentPreview() {
     FiniusTheme {
         val accounts = Account.createFakeAccounts()
         AccountsHomeScreenContent(
-            strings = strings.accountsStrings.accountHomeStrings,
+            strings = strings.bankAccountStrings.bankAccountsHomeStrings,
             accounts = accounts,
             onClickNavigationIcon = {},
             onClickNewAccount = {})

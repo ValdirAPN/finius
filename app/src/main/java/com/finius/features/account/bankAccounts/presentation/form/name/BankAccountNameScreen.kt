@@ -1,0 +1,98 @@
+package com.finius.features.account.bankAccounts.presentation.form.name
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.lyricist.strings
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.kodein.rememberScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import com.finius.R
+import com.finius.features.account.bankAccounts.presentation.form.AccountFormScreenModel
+import com.finius.features.account.bankAccounts.presentation.form.brand.BankAccountBrandScreen
+import com.finius.ui.components.FiniusButton
+import com.finius.ui.components.FiniusInputField
+import com.finius.ui.components.FiniusNavigationBar
+import com.finius.ui.components.FiniusNavigationBarLeadingAction
+import com.finius.ui.theme.FiniusTheme
+
+class BankAccountNameScreen : Screen {
+    @Composable
+    override fun Content() {
+
+        val screenModel = rememberScreenModel<AccountFormScreenModel>()
+        val state by screenModel.uiState.collectAsStateWithLifecycle()
+
+        val navigator = LocalNavigator.currentOrThrow
+
+        val bankAccountNameStrings = strings.bankAccountStrings.bankAccountFormStrings.bankAccountNameStrings
+
+        BankAccountNameScreenContent(
+            strings = bankAccountNameStrings,
+            name = state.name,
+            onClickNavigationIcon = { navigator.pop() },
+            onClickContinue = { navigator.push(BankAccountBrandScreen()) }
+        )
+    }
+}
+
+@Composable
+fun BankAccountNameScreenContent(
+    strings: BankAccountNameStrings,
+    name: TextFieldState,
+    onClickNavigationIcon: () -> Unit,
+    onClickContinue: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(modifier = modifier, color = MaterialTheme.colorScheme.background) {
+        Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            FiniusNavigationBar(
+                title = strings.title,
+                leadingAction = FiniusNavigationBarLeadingAction.Back(action = onClickNavigationIcon)
+            )
+
+            Column(modifier = Modifier.weight(1f)) {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    FiniusInputField(state = name)
+                }
+                Column(modifier = Modifier.padding(16.dp)) {
+                    FiniusButton(
+                        text = strings.btnLabel,
+                        onClick = onClickContinue,
+                        trailingIconRes = R.drawable.arrow_right_light
+                    )
+                }
+            }
+
+
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun BankAccountNameScreenContentPreview() {
+    FiniusTheme {
+        BankAccountNameScreenContent(
+            strings = strings.bankAccountStrings.bankAccountFormStrings.bankAccountNameStrings,
+            name = TextFieldState(),
+            onClickNavigationIcon = {},
+            onClickContinue = {}
+        )
+    }
+}
