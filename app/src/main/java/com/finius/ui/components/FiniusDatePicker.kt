@@ -12,15 +12,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.commandiron.wheel_picker_compose.WheelDatePicker
 import com.finius.ui.theme.FiniusTheme
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toKotlinLocalDate
 
 @Composable
-fun FiniusDatePicker(modifier: Modifier = Modifier) {
+fun FiniusDatePicker(
+    modifier: Modifier = Modifier,
+    onSelectDate: (LocalDate) -> Unit
+) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp)
     ) {
         Box(modifier = Modifier.padding(16.dp)) {
-            WheelDatePicker(modifier = Modifier.fillMaxWidth())
+            WheelDatePicker(
+                modifier = Modifier.fillMaxWidth(),
+                onSnappedDate = { date -> onSelectDate(date.toKotlinLocalDate()) }
+            )
         }
     }
 }
@@ -30,7 +38,9 @@ fun FiniusDatePicker(modifier: Modifier = Modifier) {
 private fun FiniusDatePickerPreview() {
     FiniusTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            FiniusDatePicker()
+            FiniusDatePicker(
+                onSelectDate = {}
+            )
         }
     }
 }

@@ -9,28 +9,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
+import com.finius.core.domain.toMoney
 import com.finius.core.presentation.FiniusSuccessScreen
+import com.finius.features.transaction.presentation.TransactionFormScreenModel
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusInputField
 import com.finius.ui.components.FiniusNavigationBar
@@ -41,20 +41,28 @@ import com.finius.ui.theme.FiniusTheme
 class TransactionAmountScreen : Screen {
     @Composable
     override fun Content() {
+
+        val model = rememberScreenModel<TransactionFormScreenModel>()
+        val state by model.uiState.collectAsStateWithLifecycle()
+
         val amountStrings = strings.transactionStrings.amountStrings
-        val amountState = rememberTextFieldState()
         val navigator = LocalNavigator.currentOrThrow
 
         val successScreenTitle = strings.transactionStrings.successScreenTitle
 
         TransactionAmountScreenContent(
             strings = amountStrings,
-            amount = amountState,
+            amount = state.amount,
+            isTotalAmount = state.isTotalAmount,
+            setIsTotalAmount = model::setIsTotalAmount,
+            installments = state.recurrence,
             onClickContinue = {
+                model.createTransaction()
                 navigator.push(
                     FiniusSuccessScreen(
                         text = successScreenTitle,
-                        onClickContinue = { navigator.popUntilRoot() })
+                        onClickContinue = { navigator.popUntilRoot() }
+                    )
                 )
             })
     }
@@ -64,12 +72,12 @@ class TransactionAmountScreen : Screen {
 fun TransactionAmountScreenContent(
     strings: TransactionAmountStrings,
     amount: TextFieldState,
+    isTotalAmount: Boolean,
+    installments: Int,
+    setIsTotalAmount: (Boolean) -> Unit,
     onClickContinue: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isTotalAmount by remember {
-        mutableStateOf(false)
-    }
 
     Surface(
         modifier = modifier,
@@ -109,7 +117,7 @@ fun TransactionAmountScreenContent(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(text = strings.isTotalAmountLabel, modifier = Modifier.weight(1f))
-                        Switch(checked = isTotalAmount, onCheckedChange = { isTotalAmount = it })
+                        Switch(checked = isTotalAmount, onCheckedChange = setIsTotalAmount)
                     }
                 }
             }
@@ -120,40 +128,60 @@ fun TransactionAmountScreenContent(
                     .padding(bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .clip(
-                            RoundedCornerShape(16.dp)
-                        )
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .padding(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+
+                val amountValue = if (amount.text.toString().isNotEmpty()) {
+                    amount.text.toString().toDouble()
+                } else 0.0
+
+                if (amountValue > 0) {
+
+                    val installmentValue = if (isTotalAmount) {
+                        amountValue / installments
+                    } else amountValue
+
+                    val totalAmount = if (isTotalAmount) {
+                        amountValue
+                    } else amountValue * installments
+
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .clip(
+                                RoundedCornerShape(16.dp)
+                            )
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .padding(16.dp)
                     ) {
-                        Text(
-                            text = strings.installmentValueLabel,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "3x de R$ 461,63",
-                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = strings.totalValueLabel,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "R$ 1.384,90",
-                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = strings.installmentValueLabel,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = strings.installmentValue(
+                                    installments,
+                                    installmentValue.toMoney()
+                                ),
+                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                            )
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = strings.totalValueLabel,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = strings.totalValue(totalAmount.toMoney()),
+                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                            )
+                        }
                     }
                 }
 
@@ -178,6 +206,9 @@ private fun TransactionAmountScreenContentPreview() {
         TransactionAmountScreenContent(
             strings = amountStrings,
             amount = TextFieldState(),
+            installments = 1,
+            isTotalAmount = true,
+            setIsTotalAmount = {},
             onClickContinue = {}
         )
     }

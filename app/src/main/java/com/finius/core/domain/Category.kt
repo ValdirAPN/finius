@@ -1,49 +1,65 @@
 package com.finius.core.domain
 
 import com.finius.R
+import com.finius.core.CategoryEntity
+
+enum class CategoryIcon(val iconRes: Int) {
+    ShoppingBag(iconRes = R.drawable.shopping_bag_fill),
+    ForkKnife(iconRes = R.drawable.fork_knife_fill),
+    Airplane(iconRes = R.drawable.airplane_fill),
+    CarProfile(iconRes = R.drawable.car_profile_fill),
+    Gift(iconRes = R.drawable.gift_fill),
+    Currency(iconRes = R.drawable.currency_dolar_fill),
+}
 
 data class Category(
     val id: String,
     val title: String,
-    val iconRes: Int,
+    val icon: CategoryIcon,
 ) {
     companion object {
         fun fakeCategory(
             id: String = "id",
             title: String = "Compras",
-            iconRes: Int = R.drawable.shopping_bag_fill
+            icon: CategoryIcon = CategoryIcon.ShoppingBag
         ) = Category(
             id = id,
             title = title,
-            iconRes = iconRes
+            icon = icon
         )
 
         fun fakeCategories() = listOf(
             fakeCategory(
                 id = "1",
                 title = "Alimentação",
-                iconRes = R.drawable.fork_knife_fill
+                icon = CategoryIcon.ForkKnife
             ),
             fakeCategory(
                 id = "2",
                 title = "Viagem",
-                iconRes = R.drawable.airplane_fill
+                icon = CategoryIcon.Airplane
             ),
             fakeCategory(
                 id = "3",
                 title = "Transporte",
-                iconRes = R.drawable.car_profile_fill
+                icon = CategoryIcon.CarProfile
             ),
             fakeCategory(
                 id = "4",
                 title = "Compras",
-                iconRes = R.drawable.shopping_bag_fill
+                icon = CategoryIcon.ShoppingBag
             ),
             fakeCategory(
                 id = "5",
                 title = "Presente",
-                iconRes = R.drawable.gift_fill
+                icon = CategoryIcon.Gift
             ),
         )
     }
 }
+
+fun CategoryEntity.toCategory() = Category(
+    id = id,
+    title = title,
+    icon = icon
+)

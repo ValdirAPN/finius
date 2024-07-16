@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,7 +57,7 @@ fun TransactionComponent(transaction: Transaction, modifier: Modifier = Modifier
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            painter = painterResource(id = category.iconRes),
+                            painter = painterResource(id = category.icon.iconRes),
                             contentDescription = category.title,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )

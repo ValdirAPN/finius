@@ -22,12 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Category
+import com.finius.features.transaction.presentation.TransactionFormScreenModel
 import com.finius.features.transaction.presentation.date.TransactionDateScreen
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusButtonState
@@ -41,12 +44,20 @@ class TransactionCategoryScreen : Screen {
     @Composable
     override fun Content() {
 
+        val model = rememberScreenModel<TransactionCategoryScreenModel>()
+        val state by model.uiState.collectAsStateWithLifecycle()
+
+        val formModel = rememberScreenModel<TransactionFormScreenModel>()
+        val formState by formModel.uiState.collectAsStateWithLifecycle()
+
         val navigator = LocalNavigator.currentOrThrow
         val categoryStrings = strings.transactionStrings.categoryStrings
 
         TransactionCategoryScreenContent(
             strings = categoryStrings,
-            categories = Category.fakeCategories(),
+            categories = state.categories,
+            selectedCategory = formState.category,
+            onSelectCategory = formModel::setCategory,
             onClickNavigationIcon = navigator::pop,
             onClickContinue = { navigator.push(TransactionDateScreen()) }
         )
@@ -56,16 +67,13 @@ class TransactionCategoryScreen : Screen {
 @Composable
 fun TransactionCategoryScreenContent(
     strings: TransactionCategoryStrings,
+    selectedCategory: Category?,
     categories: List<Category>,
+    onSelectCategory: (Category) -> Unit,
     onClickNavigationIcon: () -> Unit,
     onClickContinue: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    var selectedCategory by remember {
-        mutableStateOf<Category?>(null)
-    }
-
     Surface(
         modifier = modifier,
         color = MaterialTheme.colorScheme.background
@@ -82,7 +90,7 @@ fun TransactionCategoryScreenContent(
                 CategoriesContainer(
                     categories = categories,
                     selectedCategory = selectedCategory,
-                    onClickCategory = { category -> selectedCategory = category },
+                    onClickCategory = onSelectCategory,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
             }
@@ -123,7 +131,7 @@ fun CategoriesContainer(
                             .padding(4.dp)
                     ) {
                         Icon(
-                            painter = painterResource(id = category.iconRes),
+                            painter = painterResource(id = category.icon.iconRes),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primaryContainer
                         )

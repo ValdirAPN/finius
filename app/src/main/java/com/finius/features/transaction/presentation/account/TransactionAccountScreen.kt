@@ -28,8 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.lyricist.strings
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -39,6 +39,7 @@ import com.finius.core.domain.Account
 import com.finius.core.domain.BankAccount
 import com.finius.core.domain.CreditCard
 import com.finius.core.domain.TransactionType
+import com.finius.features.transaction.presentation.TransactionFormScreenModel
 import com.finius.features.transaction.presentation.title.TransactionTitleScreen
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusButtonState
@@ -49,25 +50,28 @@ import com.finius.ui.components.FiniusNavigationBar
 import com.finius.ui.components.FiniusNavigationBarLeadingAction
 import com.finius.ui.theme.FiniusTheme
 
-data class TransactionAccountScreen(
-    val transactionType: TransactionType
-) : Screen {
+class TransactionAccountScreen : Screen {
     @Composable
     override fun Content() {
 
         val navigator = LocalNavigator.currentOrThrow
         val transactionAccountStrings = strings.transactionStrings.accountStrings
 
-        val screenModel = rememberScreenModel<TransactionAccountScreenModel>()
-        val state by screenModel.state.collectAsState()
+        val model = rememberScreenModel<TransactionAccountScreenModel>()
+        val state by model.state.collectAsState()
+
+        val transactionFormModel = rememberScreenModel<TransactionFormScreenModel>()
+        val transactionFormState by transactionFormModel.uiState.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {
-            screenModel.assemble(transactionType)
+            model.assemble(transactionFormState.type)
         }
 
         TransactionAccountScreenContent(
             strings = transactionAccountStrings,
-            transactionType = transactionType,
+            selectedAccount = transactionFormState.account,
+            onSelectAccount = { account -> transactionFormModel.setAccount(account)},
+            transactionType = transactionFormState.type,
             accounts = state.accounts,
             onClickNavigationIcon = navigator::pop,
             onClickContinue = { navigator.push(TransactionTitleScreen()) }
@@ -78,16 +82,14 @@ data class TransactionAccountScreen(
 @Composable
 fun TransactionAccountScreenContent(
     strings: TransactionAccountStrings,
+    selectedAccount: Account?,
+    onSelectAccount: (Account) -> Unit,
     transactionType: TransactionType,
     accounts: List<Account>,
     onClickNavigationIcon: () -> Unit,
     onClickContinue: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    var selectedAccount by remember {
-        mutableStateOf<Account?>(null)
-    }
 
     Surface(
         modifier = modifier,
@@ -107,7 +109,7 @@ fun TransactionAccountScreenContent(
                     strings = strings,
                     accounts = accounts,
                     selectedAccount = selectedAccount,
-                    onClickAccount = { account -> selectedAccount = account },
+                    onClickAccount = onSelectAccount,
                 )
             }
             Column(
@@ -229,6 +231,8 @@ private fun TransactionAccountScreenContentIncomePreview() {
                 strings = transactionAccountStrings,
                 transactionType = TransactionType.INCOME,
                 accounts = accounts,
+                selectedAccount = accounts.first(),
+                onSelectAccount = {},
                 onClickNavigationIcon = {},
                 onClickContinue = {}
             )
@@ -249,6 +253,8 @@ private fun TransactionAccountScreenContentExpensePreview() {
                 strings = transactionAccountStrings,
                 transactionType = TransactionType.EXPENSE,
                 accounts = accounts,
+                selectedAccount = accounts.first(),
+                onSelectAccount = {},
                 onClickNavigationIcon = {},
                 onClickContinue = {}
             )

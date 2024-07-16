@@ -1,0 +1,17 @@
+import com.finius.core.domain.CategoryIcon;
+
+CREATE TABLE CategoryEntity (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    icon TEXT AS CategoryIcon NOT NULL
+);
+
+insert:
+INSERT INTO CategoryEntity(id, title, icon)
+VALUES (?, ?, ?);
+
+getAll:
+SELECT * FROM CategoryEntity;
+
+getById:
+SELECT * FROM CategoryEntity WHERE id = ?;

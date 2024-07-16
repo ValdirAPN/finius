@@ -33,25 +33,41 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
+import com.finius.features.transaction.presentation.TransactionFormScreenModel
 import com.finius.features.transaction.presentation.amount.TransactionAmountScreen
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusDatePicker
 import com.finius.ui.components.FiniusNavigationBar
 import com.finius.ui.components.FiniusNavigationBarLeadingAction
 import com.finius.ui.theme.FiniusTheme
+import kotlinx.datetime.LocalDate
 
 class TransactionDateScreen : Screen {
     @Composable
     override fun Content() {
+
+        val model = rememberScreenModel<TransactionFormScreenModel>()
+        val state by model.uiState.collectAsStateWithLifecycle()
+
         val navigator = LocalNavigator.currentOrThrow
         val dateStrings = strings.transactionStrings.dateStrings
+
         TransactionDateScreenContent(
             strings = dateStrings,
+            onSelectDate = model::setDate,
+            shouldRepeat = state.shouldRepeat,
+            onSetShouldRepeat = model::setShouldRepeat,
+            recurrenceUnit = state.recurrenceUnit,
+            onSetRecurrenceUnit = model::setRecurrenceUnit,
+            recurrence = state.recurrence,
+            onSetRecurrence = model::setRecurrence,
             onClickNavigationIcon = navigator::pop,
             onClickContinue = { navigator.push(TransactionAmountScreen()) }
         )
@@ -62,6 +78,13 @@ class TransactionDateScreen : Screen {
 @Composable
 fun TransactionDateScreenContent(
     strings: TransactionDateStrings,
+    onSelectDate: (LocalDate) -> Unit,
+    shouldRepeat: Boolean,
+    onSetShouldRepeat: (Boolean) -> Unit,
+    recurrenceUnit: TransactionRecurrenceUnit,
+    onSetRecurrenceUnit: (TransactionRecurrenceUnit) -> Unit,
+    recurrence: Int,
+    onSetRecurrence: (Int) -> Unit,
     onClickNavigationIcon: () -> Unit,
     onClickContinue: () -> Unit,
     modifier: Modifier = Modifier
@@ -83,25 +106,20 @@ fun TransactionDateScreenContent(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    FiniusDatePicker()
-
-                    var shouldRepeat by remember {
-                        mutableStateOf(false)
-                    }
+                    FiniusDatePicker(onSelectDate = onSelectDate)
 
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(text = strings.shouldRepeatLabel, modifier = Modifier.weight(1f))
-                        Switch(checked = shouldRepeat, onCheckedChange = { shouldRepeat = it })
+                        Switch(checked = shouldRepeat, onCheckedChange = onSetShouldRepeat)
                     }
 
                     if (shouldRepeat) {
 
                         val recurrences = TransactionRecurrenceUnit.entries
                         var expanded by remember { mutableStateOf(false) }
-                        var recurrence by remember { mutableStateOf(TransactionRecurrenceUnit.MONTHLY) }
 
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -123,7 +141,7 @@ fun TransactionDateScreenContent(
                                         .height(48.dp)
                                 ) {
                                     Text(
-                                        text = recurrence.displayName(),
+                                        text = recurrenceUnit.displayName(),
                                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                                     )
 
@@ -156,17 +174,11 @@ fun TransactionDateScreenContent(
                                                     textAlign = TextAlign.Center
                                                 )
                                             },
-                                            onClick = {
-                                                recurrence = it
-                                                expanded = false
-                                            }
+                                            onClick = { onSetRecurrenceUnit(it) }
                                         )
                                     }
                                 }
                             }
-                        }
-                        var recurrenceTimes by remember {
-                            mutableIntStateOf(1)
                         }
 
                         Row(
@@ -174,7 +186,7 @@ fun TransactionDateScreenContent(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             Text(
-                                text = strings.howLongToRepeatLabel(recurrence),
+                                text = strings.howLongToRepeatLabel(recurrenceUnit),
                                 modifier = Modifier.weight(1f)
                             )
                             Row(
@@ -193,12 +205,12 @@ fun TransactionDateScreenContent(
                                         .size(32.dp)
                                         .clip(RoundedCornerShape(100))
                                         .clickable {
-                                            if (recurrenceTimes > 1) recurrenceTimes--
+                                            if (recurrence > 1) onSetRecurrence(recurrence - 1)
                                         }
                                         .padding(4.dp)
                                 )
                                 Text(
-                                    text = recurrenceTimes.toString(),
+                                    text = recurrence.toString(),
                                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                                 )
                                 Icon(
@@ -207,7 +219,7 @@ fun TransactionDateScreenContent(
                                     modifier = Modifier
                                         .size(32.dp)
                                         .clip(RoundedCornerShape(100))
-                                        .clickable { recurrenceTimes++ }
+                                        .clickable { onSetRecurrence(recurrence + 1) }
                                         .padding(4.dp)
                                 )
                             }
@@ -236,6 +248,13 @@ private fun TransactionDateScreenContentPreview() {
     FiniusTheme {
         TransactionDateScreenContent(
             strings = strings.transactionStrings.dateStrings,
+            onSelectDate = {},
+            shouldRepeat = false,
+            onSetShouldRepeat = {},
+            recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
+            onSetRecurrenceUnit = {},
+            recurrence = 1,
+            onSetRecurrence = {},
             onClickContinue = {},
             onClickNavigationIcon = {}
         )

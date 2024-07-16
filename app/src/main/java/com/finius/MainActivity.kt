@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
             FiniusTheme {
                 ProvideStrings(lyricist = lyricist, provider = LocalCommonStrings) {
                     Navigator(
-                        screen = HomeScreen,
+                        screen = HomeScreen(),
                         disposeBehavior = NavigatorDisposeBehavior(disposeSteps = false)
                     ) { navigator ->
                         SlideTransition(

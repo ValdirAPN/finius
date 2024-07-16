@@ -6,20 +6,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
+import com.finius.features.transaction.presentation.TransactionFormScreenModel
 import com.finius.features.transaction.presentation.category.TransactionCategoryScreen
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusButtonState
@@ -35,15 +38,17 @@ class TransactionTitleScreen : Screen {
     @Composable
     override fun Content() {
 
+        val model = rememberScreenModel<TransactionFormScreenModel>()
+        val state by model.uiState.collectAsStateWithLifecycle()
+
         val navigator = LocalNavigator.currentOrThrow
         val titleStrings = strings.transactionStrings.titleStrings
-        val titleState = rememberTextFieldState()
 
         TransactionTitleScreenContent(
             strings = titleStrings,
             onClickNavigationIcon = navigator::pop,
             onClickContinue = { navigator.push(TransactionCategoryScreen()) },
-            titleState = titleState
+            titleState = state.title
         )
     }
 }

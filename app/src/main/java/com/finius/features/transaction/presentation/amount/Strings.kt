@@ -13,6 +13,8 @@ data class TransactionAmountStrings(
     val installment: String,
     val total: String,
     val isTotalAmountLabel: AnnotatedString,
+    val installmentValue: (installments: Int, value: String) -> String,
+    val totalValue: (value: String) -> String,
     val btnLabel: String
 )
 
@@ -29,5 +31,9 @@ val TransactionAmountStringsPt = TransactionAmountStrings(
         }
         append("?")
     },
+    installmentValue = { installments, value ->
+        "${installments}x de R$ $value"
+    },
+    totalValue = { value -> "R$ $value"},
     btnLabel = "Cadastrar"
 )

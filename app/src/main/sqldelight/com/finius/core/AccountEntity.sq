@@ -20,6 +20,9 @@ SELECT * FROM AccountEntity;
 getByType:
 SELECT * FROM AccountEntity WHERE type = ?;
 
+getById:
+SELECT * FROM AccountEntity WHERE id = ?;
+
 insert:
 INSERT INTO AccountEntity(id, type, name, brand, balance, totalLimit, dueDay)
 VALUES(?, ?, ?, ?, ?, ?, ?);

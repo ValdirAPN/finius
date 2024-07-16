@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,14 +16,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.TransactionType
+import com.finius.features.transaction.presentation.TransactionFormScreenModel
 import com.finius.features.transaction.presentation.counterParty.TransactionCounterPartyScreen
 import com.finius.ui.components.FiniusButton
 import com.finius.ui.components.FiniusNavigationBar
@@ -38,14 +42,36 @@ class TransactionTypeScreen : Screen {
     @Composable
     override fun Content() {
 
+        val model = rememberScreenModel<TransactionFormScreenModel>()
+        val state by model.uiState.collectAsStateWithLifecycle()
+
         val navigator = LocalNavigator.currentOrThrow
         val transactionTypeStrings = strings.transactionStrings.typeStrings
 
+        val options = remember {
+            listOf(
+                FiniusRadioButtonItem(
+                    id = TransactionType.EXPENSE.name,
+                    label = transactionTypeStrings.rbExpenseLabel
+                ),
+                FiniusRadioButtonItem(
+                    id = TransactionType.INCOME.name,
+                    label = transactionTypeStrings.rbIncomeLabel
+                ),
+            )
+        }
+
         TransactionTypeScreenContent(
             strings = transactionTypeStrings,
+            options = options,
+            selectedOption = options.first { it.id == state.type.name },
+            onClickOption = { option ->
+                val type = TransactionType.entries.first { it.name == option.id }
+                model.setType(type)
+            },
             onClickNavigationIcon = navigator::popUntilRoot,
             onClickContinue = { type ->
-                type?.let { navigator.push(TransactionCounterPartyScreen(it)) }
+                type?.let { navigator.push(TransactionCounterPartyScreen()) }
             }
         )
     }
@@ -54,28 +80,13 @@ class TransactionTypeScreen : Screen {
 @Composable
 fun TransactionTypeScreenContent(
     strings: TransactionTypeStrings,
+    options: List<FiniusRadioButtonItem>,
+    selectedOption: FiniusRadioButtonItem,
+    onClickOption: (FiniusRadioButtonItem) -> Unit,
     onClickNavigationIcon: () -> Unit,
     onClickContinue: (TransactionType?) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    val items = remember {
-        listOf(
-            FiniusRadioButtonItem(
-                id = TransactionType.EXPENSE.name,
-                label = strings.rbExpenseLabel
-            ),
-            FiniusRadioButtonItem(
-                id = TransactionType.INCOME.name,
-                label = strings.rbIncomeLabel
-            ),
-        )
-    }
-
-    var selectedItem by remember {
-        mutableStateOf(items.first())
-    }
-
     Surface(
         modifier = modifier,
         color = MaterialTheme.colorScheme.background
@@ -91,9 +102,9 @@ fun TransactionTypeScreenContent(
                 )
 
                 FiniusRadioButtonGroup(
-                    items = items,
-                    selectedItem = selectedItem,
-                    onSelect = { item -> selectedItem = item },
+                    items = options,
+                    selectedItem = selectedOption,
+                    onSelect = onClickOption,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
@@ -105,7 +116,7 @@ fun TransactionTypeScreenContent(
                     text = strings.btnLabel,
                     onClick = {
                         val type =
-                            TransactionType.entries.firstOrNull { it.name == selectedItem.id }
+                            TransactionType.entries.firstOrNull { it.name == selectedOption.id }
                         onClickContinue(type)
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -121,8 +132,28 @@ fun TransactionTypeScreenContent(
 private fun TransactionTypeScreenContentPreview() {
     FiniusTheme {
         val transactionTypeStrings = strings.transactionStrings.typeStrings
+        val options = remember {
+            listOf(
+                FiniusRadioButtonItem(
+                    id = TransactionType.EXPENSE.name,
+                    label = transactionTypeStrings.rbExpenseLabel
+                ),
+                FiniusRadioButtonItem(
+                    id = TransactionType.INCOME.name,
+                    label = transactionTypeStrings.rbIncomeLabel
+                ),
+            )
+        }
+
+        var selectedOption by remember {
+            mutableStateOf(options.first())
+        }
+
         TransactionTypeScreenContent(
             strings = transactionTypeStrings,
+            options = options,
+            selectedOption = selectedOption,
+            onClickOption = {},
             onClickNavigationIcon = {},
             onClickContinue = {}
         )

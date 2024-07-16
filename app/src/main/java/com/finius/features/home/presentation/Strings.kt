@@ -6,6 +6,7 @@ data class HomeStrings(
     val accountsLabel: String,
     val cardsLabel: String,
     val transactionsOverviewLabel: String,
+    val categoriesLabel: String,
 )
 
 val HomeStringsPt = HomeStrings(
@@ -14,4 +15,5 @@ val HomeStringsPt = HomeStrings(
     accountsLabel = "Contas",
     cardsLabel = "Cartões",
     transactionsOverviewLabel = "Resumo de transações",
+    categoriesLabel = "Categorias"
 )

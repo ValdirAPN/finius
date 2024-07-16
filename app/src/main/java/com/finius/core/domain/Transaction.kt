@@ -1,14 +1,12 @@
 package com.finius.core.domain
 
-import com.finius.R
+import com.finius.core.TransactionEntity
+import com.finius.features.transaction.presentation.date.TransactionRecurrenceUnit
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-
-enum class RecurrenceType {
-    DAILY, WEEKLY, BIWEEKLY, MONTHLY, YEARLY
-}
 
 enum class TransactionType {
     INCOME, EXPENSE
@@ -23,7 +21,7 @@ data class Transaction(
     val account: Account,
     val category: Category,
     val date: LocalDate,
-    val recurrenceType: RecurrenceType,
+    val recurrenceUnit: TransactionRecurrenceUnit,
     val repeatTimes: Int
 ) {
     companion object {
@@ -37,7 +35,7 @@ data class Transaction(
                 account = Account.createFakeAccount(),
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
-                recurrenceType = RecurrenceType.MONTHLY,
+                recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
                 repeatTimes = 10
             ),
             Transaction(
@@ -49,7 +47,7 @@ data class Transaction(
                 account = Account.createFakeAccount(),
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
-                recurrenceType = RecurrenceType.MONTHLY,
+                recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
                 repeatTimes = 10
             ),
             Transaction(
@@ -61,7 +59,7 @@ data class Transaction(
                 account = Account.createFakeAccount(),
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
-                recurrenceType = RecurrenceType.MONTHLY,
+                recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
                 repeatTimes = 6
             ),
             Transaction(
@@ -78,15 +76,26 @@ data class Transaction(
                 category = Category.fakeCategory(
                     id = "Salary",
                     title = "Salário",
-                    iconRes = R.drawable.currency_dolar_fill
+                    icon = CategoryIcon.Currency
                 ),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
-                recurrenceType = RecurrenceType.MONTHLY,
+                recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
                 repeatTimes = 1
             )
         )
     }
 }
 
-
+fun TransactionEntity.toTransaction(account: Account, category: Category) = Transaction(
+    id = id,
+    title = title,
+    amount = amount,
+    type = type,
+    counterParty = counterParty,
+    account = account,
+    category = category,
+    date = Instant.fromEpochMilliseconds(dateMilliseconds).toLocalDateTime(TimeZone.UTC).date,
+    recurrenceUnit = recurrenceUnit,
+    repeatTimes = recurrence.toInt()
+)
 

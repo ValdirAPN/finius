@@ -16,42 +16,54 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
 import com.finius.core.domain.Transaction
 import com.finius.features.account.bankAccounts.presentation.home.AccountsHomeScreen
 import com.finius.features.account.creditCards.presentation.home.CreditCardsHomeScreen
+import com.finius.features.categories.presentation.CategoriesHomeScreen
 import com.finius.features.transaction.presentation.type.TransactionTypeScreen
 import com.finius.ui.components.FiniusShortcutButton
 import com.finius.ui.components.TransactionComponent
 import com.finius.ui.theme.FiniusTheme
 
-object HomeScreen : Screen {
+class HomeScreen : Screen {
 
     override val key: ScreenKey = uniqueScreenKey
 
     @Composable
     override fun Content() {
 
+        val model = rememberScreenModel<HomeScreenModel>()
+        val state by model.uiState.collectAsStateWithLifecycle()
+
         val navigator = LocalNavigator.currentOrThrow
         val homeStrings = strings.homeStrings
-        val transactions = Transaction.fakeTransactions()
+
+        LaunchedEffect(Unit) {
+            model.assemble()
+        }
 
         HomeScreenContent(
             strings = homeStrings,
-            transactions = transactions,
+            transactions = state.transactions,
             onClickNewTransaction = { navigator.push(TransactionTypeScreen()) },
             onClickAccounts = { navigator.push(AccountsHomeScreen()) },
-            onClickCards = { navigator.push(CreditCardsHomeScreen())},
+            onClickCards = { navigator.push(CreditCardsHomeScreen()) },
+            onClickCategories = { navigator.push(CategoriesHomeScreen()) },
         )
     }
 }
@@ -64,6 +76,7 @@ fun HomeScreenContent(
     onClickNewTransaction: () -> Unit,
     onClickAccounts: () -> Unit,
     onClickCards: () -> Unit,
+    onClickCategories: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -76,6 +89,7 @@ fun HomeScreenContent(
             onClickNewTransaction = onClickNewTransaction,
             onClickAccounts = onClickAccounts,
             onClickCards = onClickCards,
+            onClickCategories = onClickCategories
         )
         HomeScreenTransactions(transactions = transactions)
     }
@@ -95,6 +109,7 @@ private fun HomeScreenContentPreview() {
             onClickNewTransaction = {},
             onClickAccounts = {},
             onClickCards = {},
+            onClickCategories = {}
         )
     }
 }
@@ -105,6 +120,7 @@ fun HomeScreenHeader(
     onClickNewTransaction: () -> Unit,
     onClickAccounts: () -> Unit,
     onClickCards: () -> Unit,
+    onClickCategories: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -153,6 +169,12 @@ fun HomeScreenHeader(
                     icon = painterResource(id = R.drawable.chart_donut_light),
                     title = strings.transactionsOverviewLabel,
                     onClick = {}
+                )
+
+                FiniusShortcutButton(
+                    icon = painterResource(id = R.drawable.circles_four_light),
+                    title = strings.categoriesLabel,
+                    onClick = onClickCategories
                 )
             }
         }
