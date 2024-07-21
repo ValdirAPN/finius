@@ -6,7 +6,6 @@ enum class AccountBrand(
     val iconRes: Int,
     val title: String
 ) {
-
     Wallet(iconRes = R.drawable.wallet_fill, title = "Carteira"),
     Nubank(iconRes = R.drawable.nubank, title = "Nubank"),
     BancoDoBrasil(iconRes = R.drawable.banco_do_brasil, title = "Banco do Brasil"),
@@ -20,4 +19,5 @@ enum class AccountBrand(
     Inter(iconRes = R.drawable.inter, title = "Inter"),
     Pan(iconRes = R.drawable.pan, title = "Banco Pan"),
     BTG(iconRes = R.drawable.btg, title = "BTG Pactual"),
+    Will(iconRes = R.drawable.will_bank, title = "Will")
 }
