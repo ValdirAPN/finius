@@ -76,7 +76,8 @@ fun CardDueDayScreenContent(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     FiniusInputField(
-                        state = dueDay
+                        state = dueDay,
+                        readOnly = true
                     )
                 }
 
@@ -84,7 +85,15 @@ fun CardDueDayScreenContent(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.padding(bottom = 16.dp)
                 ) {
-                    FiniusNumberKeyboard(textFieldState = dueDay)
+                    FiniusNumberKeyboard(
+                        textFieldState = dueDay,
+                        condition = { value ->
+                            isValidDay(
+                                current = dueDay.text.toString(),
+                                newChar = value
+                            )
+                        }
+                    )
                     FiniusButton(
                         text = strings.btnLabel,
                         onClick = onClickContinue,
@@ -95,6 +104,12 @@ fun CardDueDayScreenContent(
             }
         }
     }
+}
+
+private fun isValidDay(current: String, newChar: String): Boolean {
+    val newValue = (current + newChar).toIntOrNull() ?: 0
+    val isValidDay = newValue in 1..31
+    return isValidDay
 }
 
 @Preview

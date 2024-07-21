@@ -2,19 +2,14 @@ package com.finius.ui.formatters
 
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldBuffer
-import androidx.compose.foundation.text.input.insert
-import java.text.NumberFormat
-import java.util.Locale
+import androidx.compose.runtime.Stable
+import com.finius.core.domain.Money
 
-object MoneyOutputTransformation : OutputTransformation {
+@Stable
+class MoneyOutputTransformation: OutputTransformation {
     override fun TextFieldBuffer.transformOutput() {
-        if (originalText.isNotEmpty()) {
-            println("Original Text: $originalText")
-            val numberFormat = NumberFormat.getNumberInstance(Locale("pt", "BR"))
-            val textToDouble = originalText.toString().toDouble() / 100
-            val newValue = numberFormat.format(textToDouble)
-            replace(0, originalText.length, newValue)
-//            insert(0,"R$ ")
-        }
+        val parsedLong = originalText.toString().toLongOrNull() ?: 0L
+        val parsedMoney = Money(parsedLong).format()
+        this.replace(0, originalText.length, parsedMoney)
     }
 }

@@ -22,8 +22,17 @@ data class Transaction(
     val category: Category,
     val date: LocalDate,
     val recurrenceUnit: TransactionRecurrenceUnit,
-    val repeatTimes: Int
+    val recurrence: Int
 ) {
+
+    fun getCurrentInstallments(): Int {
+        val today = Clock.System.now().toLocalDateTime(TimeZone.UTC)
+        val currentMonth = today.monthNumber
+        val monthDifference = currentMonth - date.monthNumber
+
+        return recurrence - monthDifference
+    }
+
     companion object {
         fun fakeTransactions() = listOf(
             Transaction(
@@ -36,7 +45,7 @@ data class Transaction(
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
                 recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
-                repeatTimes = 10
+                recurrence = 10
             ),
             Transaction(
                 id = "2",
@@ -48,7 +57,7 @@ data class Transaction(
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
                 recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
-                repeatTimes = 10
+                recurrence = 10
             ),
             Transaction(
                 id = "3",
@@ -60,7 +69,7 @@ data class Transaction(
                 category = Category.fakeCategory(),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
                 recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
-                repeatTimes = 6
+                recurrence = 6
             ),
             Transaction(
                 id = "4",
@@ -80,7 +89,7 @@ data class Transaction(
                 ),
                 date = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
                 recurrenceUnit = TransactionRecurrenceUnit.MONTHLY,
-                repeatTimes = 1
+                recurrence = 1
             )
         )
     }
@@ -96,6 +105,6 @@ fun TransactionEntity.toTransaction(account: Account, category: Category) = Tran
     category = category,
     date = Instant.fromEpochMilliseconds(dateMilliseconds).toLocalDateTime(TimeZone.UTC).date,
     recurrenceUnit = recurrenceUnit,
-    repeatTimes = recurrence.toInt()
+    recurrence = recurrence.toInt()
 )
 

@@ -27,6 +27,7 @@ import com.finius.ui.components.FiniusInputField
 import com.finius.ui.components.FiniusNavigationBar
 import com.finius.ui.components.FiniusNavigationBarLeadingAction
 import com.finius.ui.components.FiniusNumberKeyboard
+import com.finius.ui.formatters.MoneyOutputTransformation
 import com.finius.ui.theme.FiniusTheme
 
 class CardLimitScreen : Screen {
@@ -70,15 +71,7 @@ fun CardLimitScreenContent(
                     FiniusInputField(
                         state = limit,
                         readOnly = true,
-                        outputTransformation = {
-                            if (originalText.isNotEmpty()) {
-                                replace(
-                                    0,
-                                    originalText.length,
-                                    (originalText.toString().toDouble() / 100).toString()
-                                )
-                            }
-                        }
+                        outputTransformation = MoneyOutputTransformation()
                     )
                 }
 

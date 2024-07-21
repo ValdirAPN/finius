@@ -28,7 +28,7 @@ import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.finius.R
-import com.finius.core.domain.toMoney
+import com.finius.core.domain.Money
 import com.finius.core.presentation.FiniusSuccessScreen
 import com.finius.features.transaction.presentation.TransactionFormScreenModel
 import com.finius.ui.components.FiniusButton
@@ -36,6 +36,7 @@ import com.finius.ui.components.FiniusInputField
 import com.finius.ui.components.FiniusNavigationBar
 import com.finius.ui.components.FiniusNavigationBarLeadingAction
 import com.finius.ui.components.FiniusNumberKeyboard
+import com.finius.ui.formatters.MoneyOutputTransformation
 import com.finius.ui.theme.FiniusTheme
 
 class TransactionAmountScreen : Screen {
@@ -102,15 +103,8 @@ fun TransactionAmountScreenContent(
                     FiniusInputField(
                         state = amount,
                         readOnly = true,
-                        outputTransformation = {
-                            if (originalText.isNotEmpty()) {
-                                replace(
-                                    0,
-                                    originalText.length,
-                                    (originalText.toString().toDouble() / 100).toString()
-                                )
-                            }
-                        })
+                        outputTransformation = MoneyOutputTransformation()
+                    )
 
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -163,7 +157,7 @@ fun TransactionAmountScreenContent(
                             Text(
                                 text = strings.installmentValue(
                                     installments,
-                                    installmentValue.toMoney()
+                                    Money(installmentValue.toLong()).format()
                                 ),
                                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                             )
@@ -178,7 +172,7 @@ fun TransactionAmountScreenContent(
                                 style = MaterialTheme.typography.bodyMedium
                             )
                             Text(
-                                text = strings.totalValue(totalAmount.toMoney()),
+                                text = strings.totalValue(Money(totalAmount.toLong()).format()),
                                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                             )
                         }

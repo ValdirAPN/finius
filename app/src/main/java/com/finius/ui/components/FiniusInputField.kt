@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
@@ -29,6 +30,7 @@ fun FiniusInputField(
     modifier: Modifier = Modifier,
     label: String? = null,
     readOnly: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     outputTransformation: OutputTransformation? = null,
     inputTransformation: InputTransformation? = null,
 ) {
@@ -52,6 +54,7 @@ fun FiniusInputField(
                 readOnly = readOnly,
                 textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+                keyboardOptions = keyboardOptions,
                 outputTransformation = outputTransformation,
                 inputTransformation = inputTransformation,
                 modifier = Modifier

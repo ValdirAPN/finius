@@ -1,6 +1,5 @@
 package com.finius.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,7 +26,11 @@ import com.finius.R
 import com.finius.ui.theme.FiniusTheme
 
 @Composable
-fun FiniusNumberKeyboard(textFieldState: TextFieldState, modifier: Modifier = Modifier) {
+fun FiniusNumberKeyboard(
+    textFieldState: TextFieldState,
+    modifier: Modifier = Modifier,
+    condition: (value: String) -> Boolean = { true }
+) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -41,19 +43,34 @@ fun FiniusNumberKeyboard(textFieldState: TextFieldState, modifier: Modifier = Mo
                 FiniusKeyboardButton(
                     content = { Text(text = "1") },
                     onClick = {
-                        textFieldState.edit { append("1") }
+                        val input = "1"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
                 FiniusKeyboardButton(
                     content = { Text(text = "2") },
                     onClick = {
-                        textFieldState.edit { append("2") }
+                        val input = "2"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
                 FiniusKeyboardButton(
                     content = { Text(text = "3") },
                     onClick = {
-                        textFieldState.edit { append("3") }
+                        val input = "3"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
             }
@@ -61,19 +78,34 @@ fun FiniusNumberKeyboard(textFieldState: TextFieldState, modifier: Modifier = Mo
                 FiniusKeyboardButton(
                     content = { Text(text = "4") },
                     onClick = {
-                        textFieldState.edit { append("4") }
+                        val input = "4"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
                 FiniusKeyboardButton(
                     content = { Text(text = "5") },
                     onClick = {
-                        textFieldState.edit { append("5") }
+                        val input = "5"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
                 FiniusKeyboardButton(
                     content = { Text(text = "6") },
                     onClick = {
-                        textFieldState.edit { append("6") }
+                        val input = "6"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
             }
@@ -81,19 +113,34 @@ fun FiniusNumberKeyboard(textFieldState: TextFieldState, modifier: Modifier = Mo
                 FiniusKeyboardButton(
                     content = { Text(text = "7") },
                     onClick = {
-                        textFieldState.edit { append("7") }
+                        val input = "7"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
                 FiniusKeyboardButton(
                     content = { Text(text = "8") },
                     onClick = {
-                        textFieldState.edit { append("8") }
+                        val input = "8"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
                 FiniusKeyboardButton(
                     content = { Text(text = "9") },
                     onClick = {
-                        textFieldState.edit { append("9") }
+                        val input = "9"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
             }
@@ -105,7 +152,12 @@ fun FiniusNumberKeyboard(textFieldState: TextFieldState, modifier: Modifier = Mo
                 FiniusKeyboardButton(
                     content = { Text(text = "0") },
                     onClick = {
-                        textFieldState.edit { append("0") }
+                        val input = "0"
+                        if (condition(input)) {
+                            textFieldState.edit {
+                                append(input)
+                            }
+                        }
                     }
                 )
                 FiniusKeyboardButton(
@@ -117,7 +169,11 @@ fun FiniusNumberKeyboard(textFieldState: TextFieldState, modifier: Modifier = Mo
                         )
                     },
                     onClick = {
-                        textFieldState.edit { delete(textFieldState.text.length - 1, textFieldState.text.length) }
+                        textFieldState.edit {
+                            val text = textFieldState.text
+                            if (text.isNotEmpty()) {
+                                delete(text.length - 1, text.length) }
+                            }
                     }
                 )
             }

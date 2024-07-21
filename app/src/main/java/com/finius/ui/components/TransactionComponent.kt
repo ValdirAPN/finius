@@ -80,7 +80,7 @@ fun TransactionComponent(transaction: Transaction, modifier: Modifier = Modifier
                         text = amountString,
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
-                    Text(text = "1/10", style = MaterialTheme.typography.labelSmall)
+                    Text(text = "${getCurrentInstallments()}/$recurrence", style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
