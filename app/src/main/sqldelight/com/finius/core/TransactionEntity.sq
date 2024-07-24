@@ -4,7 +4,7 @@ import com.finius.features.transaction.presentation.date.TransactionRecurrenceUn
 CREATE TABLE TransactionEntity (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
-    amount REAL NOT NULL,
+    amount INTEGER NOT NULL,
     type TEXT AS TransactionType NOT NULL,
     counterParty TEXT NOT NULL,
     accountId TEXT NOT NULL,

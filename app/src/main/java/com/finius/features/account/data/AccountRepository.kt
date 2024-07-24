@@ -24,7 +24,7 @@ class AccountRepository(
         type: AccountType,
         name: String,
         brand: AccountBrand,
-        balance: Double,
+        balance: Long,
         totalLimit: Double? = null,
         dueDay: Int? = null,
     ) = accountEntityQueries.insert(

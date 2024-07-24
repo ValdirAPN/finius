@@ -37,7 +37,7 @@ data class CardFormScreenModel(
                 type = AccountType.CreditCard,
                 name = name.text.toString(),
                 brand = brand ?: throw Error("Brand is null"),
-                balance = limit.text.toString().toDouble() / 100,
+                balance = limit.text.toString().toLong(),
                 totalLimit = limit.text.toString().toDouble() / 100,
                 dueDay = dueDay.text.toString().toInt(),
             )

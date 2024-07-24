@@ -91,7 +91,7 @@ class TransactionFormScreenModel(
             transactionRepository.insert(
                 id = UUID.randomUUID().toString(),
                 title = title.text.toString(),
-                amount = amount.text.toString().toDouble(),
+                amount = amount.text.toString().toLong(),
                 type = type,
                 counterParty = counterParty.text.toString(),
                 accountId = account?.id ?: throw Exception("Account is null"),

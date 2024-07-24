@@ -6,13 +6,13 @@ CREATE TABLE AccountEntity (
     type TEXT AS AccountType NOT NULL,
     name TEXT NOT NULL,
     brand TEXT AS AccountBrand NOT NULL,
-    balance REAL NOT NULL,
+    balance INTEGER NOT NULL,
     totalLimit REAL,
     dueDay INTEGER
 );
 
 INSERT INTO AccountEntity
-VALUES ("default_account", "BankAccount", "Carteira", "Wallet", 982.99, NULL, NULL);
+VALUES ("default_account", "BankAccount", "Carteira", "Wallet", 0, NULL, NULL);
 
 getAll:
 SELECT * FROM AccountEntity;

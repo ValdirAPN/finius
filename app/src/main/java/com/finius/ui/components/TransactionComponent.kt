@@ -22,18 +22,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.finius.core.domain.Money
 import com.finius.core.domain.Transaction
-import com.finius.core.domain.TransactionType
 import com.finius.ui.theme.FiniusTheme
 
 @Composable
 fun TransactionComponent(transaction: Transaction, modifier: Modifier = Modifier) {
     with(transaction) {
         val amountString = remember(amount) {
-            when (type) {
-                TransactionType.INCOME -> "+R$ $amount"
-                TransactionType.EXPENSE -> "-R$ $amount"
-            }
+            Money(cents = amount).format()
         }
         Surface(
             color = MaterialTheme.colorScheme.background,

@@ -11,14 +11,14 @@ interface Account {
     val id: String
     val name: String
     val brand: AccountBrand
-    val balance: Double
+    val balance: Long
 
     companion object {
         fun createFakeAccount(
             id: String = UUID.randomUUID().toString(),
             name: String = "Nubank",
             brand: AccountBrand = AccountBrand.Nubank,
-            balance: Double = 1871.82
+            balance: Long = 187182
         ) =
             BankAccount(
                 id = id,
@@ -32,13 +32,13 @@ interface Account {
                 id = UUID.randomUUID().toString(),
                 name = "Nubank",
                 brand = AccountBrand.Nubank,
-                balance = 100.0
+                balance = 1000
             ),
             CreditCard(
                 id = UUID.randomUUID().toString(),
                 name = "Nubank",
                 brand = AccountBrand.Nubank,
-                balance = 2871.82,
+                balance = 287182,
                 totalLimit = 3000.0,
                 dueDay = 4
             ),
@@ -46,7 +46,7 @@ interface Account {
                 id = UUID.randomUUID().toString(),
                 name = "Caixa Econômica",
                 brand = AccountBrand.CaixaEconomica,
-                balance = 2920.38
+                balance = 292038
             ),
         )
     }
@@ -56,14 +56,14 @@ data class BankAccount(
     override val id: String,
     override val name: String,
     override val brand: AccountBrand,
-    override val balance: Double,
+    override val balance: Long,
 ) : Account
 
 data class CreditCard(
     override val id: String,
     override val name: String,
     override val brand: AccountBrand,
-    override val balance: Double,
+    override val balance: Long,
     val totalLimit: Double,
     val dueDay: Int,
 ) : Account

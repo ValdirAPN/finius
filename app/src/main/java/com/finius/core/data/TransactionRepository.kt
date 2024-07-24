@@ -36,7 +36,7 @@ class TransactionRepository(
     fun insert(
         id: String,
         title: String,
-        amount: Double,
+        amount: Long,
         type: TransactionType,
         counterParty: String,
         accountId: String,

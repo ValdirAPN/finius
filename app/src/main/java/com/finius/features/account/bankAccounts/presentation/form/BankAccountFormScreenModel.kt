@@ -36,7 +36,7 @@ data class AccountFormScreenModel(
                 type = AccountType.BankAccount,
                 name = name.text.toString(),
                 brand = brand,
-                balance = balance.text.toString().toDouble() / 100,
+                balance = balance.text.toString().toLong(),
             )
         }
     }
