@@ -3,10 +3,8 @@ package com.finius
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Modifier
 import cafe.adriel.lyricist.Lyricist
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.lyricist.rememberStrings
@@ -14,10 +12,9 @@ import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.transitions.SlideTransition
-import com.finius.features.home.presentation.HomeScreen
+import com.finius.ui.strings.Locales
 import com.finius.ui.strings.Strings
 import com.finius.ui.strings.StringsPt
-import com.finius.ui.strings.Locales
 import com.finius.ui.theme.FiniusTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,7 +39,7 @@ class MainActivity : ComponentActivity() {
             FiniusTheme {
                 ProvideStrings(lyricist = lyricist, provider = LocalCommonStrings) {
                     Navigator(
-                        screen = HomeScreen(),
+                        screen = SplashScreen(),
                         disposeBehavior = NavigatorDisposeBehavior(disposeSteps = false)
                     ) { navigator ->
                         SlideTransition(

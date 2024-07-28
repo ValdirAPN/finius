@@ -131,10 +131,10 @@ fun CategoriesHomeScreenContent(
 @Composable
 private fun CategoriesHomeScreenContentPreview() {
     FiniusTheme {
-        val categoriesHomeStrings = strings.categoriesStrings.homeStrings
+        val categoriesStrings = strings.categoriesStrings
         CategoriesHomeScreenContent(
-            strings = categoriesHomeStrings,
-            categories = Category.fakeCategories(),
+            strings = categoriesStrings.homeStrings,
+            categories = Category.defaultCategories(categoriesStrings.defaultCategories),
             onClickNavigationIcon = {},
             onClickAddCategory = {},
         )

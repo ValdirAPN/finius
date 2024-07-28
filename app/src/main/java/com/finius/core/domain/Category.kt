@@ -2,6 +2,7 @@ package com.finius.core.domain
 
 import com.finius.R
 import com.finius.core.CategoryEntity
+import com.finius.features.categories.presentation.DefaultCategoriesStrings
 
 enum class CategoryIcon(val iconRes: Int) {
     ShoppingBag(iconRes = R.drawable.shopping_bag_fill),
@@ -18,6 +19,40 @@ data class Category(
     val icon: CategoryIcon,
 ) {
     companion object {
+
+        fun defaultCategories(strings: DefaultCategoriesStrings) = listOf(
+            Category(
+                id = "shopping",
+                title = strings.shopping,
+                icon = CategoryIcon.ShoppingBag
+            ),
+            Category(
+                id = "food",
+                title = strings.food,
+                icon = CategoryIcon.ForkKnife
+            ),
+            Category(
+                id = "travel",
+                title = strings.travel,
+                icon = CategoryIcon.Airplane
+            ),
+            Category(
+                id = "transport",
+                title = strings.transport,
+                icon = CategoryIcon.CarProfile
+            ),
+            Category(
+                id = "gift",
+                title = strings.gift,
+                icon = CategoryIcon.Gift
+            ),
+            Category(
+                id = "salary",
+                title = strings.salary,
+                icon = CategoryIcon.Currency
+            ),
+        )
+
         fun fakeCategory(
             id: String = "id",
             title: String = "Compras",
@@ -26,34 +61,6 @@ data class Category(
             id = id,
             title = title,
             icon = icon
-        )
-
-        fun fakeCategories() = listOf(
-            fakeCategory(
-                id = "1",
-                title = "Alimentação",
-                icon = CategoryIcon.ForkKnife
-            ),
-            fakeCategory(
-                id = "2",
-                title = "Viagem",
-                icon = CategoryIcon.Airplane
-            ),
-            fakeCategory(
-                id = "3",
-                title = "Transporte",
-                icon = CategoryIcon.CarProfile
-            ),
-            fakeCategory(
-                id = "4",
-                title = "Compras",
-                icon = CategoryIcon.ShoppingBag
-            ),
-            fakeCategory(
-                id = "5",
-                title = "Presente",
-                icon = CategoryIcon.Gift
-            ),
         )
     }
 }

@@ -18,11 +18,7 @@ class TransactionCategoryScreenModel(
     private var _uiState = MutableStateFlow(TransactionCategoryScreenState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        assemble()
-    }
-
-    private fun assemble() {
+    fun assemble() {
         val categories = categoryRepository.getAll()
         _uiState.update {
             it.copy(

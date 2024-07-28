@@ -142,6 +142,12 @@ class FiniusApplication : Application(), DIAware {
                 transactionRepository = instance()
             )
         }
+
+        bindSingleton {
+            SplashScreenModel(
+                categoryRepository = instance()
+            )
+        }
     }
 }
 

@@ -6,8 +6,8 @@ CREATE TABLE CategoryEntity (
     icon TEXT AS CategoryIcon NOT NULL
 );
 
-insert:
-INSERT INTO CategoryEntity(id, title, icon)
+upsert:
+INSERT OR REPLACE INTO CategoryEntity(id, title, icon)
 VALUES (?, ?, ?);
 
 getAll:

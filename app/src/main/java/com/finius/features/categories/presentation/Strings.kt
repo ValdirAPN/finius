@@ -25,12 +25,32 @@ val CategoriesHomeStringsPt = CategoriesHomeStrings(
     btnLabel = "Adicionar nova categoria",
 )
 
+data class DefaultCategoriesStrings(
+    val shopping: String,
+    val food: String,
+    val travel: String,
+    val transport: String,
+    val gift: String,
+    val salary: String,
+)
+
+val DefaultCategoriesStringsPt = DefaultCategoriesStrings(
+    shopping = "Compras",
+    food = "Alimetação",
+    travel = "Viagem",
+    transport = "Transporte",
+    gift = "Presente",
+    salary = "Salário",
+)
+
 data class CategoriesStrings(
     val homeStrings: CategoriesHomeStrings,
     val formStrings: CategoryFormStrings,
+    val defaultCategories: DefaultCategoriesStrings,
 )
 
 val CategoriesStringsPt = CategoriesStrings(
     homeStrings = CategoriesHomeStringsPt,
     formStrings = CategoryFormStringsPt,
+    defaultCategories = DefaultCategoriesStringsPt
 )
