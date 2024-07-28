@@ -6,29 +6,22 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.finius.core.AccountEntity
 import com.finius.core.CategoryEntity
 import com.finius.core.TransactionEntity
-import com.finius.core.data.CategoryRepository
-import com.finius.core.data.TransactionRepository
 import com.finius.core.domain.AccountBrand
 import com.finius.core.domain.AccountType
 import com.finius.core.domain.CategoryIcon
 import com.finius.core.domain.TransactionType
-import com.finius.features.account.bankAccounts.presentation.form.AccountFormScreenModel
-import com.finius.features.account.bankAccounts.presentation.home.AccountsHomeScreenModel
-import com.finius.features.account.creditCards.presentation.form.CardFormScreenModel
-import com.finius.features.account.creditCards.presentation.home.CardsHomeScreenModel
-import com.finius.features.account.data.AccountRepository
-import com.finius.features.categories.presentation.CategoriesHomeScreenModel
-import com.finius.features.categories.presentation.CategoryFormScreenModel
-import com.finius.features.home.presentation.HomeScreenModel
-import com.finius.features.transaction.presentation.TransactionFormScreenModel
-import com.finius.features.transaction.presentation.account.TransactionAccountScreenModel
-import com.finius.features.transaction.presentation.category.TransactionCategoryScreenModel
+import com.finius.features.account.accountDi
+import com.finius.features.categories.categoryDi
+import com.finius.features.home.homeDi
 import com.finius.features.transaction.presentation.date.TransactionRecurrenceUnit
+import com.finius.features.transaction.transactionDi
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bindProvider
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
+
+private const val DATABASE_NAME = "Finius.db"
 
 class FiniusApplication : Application(), DIAware {
 
@@ -38,7 +31,7 @@ class FiniusApplication : Application(), DIAware {
             AndroidSqliteDriver(
                 schema = Database.Schema,
                 context = this@FiniusApplication,
-                name = "Finius.db",
+                name = DATABASE_NAME,
             )
         }
 
@@ -51,103 +44,16 @@ class FiniusApplication : Application(), DIAware {
             )
         }
 
-        bindSingleton {
-            instance<Database>().accountEntityQueries
-        }
-
-        bindSingleton {
-            AccountRepository(
-                accountEntityQueries = instance()
-            )
-        }
-
         bindProvider {
-            AccountsHomeScreenModel(
-                accountRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            AccountFormScreenModel(
-                accountRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            CardsHomeScreenModel(
-                accountRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            CardFormScreenModel(
-                accountRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            TransactionAccountScreenModel(
-                accountRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            instance<Database>().categoryEntityQueries
-        }
-
-        bindSingleton {
-            CategoryRepository(
-                categoryEntityQueries = instance()
-            )
-        }
-
-        bindSingleton {
-            CategoryFormScreenModel(
-                categoryRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            CategoriesHomeScreenModel(
-                categoryRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            instance<Database>().transactionEntityQueries
-        }
-
-        bindProvider {
-            TransactionCategoryScreenModel(
-                categoryRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            TransactionRepository(
-                transactionEntityQueries = instance(),
-                accountEntityQueries = instance(),
-                categoryEntityQueries = instance()
-            )
-        }
-
-        bindSingleton {
-            TransactionFormScreenModel(
-                transactionRepository = instance()
-            )
-        }
-
-        bindSingleton {
-            HomeScreenModel(
-                transactionRepository = instance()
-            )
-        }
-
-        bindSingleton {
             SplashScreenModel(
                 categoryRepository = instance()
             )
         }
+
+        import(homeDi)
+        import(accountDi)
+        import(transactionDi)
+        import(categoryDi)
     }
 }
 
@@ -169,7 +75,6 @@ private val TransactionEntityAdapter = TransactionEntity.Adapter(
         override fun encode(value: TransactionRecurrenceUnit): String {
             return value.name
         }
-
     }
 )
 
@@ -182,7 +87,6 @@ private val CategoryEntityAdapter = CategoryEntity.Adapter(
         override fun encode(value: CategoryIcon): String {
             return value.name
         }
-
     }
 )
 
