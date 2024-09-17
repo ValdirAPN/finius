@@ -4,24 +4,61 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import br.com.finius.home.HomeScreen
+import br.com.finius.home.HomeRoute
+import br.com.finius.transaction.NewTransactionScreen
+import br.com.finius.transaction.NewTransactionRoute
 import br.com.finius.ui.theme.FiniusTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
+
+            val navController = rememberNavController()
+
             FiniusTheme {
-                HomeScreen()
+                NavHost(
+                    navController = navController,
+                    startDestination = HomeRoute,
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start,
+                            tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End,
+                            tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End,
+                            tween(700)
+                        )
+                    }
+                ) {
+                    composable<HomeRoute> {
+                        HomeScreen(
+                            onNavigateToTransaction = { navController.navigate(route = NewTransactionRoute) }
+                        )
+                    }
+                    composable<NewTransactionRoute> {
+                        NewTransactionScreen(onNavigateBack = navController::popBackStack)
+                    }
+                }
             }
         }
     }

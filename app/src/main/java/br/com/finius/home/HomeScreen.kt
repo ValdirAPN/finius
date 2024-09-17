@@ -2,6 +2,7 @@ package br.com.finius.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,9 +35,13 @@ import br.com.finius.ui.theme.FrenchGray
 import br.com.finius.ui.theme.LightGreen2
 import br.com.finius.ui.theme.MintCream
 import br.com.finius.ui.theme.Viridian
+import kotlinx.serialization.Serializable
+
+@Serializable
+object HomeRoute
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(onNavigateToTransaction: () -> Unit, modifier: Modifier = Modifier) {
 
     Scaffold(modifier) { innerPadding ->
         Column(modifier = Modifier
@@ -114,32 +119,38 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     DashboardButton(
                         label = "Nova transação",
                         iconRes = R.drawable.currency_circle_dollar,
+                        onClick = onNavigateToTransaction
                     )
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     DashboardButton(
                         label = "Contas",
-                        iconRes = R.drawable.bank
+                        iconRes = R.drawable.bank,
+                        onClick = {}
                     )
                     DashboardButton(
                         label = "Cartões",
-                        iconRes = R.drawable.credit_card
+                        iconRes = R.drawable.credit_card,
+                        onClick = {}
                     )
                     DashboardButton(
                         label = "Transações",
-                        iconRes = R.drawable.chart_donut
+                        iconRes = R.drawable.chart_donut,
+                        onClick = {}
                     )
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     DashboardButton(
                         label = "Metas",
-                        iconRes = R.drawable.target
+                        iconRes = R.drawable.target,
+                        onClick = {}
                     )
                     DashboardButton(
                         label = "Assinaturas",
-                        iconRes = R.drawable.arrows_counter_clock_wise
+                        iconRes = R.drawable.arrows_counter_clock_wise,
+                        onClick = {}
                     )
                 }
             }
@@ -154,6 +165,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
                 )
                 Column {
+                    TransactionItem()
+                    TransactionItem()
                     TransactionItem()
                     TransactionItem()
                     TransactionItem()
@@ -214,11 +227,12 @@ fun TransactionItem(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun RowScope.DashboardButton(label: String, iconRes: Int, modifier: Modifier = Modifier) {
+fun RowScope.DashboardButton(label: String, iconRes: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .weight(1f)
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onClick() }
             .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp)
             .height(96.dp),
@@ -234,6 +248,8 @@ fun RowScope.DashboardButton(label: String, iconRes: Int, modifier: Modifier = M
 @Composable
 private fun HomeScreenPreview() {
     FiniusTheme {
-        HomeScreen()
+        HomeScreen(
+            onNavigateToTransaction = {}
+        )
     }
 }

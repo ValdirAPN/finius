@@ -1,5 +1,6 @@
 package br.com.finius.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -41,6 +42,13 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp,
         lineHeight = 20.sp,
+        letterSpacing = 0.2.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = albertSans,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        lineHeight = 17.sp,
         letterSpacing = 0.2.sp
     ),
 
