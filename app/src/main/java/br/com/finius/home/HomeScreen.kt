@@ -44,6 +44,7 @@ object HomeRoute
 fun HomeScreen(
     onNavigateToTransaction: () -> Unit,
     onNavigateToBankAccounts: () -> Unit,
+    onNavigateToCards: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -136,7 +137,7 @@ fun HomeScreen(
                     DashboardButton(
                         label = "Cartões",
                         iconRes = R.drawable.credit_card,
-                        onClick = {}
+                        onClick = onNavigateToCards
                     )
                     DashboardButton(
                         label = "Transações",
@@ -254,7 +255,8 @@ private fun HomeScreenPreview() {
     FiniusTheme {
         HomeScreen(
             onNavigateToTransaction = {},
-            onNavigateToBankAccounts = {}
+            onNavigateToBankAccounts = {},
+            onNavigateToCards = {}
         )
     }
 }

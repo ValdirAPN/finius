@@ -18,6 +18,7 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = Onyx,
     surface = Color.White,
     onSurface = Onyx,
+    onSurfaceVariant = FrenchGray,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -26,6 +27,7 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Onyx,
     surface = Color.White,
     onSurface = Onyx,
+    onSurfaceVariant = FrenchGray,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
