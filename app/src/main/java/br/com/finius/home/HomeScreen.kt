@@ -41,7 +41,11 @@ import kotlinx.serialization.Serializable
 object HomeRoute
 
 @Composable
-fun HomeScreen(onNavigateToTransaction: () -> Unit, modifier: Modifier = Modifier) {
+fun HomeScreen(
+    onNavigateToTransaction: () -> Unit,
+    onNavigateToBankAccounts: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Scaffold(modifier) { innerPadding ->
         Column(modifier = Modifier
@@ -127,7 +131,7 @@ fun HomeScreen(onNavigateToTransaction: () -> Unit, modifier: Modifier = Modifie
                     DashboardButton(
                         label = "Contas",
                         iconRes = R.drawable.bank,
-                        onClick = {}
+                        onClick = onNavigateToBankAccounts
                     )
                     DashboardButton(
                         label = "Cartões",
@@ -249,7 +253,8 @@ fun RowScope.DashboardButton(label: String, iconRes: Int, onClick: () -> Unit, m
 private fun HomeScreenPreview() {
     FiniusTheme {
         HomeScreen(
-            onNavigateToTransaction = {}
+            onNavigateToTransaction = {},
+            onNavigateToBankAccounts = {}
         )
     }
 }

@@ -9,6 +9,8 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.finius.bankAccounts.BankAccountsRoute
+import br.com.finius.bankAccounts.BankAccountsScreen
 import br.com.finius.home.HomeScreen
 import br.com.finius.home.HomeRoute
 import br.com.finius.transaction.NewTransactionScreen
@@ -52,11 +54,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable<HomeRoute> {
                         HomeScreen(
-                            onNavigateToTransaction = { navController.navigate(route = NewTransactionRoute) }
+                            onNavigateToTransaction = { navController.navigate(route = NewTransactionRoute) },
+                            onNavigateToBankAccounts = { navController.navigate(route = BankAccountsRoute) },
                         )
                     }
                     composable<NewTransactionRoute> {
                         NewTransactionScreen(onNavigateBack = navController::popBackStack)
+                    }
+                    composable<BankAccountsRoute> {
+                        BankAccountsScreen(
+                            onNavigateBack = navController::popBackStack,
+                            onNavigateToNewBankAccount = {}
+                        )
                     }
                 }
             }
