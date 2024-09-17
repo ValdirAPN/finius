@@ -50,9 +50,7 @@ fun CardsScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(vertical = 12.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .fillMaxSize()
         ) {
             CreditCard(label = "BB Ouro Card", availableLimit = 6123.71, totalLimit = 9999.0)
             CreditCard(label = "Itaú Click", availableLimit = 2913.91, totalLimit = 12100.0)

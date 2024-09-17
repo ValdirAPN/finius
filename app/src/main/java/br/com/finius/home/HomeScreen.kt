@@ -30,9 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.finius.R
+import br.com.finius.transactions.TransactionsRoute
+import br.com.finius.ui.components.TransactionListItem
 import br.com.finius.ui.theme.FiniusTheme
-import br.com.finius.ui.theme.FrenchGray
-import br.com.finius.ui.theme.LightGreen2
 import br.com.finius.ui.theme.MintCream
 import br.com.finius.ui.theme.Viridian
 import kotlinx.serialization.Serializable
@@ -42,16 +42,19 @@ object HomeRoute
 
 @Composable
 fun HomeScreen(
-    onNavigateToTransaction: () -> Unit,
+    onNavigateToNewTransaction: () -> Unit,
     onNavigateToBankAccounts: () -> Unit,
     onNavigateToCards: () -> Unit,
-    modifier: Modifier = Modifier
+    onNavigateToTransactions: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     Scaffold(modifier) { innerPadding ->
-        Column(modifier = Modifier
-            .padding(innerPadding)
-            .verticalScroll(rememberScrollState())) {
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+        ) {
             Row(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
@@ -106,7 +109,11 @@ fun HomeScreen(
                         .padding(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(painter = painterResource(id = R.drawable.arrow_circle_up_right), contentDescription = null, tint = Viridian)
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_circle_up_right),
+                        contentDescription = null,
+                        tint = Viridian
+                    )
                     Text(
                         text = "3,92%",
                         style = MaterialTheme.typography.bodySmall,
@@ -124,7 +131,7 @@ fun HomeScreen(
                     DashboardButton(
                         label = "Nova transação",
                         iconRes = R.drawable.currency_circle_dollar,
-                        onClick = onNavigateToTransaction
+                        onClick = onNavigateToNewTransaction
                     )
                 }
 
@@ -142,7 +149,7 @@ fun HomeScreen(
                     DashboardButton(
                         label = "Transações",
                         iconRes = R.drawable.chart_donut,
-                        onClick = {}
+                        onClick = onNavigateToTransactions
                     )
                 }
 
@@ -170,16 +177,9 @@ fun HomeScreen(
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
                 )
                 Column {
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
-                    TransactionItem()
+                    repeat(8) {
+                        TransactionListItem()
+                    }
                 }
             }
         }
@@ -187,52 +187,12 @@ fun HomeScreen(
 }
 
 @Composable
-fun TransactionItem(modifier: Modifier = Modifier) {
-    Row(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(
-                    RoundedCornerShape(100)
-                )
-                .background(LightGreen2),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.currency_dollar_simple),
-                contentDescription = null
-            )
-        }
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(
-                text = "Salário",
-                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
-            )
-            Text(
-                text = "15 de Setembro de 2024",
-                style = MaterialTheme.typography.bodySmall,
-                color = FrenchGray
-            )
-        }
-
-        Text(
-            text = "R$ 4.500,00",
-            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-            color = Viridian
-        )
-    }
-}
-
-@Composable
-fun RowScope.DashboardButton(label: String, iconRes: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun RowScope.DashboardButton(
+    label: String,
+    iconRes: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .weight(1f)
@@ -254,9 +214,10 @@ fun RowScope.DashboardButton(label: String, iconRes: Int, onClick: () -> Unit, m
 private fun HomeScreenPreview() {
     FiniusTheme {
         HomeScreen(
-            onNavigateToTransaction = {},
+            onNavigateToNewTransaction = {},
             onNavigateToBankAccounts = {},
-            onNavigateToCards = {}
+            onNavigateToCards = {},
+            onNavigateToTransactions = {}
         )
     }
 }

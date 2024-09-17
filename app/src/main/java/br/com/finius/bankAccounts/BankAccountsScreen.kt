@@ -49,9 +49,7 @@ fun BankAccountsScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(vertical = 12.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .fillMaxSize()
         ) {
             BankAccount(label = "Banco do Brasil", balance = 1239.23)
             BankAccount(label = "Itaú", balance = 2680.25)

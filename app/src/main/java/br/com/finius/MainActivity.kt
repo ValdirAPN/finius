@@ -3,7 +3,6 @@ package br.com.finius
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.navigation.compose.NavHost
@@ -17,6 +16,8 @@ import br.com.finius.home.HomeScreen
 import br.com.finius.home.HomeRoute
 import br.com.finius.transaction.NewTransactionScreen
 import br.com.finius.transaction.NewTransactionRoute
+import br.com.finius.transactions.TransactionsRoute
+import br.com.finius.transactions.TransactionsScreen
 import br.com.finius.ui.theme.FiniusTheme
 
 class MainActivity : ComponentActivity() {
@@ -56,9 +57,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable<HomeRoute> {
                         HomeScreen(
-                            onNavigateToTransaction = { navController.navigate(route = NewTransactionRoute) },
+                            onNavigateToNewTransaction = { navController.navigate(route = NewTransactionRoute) },
                             onNavigateToBankAccounts = { navController.navigate(route = BankAccountsRoute) },
-                            onNavigateToCards = { navController.navigate(route = CardsRoute) }
+                            onNavigateToCards = { navController.navigate(route = CardsRoute) },
+                            onNavigateToTransactions = { navController.navigate(TransactionsRoute) }
                         )
                     }
                     composable<NewTransactionRoute> {
@@ -74,6 +76,12 @@ class MainActivity : ComponentActivity() {
                         CardsScreen(
                             onNavigateBack = navController::popBackStack,
                             onNavigateToNewCard = {}
+                        )
+                    }
+                    composable<TransactionsRoute> {
+                        TransactionsScreen(
+                            onNavigateBack = navController::popBackStack,
+                            onNavigateToNewTransaction = {}
                         )
                     }
                 }

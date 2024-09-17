@@ -79,7 +79,6 @@ fun NewTransactionScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifi
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(top = 4.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
