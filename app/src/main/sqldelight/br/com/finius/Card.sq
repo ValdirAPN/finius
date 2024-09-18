@@ -1,4 +1,0 @@
-CREATE TABLE card(
-    name TEXT NOT NULL,
-    totalLimit REAL NOT NULL
-);

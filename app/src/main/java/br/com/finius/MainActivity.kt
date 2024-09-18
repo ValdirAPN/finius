@@ -20,10 +20,9 @@ import br.com.finius.home.HomeRoute
 import br.com.finius.home.HomeScreen
 import br.com.finius.transaction.NewTransactionRoute
 import br.com.finius.transaction.NewTransactionScreen
-import br.com.finius.transactions.TransactionsRoute
-import br.com.finius.transactions.TransactionsScreen
+import br.com.finius.transactionList.TransactionListRoute
+import br.com.finius.transactionList.TransactionListScreen
 import br.com.finius.ui.theme.FiniusTheme
-import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +64,7 @@ class MainActivity : ComponentActivity() {
                             onNavigateToNewTransaction = { navController.navigate(route = NewTransactionRoute) },
                             onNavigateToBankAccounts = { navController.navigate(route = BankAccountsRoute) },
                             onNavigateToCards = { navController.navigate(route = CardsRoute) },
-                            onNavigateToTransactions = { navController.navigate(TransactionsRoute) }
+                            onNavigateToTransactions = { navController.navigate(TransactionListRoute) }
                         )
                     }
                     composable<NewTransactionRoute> {
@@ -89,10 +88,10 @@ class MainActivity : ComponentActivity() {
                     composable<NewCardRoute> {
                         NewCardScreen(onNavigateBack = navController::popBackStack)
                     }
-                    composable<TransactionsRoute> {
-                        TransactionsScreen(
+                    composable<TransactionListRoute> {
+                        TransactionListScreen(
                             onNavigateBack = navController::popBackStack,
-                            onNavigateToNewTransaction = {}
+                            onNavigateToNewTransaction = { navController.navigate(NewTransactionRoute) }
                         )
                     }
                 }

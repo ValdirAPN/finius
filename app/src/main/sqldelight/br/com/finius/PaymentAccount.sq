@@ -1,0 +1,23 @@
+import br.com.finius.domain.model.Colors;
+import br.com.finius.domain.model.PaymentAccountType;
+
+CREATE TABLE paymentAccount(
+    id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    balance REAL NOT NULL,
+    type TEXT AS PaymentAccountType NOT NULL,
+    dueDay INTEGER NOT NULL,
+    color TEXT AS Colors NOT NULL
+);
+
+insert:
+INSERT INTO paymentAccount
+VALUES (?, ?, ?, ?, ?, ?);
+
+listBanks:
+SELECT * FROM paymentAccount
+WHERE type = "Bank";
+
+listCards:
+SELECT * FROM paymentAccount
+WHERE type = "Card";

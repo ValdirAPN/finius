@@ -28,11 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.finius.R
+import br.com.finius.ui.components.NoTransactionsFoundComponent
 import br.com.finius.ui.components.TransactionListItem
 import br.com.finius.ui.theme.FiniusTheme
 import br.com.finius.ui.theme.MintCream
@@ -49,7 +51,6 @@ fun HomeScreen(
     onNavigateToBankAccounts: () -> Unit,
     onNavigateToCards: () -> Unit,
     onNavigateToTransactions: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
 
     val viewModel = koinViewModel<HomeViewModel>()
@@ -59,6 +60,24 @@ fun HomeScreen(
         viewModel.getTransactions()
     }
 
+    HomeScreenContent(
+        uiState = uiState,
+        onNavigateToNewTransaction = onNavigateToNewTransaction,
+        onNavigateToBankAccounts = onNavigateToBankAccounts,
+        onNavigateToCards = onNavigateToCards,
+        onNavigateToTransactions = onNavigateToTransactions,
+    )
+}
+
+@Composable
+private fun HomeScreenContent(
+    uiState: HomeUiState,
+    onNavigateToNewTransaction: () -> Unit,
+    onNavigateToBankAccounts: () -> Unit,
+    onNavigateToCards: () -> Unit,
+    onNavigateToTransactions: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(modifier) { innerPadding ->
         Column(
             modifier = Modifier
@@ -186,13 +205,14 @@ fun HomeScreen(
                     modifier = Modifier.padding(horizontal = 24.dp),
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
                 )
+
+                if (uiState.lastTransactions.isEmpty()) {
+                    NoTransactionsFoundComponent()
+                }
+
                 Column {
                     uiState.lastTransactions.forEach { transaction ->
-                        TransactionListItem(
-                            name = transaction.name,
-                            amount = transaction.amount,
-                            type = transaction.type
-                        )
+                        TransactionListItem(transaction)
                     }
                 }
             }
@@ -201,7 +221,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun RowScope.DashboardButton(
+private fun RowScope.DashboardButton(
     label: String,
     iconRes: Int,
     onClick: () -> Unit,
@@ -227,7 +247,8 @@ fun RowScope.DashboardButton(
 @Composable
 private fun HomeScreenPreview() {
     FiniusTheme {
-        HomeScreen(
+        HomeScreenContent(
+            uiState = HomeUiState(),
             onNavigateToNewTransaction = {},
             onNavigateToBankAccounts = {},
             onNavigateToCards = {},

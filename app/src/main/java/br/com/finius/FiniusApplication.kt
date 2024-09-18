@@ -3,6 +3,7 @@ package br.com.finius
 import android.app.Application
 import br.com.finius.data.repository.repositoryModule
 import br.com.finius.home.homeModule
+import br.com.finius.transactionList.transactionListModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -16,7 +17,8 @@ class FiniusApplication : Application() {
             modules(
                 appModule,
                 repositoryModule,
-                homeModule
+                homeModule,
+                transactionListModule
             )
         }
     }

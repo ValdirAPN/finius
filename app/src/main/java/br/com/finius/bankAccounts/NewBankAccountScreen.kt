@@ -17,9 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import br.com.finius.domain.model.Colors
 import br.com.finius.ui.components.Button
 import br.com.finius.ui.components.ColorSelector
-import br.com.finius.ui.components.Colors
 import br.com.finius.ui.components.InputField
 import br.com.finius.ui.components.NavigationBar
 import br.com.finius.ui.components.NavigationLeading

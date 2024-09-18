@@ -1,17 +1,21 @@
 import br.com.finius.domain.model.TransactionType;
+import br.com.finius.domain.model.Colors;
 
 CREATE TABLE financialTransaction(
+    id TEXT NOT NULL,
     name TEXT NOT NULL,
     amount REAL NOT NULL,
-    type TEXT AS TransactionType NOT NULL
+    type TEXT AS TransactionType NOT NULL,
+    color TEXT AS Colors NOT NULL,
+    paymentAccountId TEXT NOT NULL,
+    installments INTEGER NOT NULL,
+    dateInMilli INTEGER NOT NULL,
+    party TEXT NOT NULL
 );
-
-INSERT INTO financialTransaction (name, amount, type)
-VALUES ("Salário", 4500.0, "Income");
 
 insert:
 INSERT INTO financialTransaction
-VALUES (?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 list:
 SELECT * FROM financialTransaction;

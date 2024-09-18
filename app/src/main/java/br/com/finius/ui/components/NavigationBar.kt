@@ -42,7 +42,7 @@ fun NavigationBar(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
     ) {
         IconButton(onClick = leading.action, modifier = Modifier.align(Alignment.CenterStart)) {
