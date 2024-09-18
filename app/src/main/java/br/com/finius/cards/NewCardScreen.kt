@@ -1,4 +1,4 @@
-package br.com.finius.transaction
+package br.com.finius.cards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,33 +20,19 @@ import androidx.compose.ui.unit.dp
 import br.com.finius.ui.components.Button
 import br.com.finius.ui.components.ColorSelector
 import br.com.finius.ui.components.Colors
-import br.com.finius.ui.components.HorizontalSelector
 import br.com.finius.ui.components.InputField
 import br.com.finius.ui.components.NavigationBar
 import br.com.finius.ui.components.NavigationLeading
 import kotlinx.serialization.Serializable
 
 @Serializable
-object NewTransactionRoute
+object NewCardRoute
 
 @Composable
-fun NewTransactionScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
-
-    val transactionTypes = remember {
-        arrayOf("Despesa", "Receita")
-    }
-
-    var selectedTransactionType by remember(transactionTypes) {
-        mutableStateOf(transactionTypes.first())
-    }
-
-    val paymentTypes = remember {
-        arrayOf("Crédito", "Débito")
-    }
-
-    var selectedPaymentType by remember(paymentTypes) {
-        mutableStateOf(paymentTypes.first())
-    }
+fun NewCardScreen(
+    onNavigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     var selectedColor by remember {
         mutableStateOf(Colors.entries.first())
@@ -56,8 +42,8 @@ fun NewTransactionScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifi
         modifier,
         topBar = {
             NavigationBar(
-                label = "Nova Transação",
-                leading = NavigationLeading.Close(action = onNavigateBack),
+                label = "Novo Cartão",
+                leading = NavigationLeading.Back(action = onNavigateBack),
             )
         },
         bottomBar = {
@@ -73,29 +59,11 @@ fun NewTransactionScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifi
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .fillMaxSize()
         ) {
-            HorizontalSelector(
-                *transactionTypes,
-                selectedItem = selectedTransactionType,
-                onSelectItem = { selectedTransactionType = it }
-            )
-
-            InputField(label = "Título", state = rememberTextFieldState())
-
-            InputField(label = "Valor", state = rememberTextFieldState())
-
-            HorizontalSelector(
-                *paymentTypes,
-                selectedItem = selectedPaymentType,
-                onSelectItem = { selectedPaymentType = it }
-            )
-
-            InputField(label = "Cartão", state = rememberTextFieldState())
-            InputField(label = "Parcelas", state = rememberTextFieldState())
-            InputField(label = "Data", state = rememberTextFieldState())
-
+            InputField(label = "Nome", state = rememberTextFieldState())
+            InputField(label = "Limite", state = rememberTextFieldState())
+            InputField(label = "Vencimento", state = rememberTextFieldState())
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(horizontal = 24.dp)

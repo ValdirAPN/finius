@@ -10,8 +10,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.finius.bankAccounts.BankAccountsRoute
 import br.com.finius.bankAccounts.BankAccountsScreen
+import br.com.finius.bankAccounts.NewBankAccountRoute
+import br.com.finius.bankAccounts.NewBankAccountScreen
 import br.com.finius.cards.CardsRoute
 import br.com.finius.cards.CardsScreen
+import br.com.finius.cards.NewCardRoute
+import br.com.finius.cards.NewCardScreen
 import br.com.finius.home.HomeScreen
 import br.com.finius.home.HomeRoute
 import br.com.finius.transaction.NewTransactionScreen
@@ -69,14 +73,20 @@ class MainActivity : ComponentActivity() {
                     composable<BankAccountsRoute> {
                         BankAccountsScreen(
                             onNavigateBack = navController::popBackStack,
-                            onNavigateToNewBankAccount = {}
+                            onNavigateToNewBankAccount = { navController.navigate(NewBankAccountRoute) }
                         )
+                    }
+                    composable<NewBankAccountRoute> {
+                        NewBankAccountScreen(onNavigateBack = navController::popBackStack)
                     }
                     composable<CardsRoute> {
                         CardsScreen(
                             onNavigateBack = navController::popBackStack,
-                            onNavigateToNewCard = {}
+                            onNavigateToNewCard = { navController.navigate(NewCardRoute) }
                         )
+                    }
+                    composable<NewCardRoute> {
+                        NewCardScreen(onNavigateBack = navController::popBackStack)
                     }
                     composable<TransactionsRoute> {
                         TransactionsScreen(

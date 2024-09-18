@@ -24,7 +24,6 @@ import br.com.finius.ui.components.NavigationTrailing
 import br.com.finius.ui.theme.Melon
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 object CardsRoute
 

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import br.com.finius.ui.theme.FiniusTheme
 
 @Composable
-fun InputField(label: String, content: TextFieldState, modifier: Modifier = Modifier) {
+fun InputField(label: String, state: TextFieldState, modifier: Modifier = Modifier) {
     Column(modifier.padding(horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(text = label, style = MaterialTheme.typography.labelSmall)
         Box(
@@ -34,7 +34,7 @@ fun InputField(label: String, content: TextFieldState, modifier: Modifier = Modi
             contentAlignment = Alignment.Center
         ) {
             BasicTextField(
-                state = content,
+                state = state,
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface)
             )
@@ -46,6 +46,6 @@ fun InputField(label: String, content: TextFieldState, modifier: Modifier = Modi
 @Composable
 private fun InputFieldPreview() {
     FiniusTheme {
-        InputField(label = "Label", content = rememberTextFieldState())
+        InputField(label = "Label", state = rememberTextFieldState())
     }
 }
