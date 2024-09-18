@@ -59,7 +59,8 @@ fun NewBankAccountScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             InputField(label = "Nome", state = rememberTextFieldState())
             InputField(label = "Saldo", state = rememberTextFieldState())

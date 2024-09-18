@@ -21,6 +21,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,13 +31,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.finius.R
-import br.com.finius.transactions.TransactionsRoute
 import br.com.finius.ui.components.TransactionListItem
 import br.com.finius.ui.theme.FiniusTheme
 import br.com.finius.ui.theme.MintCream
 import br.com.finius.ui.theme.Viridian
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
 object HomeRoute
@@ -48,6 +51,13 @@ fun HomeScreen(
     onNavigateToTransactions: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val viewModel = koinViewModel<HomeViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getTransactions()
+    }
 
     Scaffold(modifier) { innerPadding ->
         Column(
@@ -177,8 +187,12 @@ fun HomeScreen(
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
                 )
                 Column {
-                    repeat(8) {
-                        TransactionListItem()
+                    uiState.lastTransactions.forEach { transaction ->
+                        TransactionListItem(
+                            name = transaction.name,
+                            amount = transaction.amount,
+                            type = transaction.type
+                        )
                     }
                 }
             }

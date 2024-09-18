@@ -16,13 +16,14 @@ import br.com.finius.cards.CardsRoute
 import br.com.finius.cards.CardsScreen
 import br.com.finius.cards.NewCardRoute
 import br.com.finius.cards.NewCardScreen
-import br.com.finius.home.HomeScreen
 import br.com.finius.home.HomeRoute
-import br.com.finius.transaction.NewTransactionScreen
+import br.com.finius.home.HomeScreen
 import br.com.finius.transaction.NewTransactionRoute
+import br.com.finius.transaction.NewTransactionScreen
 import br.com.finius.transactions.TransactionsRoute
 import br.com.finius.transactions.TransactionsScreen
 import br.com.finius.ui.theme.FiniusTheme
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

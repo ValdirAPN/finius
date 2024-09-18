@@ -1,0 +1,4 @@
+CREATE TABLE bankAccount(
+    name TEXT NOT NULL,
+    balance REAL NOT NULL
+);

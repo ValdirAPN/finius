@@ -1,0 +1,17 @@
+import br.com.finius.domain.model.TransactionType;
+
+CREATE TABLE financialTransaction(
+    name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    type TEXT AS TransactionType NOT NULL
+);
+
+INSERT INTO financialTransaction (name, amount, type)
+VALUES ("Salário", 4500.0, "Income");
+
+insert:
+INSERT INTO financialTransaction
+VALUES (?, ?, ?);
+
+list:
+SELECT * FROM financialTransaction;

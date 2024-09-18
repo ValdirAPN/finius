@@ -19,12 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import br.com.finius.R
+import br.com.finius.domain.model.TransactionType
 import br.com.finius.ui.theme.FrenchGray
 import br.com.finius.ui.theme.LightGreen2
 import br.com.finius.ui.theme.Viridian
 
 @Composable
-fun TransactionListItem(modifier: Modifier = Modifier) {
+fun TransactionListItem(name: String, amount: Double, type: TransactionType, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.padding(horizontal = 24.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -50,7 +51,7 @@ fun TransactionListItem(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "Salário",
+                text = name,
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
             )
             Text(
@@ -60,10 +61,15 @@ fun TransactionListItem(modifier: Modifier = Modifier) {
             )
         }
 
+        val amountColor = when (type) {
+            TransactionType.Income -> Viridian
+            TransactionType.Expense -> MaterialTheme.colorScheme.onBackground
+        }
+
         Text(
-            text = "R$ 4.500,00",
+            text = "R$ $amount",
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-            color = Viridian
+            color = amountColor
         )
     }
 }

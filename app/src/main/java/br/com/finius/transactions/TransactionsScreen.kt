@@ -1,15 +1,13 @@
 package br.com.finius.transactions
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import br.com.finius.R
+import br.com.finius.domain.model.TransactionType
 import br.com.finius.ui.components.NavigationBar
 import br.com.finius.ui.components.NavigationLeading
 import br.com.finius.ui.components.NavigationTrailing
@@ -45,7 +43,11 @@ fun TransactionsScreen(
         ) {
             repeat(24) {
                 item {
-                    TransactionListItem()
+                    TransactionListItem(
+                        name = "Salário",
+                        amount = 4500.0,
+                        type = TransactionType.Income
+                    )
                 }
             }
         }
