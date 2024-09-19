@@ -1,28 +1,38 @@
 package br.com.finius.cards
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.finius.R
+import br.com.finius.domain.model.PaymentAccount
 import br.com.finius.ui.components.NavigationBar
 import br.com.finius.ui.components.NavigationLeading
 import br.com.finius.ui.components.NavigationTrailing
 import br.com.finius.ui.theme.Melon
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
 object CardsRoute
@@ -31,65 +41,106 @@ object CardsRoute
 fun CardsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToNewCard: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        modifier,
-        topBar = {
-            NavigationBar(
-                label = "Cartões",
-                leading = NavigationLeading.Close(action = onNavigateBack),
-                primaryAction = NavigationTrailing(
-                    iconRes = R.drawable.plus,
-                    action = onNavigateToNewCard
+
+    val viewModel = koinViewModel<CardsViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Content(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onNavigateToNewCard = onNavigateToNewCard
+    )
+}
+
+@Composable
+private fun Content(
+    uiState: CardsUiState,
+    onNavigateBack: () -> Unit,
+    onNavigateToNewCard: () -> Unit,
+) {
+    with(uiState) {
+        Scaffold(
+            topBar = {
+                NavigationBar(
+                    label = "Cartões",
+                    leading = NavigationLeading.Close(action = onNavigateBack),
+                    primaryAction = NavigationTrailing(
+                        iconRes = R.drawable.plus,
+                        action = onNavigateToNewCard
+                    )
                 )
-            )
-        },
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            CreditCard(label = "BB Ouro Card", availableLimit = 6123.71, totalLimit = 9999.0)
-            CreditCard(label = "Itaú Click", availableLimit = 2913.91, totalLimit = 12100.0)
+            },
+        ) { innerPadding ->
+            Column(modifier = Modifier.padding(innerPadding)) {
+                if (cards.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.notfound),
+                                contentDescription = null
+                            )
+                        }
+
+                        Text(
+                            text = "Não tem nada por aqui. Clique em + para cadastrar um novo cartão.",
+                            style = MaterialTheme.typography.bodySmall,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 48.dp)
+                        )
+                    }
+                } else {
+                    LazyColumn {
+                        items(cards, key = { card -> card.id }) { card ->
+                            CreditCard(card)
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun CreditCard(
-    label: String,
-    availableLimit: Double,
-    totalLimit: Double,
+    card: PaymentAccount,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(100))
-                .background(Melon)
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.weight(1f)
-        )
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            horizontalAlignment = Alignment.End
+    with(card) {
+        Row(
+            modifier = modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = availableLimit.toString(), style = MaterialTheme.typography.labelMedium)
-            Text(
-                text = "de $totalLimit",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(100))
+                    .background(Melon)
             )
+            Text(
+                text = name,
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.weight(1f)
+            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(text = balance.toString(), style = MaterialTheme.typography.labelMedium)
+                Text(
+                    text = "de $balance",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }

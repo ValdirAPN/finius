@@ -7,12 +7,10 @@ import br.com.finius.domain.model.Colors
 import br.com.finius.domain.model.PaymentAccountType
 import br.com.finius.domain.model.TransactionType
 
-class Database(
-    private val context: Context
-) {
+class Database(context: Context) {
     private val driver = AndroidSqliteDriver(FiniusDatabase.Schema, context, "finius.db")
 
-    private val financialTransactionAdapter = FinancialTransaction.Adapter(
+    private val transactionEntityAdapter = TransactionEntity.Adapter(
         typeAdapter = object : ColumnAdapter<TransactionType, String> {
             override fun decode(databaseValue: String): TransactionType =
                 TransactionType.entries.first { it.name == databaseValue }
@@ -30,7 +28,7 @@ class Database(
         }
     )
 
-    private val paymentAccountAdapter = PaymentAccount.Adapter(
+    private val paymentAccountEntityAdapter = PaymentAccountEntity.Adapter(
         colorAdapter = object : ColumnAdapter<Colors, String> {
             override fun decode(databaseValue: String): Colors =
                 Colors.entries.first { it.name == databaseValue }
@@ -49,7 +47,7 @@ class Database(
 
     val database = FiniusDatabase(
         driver,
-        financialTransactionAdapter = financialTransactionAdapter,
-        paymentAccountAdapter = paymentAccountAdapter,
+        transactionEntityAdapter = transactionEntityAdapter,
+        paymentAccountEntityAdapter = paymentAccountEntityAdapter,
     )
 }

@@ -1,7 +1,7 @@
 import br.com.finius.domain.model.TransactionType;
 import br.com.finius.domain.model.Colors;
 
-CREATE TABLE financialTransaction(
+CREATE TABLE transactionEntity(
     id TEXT NOT NULL,
     name TEXT NOT NULL,
     amount REAL NOT NULL,
@@ -14,8 +14,8 @@ CREATE TABLE financialTransaction(
 );
 
 insert:
-INSERT INTO financialTransaction
+INSERT INTO transactionEntity
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 list:
-SELECT * FROM financialTransaction;
+SELECT * FROM transactionEntity;

@@ -13,4 +13,10 @@ val appModule = module {
             .value
             .transactionQueries
     }
+
+    single<PaymentAccountQueries> {
+        inject<FiniusDatabase>()
+            .value
+            .paymentAccountQueries
+    }
 }

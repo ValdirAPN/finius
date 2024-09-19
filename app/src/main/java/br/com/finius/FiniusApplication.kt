@@ -1,6 +1,8 @@
 package br.com.finius
 
 import android.app.Application
+import br.com.finius.bankAccounts.bankAccountsModule
+import br.com.finius.cards.cardsModule
 import br.com.finius.data.repository.repositoryModule
 import br.com.finius.home.homeModule
 import br.com.finius.transactionList.transactionListModule
@@ -18,7 +20,9 @@ class FiniusApplication : Application() {
                 appModule,
                 repositoryModule,
                 homeModule,
-                transactionListModule
+                transactionListModule,
+                bankAccountsModule,
+                cardsModule,
             )
         }
     }

@@ -1,23 +1,22 @@
 import br.com.finius.domain.model.Colors;
 import br.com.finius.domain.model.PaymentAccountType;
 
-CREATE TABLE paymentAccount(
+CREATE TABLE paymentAccountEntity(
     id TEXT NOT NULL,
     name TEXT NOT NULL,
     balance REAL NOT NULL,
     type TEXT AS PaymentAccountType NOT NULL,
-    dueDay INTEGER NOT NULL,
+    dueDay INTEGER,
     color TEXT AS Colors NOT NULL
 );
 
+INSERT INTO paymentAccountEntity (id, name, balance, type, color)
+VALUES ("default_account", "Carteira", 0.0, "Bank", "Melon");
+
 insert:
-INSERT INTO paymentAccount
+INSERT INTO paymentAccountEntity
 VALUES (?, ?, ?, ?, ?, ?);
 
-listBanks:
-SELECT * FROM paymentAccount
-WHERE type = "Bank";
-
-listCards:
-SELECT * FROM paymentAccount
-WHERE type = "Card";
+listByType:
+SELECT * FROM paymentAccountEntity
+WHERE type = ?;
