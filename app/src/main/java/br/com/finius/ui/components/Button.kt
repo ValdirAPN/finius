@@ -20,6 +20,7 @@ fun Button(onClick: () -> Unit, label: String, modifier: Modifier = Modifier) {
         onClick = onClick,
         modifier = modifier,
         color = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         shape = RoundedCornerShape(8.dp)
     ) {
         Box(

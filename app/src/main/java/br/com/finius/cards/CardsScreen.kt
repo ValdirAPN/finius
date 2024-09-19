@@ -1,6 +1,5 @@
 package br.com.finius.cards
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -83,9 +83,10 @@ private fun Content(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Image(
+                            Icon(
                                 painter = painterResource(id = R.drawable.notfound),
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground
                             )
                         }
 
@@ -93,7 +94,8 @@ private fun Content(
                             text = "Não tem nada por aqui. Clique em + para cadastrar um novo cartão.",
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 48.dp)
+                            modifier = Modifier.padding(horizontal = 48.dp),
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 } else {

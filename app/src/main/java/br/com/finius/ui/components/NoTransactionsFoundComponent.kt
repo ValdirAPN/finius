@@ -1,10 +1,10 @@
 package br.com.finius.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,9 +22,10 @@ fun NoTransactionsFoundComponent(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.notfound),
-                contentDescription = null
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -32,7 +33,8 @@ fun NoTransactionsFoundComponent(modifier: Modifier = Modifier) {
             text = "Não tem nada por aqui. Cadastre uma nova transação e comece a cuidar da sua saúde financeira.",
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 48.dp)
+            modifier = Modifier.padding(horizontal = 48.dp),
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }

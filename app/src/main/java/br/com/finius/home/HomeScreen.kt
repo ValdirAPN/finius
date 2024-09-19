@@ -92,7 +92,11 @@ private fun HomeScreenContent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(painter = painterResource(id = R.drawable.finius), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = R.drawable.finius),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Box(
                         modifier = Modifier
@@ -136,7 +140,8 @@ private fun HomeScreenContent(
                         .clip(RoundedCornerShape(100))
                         .background(MintCream)
                         .padding(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.arrow_circle_up_right),

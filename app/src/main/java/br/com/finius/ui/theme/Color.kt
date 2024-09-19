@@ -11,6 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val Onyx = Color(0xFF393E41)
+val OnyxDarker = Color(0xFF27292C)
 val FrenchGray = Color(0xFFA8AFB3)
 val AntiFlashWhite = Color(0xFFF1F6F8)
 val Viridian = Color(0xFF3D896D)
