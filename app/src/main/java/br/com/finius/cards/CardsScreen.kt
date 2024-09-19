@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.finius.R
 import br.com.finius.domain.model.PaymentAccount
-import br.com.finius.ui.components.NavigationBar
+import br.com.finius.ui.components.Toolbar
 import br.com.finius.ui.components.NavigationLeading
 import br.com.finius.ui.components.NavigationTrailing
 import br.com.finius.ui.theme.Melon
@@ -62,7 +62,7 @@ private fun Content(
     with(uiState) {
         Scaffold(
             topBar = {
-                NavigationBar(
+                Toolbar(
                     label = "Cartões",
                     leading = NavigationLeading.Close(action = onNavigateBack),
                     primaryAction = NavigationTrailing(

@@ -1,6 +1,5 @@
 package br.com.finius.transactionList
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.finius.R
-import br.com.finius.domain.model.Colors
-import br.com.finius.domain.model.Transaction
-import br.com.finius.domain.model.TransactionType
-import br.com.finius.ui.components.NavigationBar
+import br.com.finius.ui.components.Toolbar
 import br.com.finius.ui.components.NavigationLeading
 import br.com.finius.ui.components.NavigationTrailing
 import br.com.finius.ui.components.NoTransactionsFoundComponent
@@ -54,7 +49,7 @@ private fun Content(
     with(uiState) {
         Scaffold(
             topBar = {
-                NavigationBar(
+                Toolbar(
                     label = "Transações",
                     leading = NavigationLeading.Close(action = onNavigateBack),
                     primaryAction = NavigationTrailing(

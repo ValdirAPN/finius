@@ -22,7 +22,7 @@ import br.com.finius.ui.components.Button
 import br.com.finius.ui.components.ColorSelector
 import br.com.finius.ui.components.HorizontalSelector
 import br.com.finius.ui.components.InputField
-import br.com.finius.ui.components.NavigationBar
+import br.com.finius.ui.components.Toolbar
 import br.com.finius.ui.components.NavigationLeading
 import kotlinx.serialization.Serializable
 
@@ -55,7 +55,7 @@ fun NewTransactionScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifi
     Scaffold(
         modifier,
         topBar = {
-            NavigationBar(
+            Toolbar(
                 label = "Nova Transação",
                 leading = NavigationLeading.Close(action = onNavigateBack),
             )

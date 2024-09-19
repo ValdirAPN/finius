@@ -2,6 +2,7 @@ package br.com.finius.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +19,7 @@ import br.com.finius.ui.theme.FiniusTheme
 fun Button(onClick: () -> Unit, label: String, modifier: Modifier = Modifier) {
     Surface(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.imePadding(),
         color = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
         shape = RoundedCornerShape(8.dp)

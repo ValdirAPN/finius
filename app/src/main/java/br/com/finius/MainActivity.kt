@@ -3,6 +3,7 @@ package br.com.finius
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.navigation.compose.NavHost
@@ -27,6 +28,7 @@ import br.com.finius.ui.theme.FiniusTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
 
             val navController = rememberNavController()

@@ -21,7 +21,7 @@ import br.com.finius.domain.model.Colors
 import br.com.finius.ui.components.Button
 import br.com.finius.ui.components.ColorSelector
 import br.com.finius.ui.components.InputField
-import br.com.finius.ui.components.NavigationBar
+import br.com.finius.ui.components.Toolbar
 import br.com.finius.ui.components.NavigationLeading
 import kotlinx.serialization.Serializable
 
@@ -41,7 +41,7 @@ fun NewCardScreen(
     Scaffold(
         modifier,
         topBar = {
-            NavigationBar(
+            Toolbar(
                 label = "Novo Cartão",
                 leading = NavigationLeading.Back(action = onNavigateBack),
             )
