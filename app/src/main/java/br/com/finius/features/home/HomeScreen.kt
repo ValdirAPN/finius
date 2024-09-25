@@ -1,4 +1,4 @@
-package br.com.finius.home
+package br.com.finius.features.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

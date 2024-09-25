@@ -9,20 +9,20 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.finius.bankAccounts.BankAccountsRoute
-import br.com.finius.bankAccounts.BankAccountsScreen
-import br.com.finius.bankAccounts.NewBankAccountRoute
-import br.com.finius.bankAccounts.NewBankAccountScreen
-import br.com.finius.cards.CardsRoute
-import br.com.finius.cards.CardsScreen
-import br.com.finius.cards.NewCardRoute
-import br.com.finius.cards.NewCardScreen
-import br.com.finius.home.HomeRoute
-import br.com.finius.home.HomeScreen
-import br.com.finius.transaction.NewTransactionRoute
-import br.com.finius.transaction.NewTransactionScreen
-import br.com.finius.transactionList.TransactionListRoute
-import br.com.finius.transactionList.TransactionListScreen
+import br.com.finius.features.bankAccounts.BankAccountsRoute
+import br.com.finius.features.bankAccounts.BankAccountsScreen
+import br.com.finius.features.bankAccounts.NewBankAccountRoute
+import br.com.finius.features.bankAccounts.NewBankAccountScreen
+import br.com.finius.features.cards.CardsRoute
+import br.com.finius.features.cards.CardsScreen
+import br.com.finius.features.cards.NewCardRoute
+import br.com.finius.features.cards.NewCardScreen
+import br.com.finius.features.home.HomeRoute
+import br.com.finius.features.home.HomeScreen
+import br.com.finius.features.transaction.NewTransactionRoute
+import br.com.finius.features.transaction.NewTransactionScreen
+import br.com.finius.features.transactionList.TransactionListRoute
+import br.com.finius.features.transactionList.TransactionListScreen
 import br.com.finius.ui.theme.FiniusTheme
 
 class MainActivity : ComponentActivity() {

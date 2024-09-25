@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package br.com.finius.transaction
+package br.com.finius.features.transaction
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.DatePickerState

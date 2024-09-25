@@ -1,12 +1,12 @@
 package br.com.finius
 
 import android.app.Application
-import br.com.finius.bankAccounts.bankAccountsModule
-import br.com.finius.cards.cardsModule
+import br.com.finius.features.bankAccounts.bankAccountsModule
+import br.com.finius.features.cards.cardsModule
 import br.com.finius.data.repository.repositoryModule
-import br.com.finius.home.homeModule
-import br.com.finius.transaction.newTransactionModule
-import br.com.finius.transactionList.transactionListModule
+import br.com.finius.features.home.homeModule
+import br.com.finius.features.transaction.newTransactionModule
+import br.com.finius.features.transactionList.transactionListModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

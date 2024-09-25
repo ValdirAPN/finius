@@ -1,4 +1,4 @@
-package br.com.finius.bankAccounts
+package br.com.finius.features.cards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,10 +26,10 @@ import br.com.finius.ui.components.NavigationLeading
 import kotlinx.serialization.Serializable
 
 @Serializable
-object NewBankAccountRoute
+object NewCardRoute
 
 @Composable
-fun NewBankAccountScreen(
+fun NewCardScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -42,7 +42,7 @@ fun NewBankAccountScreen(
         modifier,
         topBar = {
             Toolbar(
-                label = "Nova Conta",
+                label = "Novo Cartão",
                 leading = NavigationLeading.Back(action = onNavigateBack),
             )
         },
@@ -63,7 +63,8 @@ fun NewBankAccountScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             InputField(label = "Nome", state = rememberTextFieldState())
-            InputField(label = "Saldo", state = rememberTextFieldState())
+            InputField(label = "Limite", state = rememberTextFieldState())
+            InputField(label = "Vencimento", state = rememberTextFieldState())
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(horizontal = 24.dp)

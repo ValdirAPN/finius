@@ -1,4 +1,4 @@
-package br.com.finius.cards
+package br.com.finius.features.cards
 
 import androidx.lifecycle.ViewModel
 import br.com.finius.data.repository.PaymentAccountRepository

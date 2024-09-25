@@ -1,4 +1,4 @@
-package br.com.finius.bankAccounts
+package br.com.finius.features.bankAccounts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package br.com.finius.cards
+package br.com.finius.features.cards
 
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

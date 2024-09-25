@@ -1,4 +1,4 @@
-package br.com.finius.transactionList
+package br.com.finius.features.transactionList
 
 import androidx.lifecycle.ViewModel
 import br.com.finius.data.repository.TransactionRepository

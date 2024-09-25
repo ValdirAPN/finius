@@ -1,4 +1,4 @@
-package br.com.finius.bankAccounts
+package br.com.finius.features.bankAccounts
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

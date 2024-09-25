@@ -1,4 +1,4 @@
-package br.com.finius.transaction
+package br.com.finius.features.transaction
 
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

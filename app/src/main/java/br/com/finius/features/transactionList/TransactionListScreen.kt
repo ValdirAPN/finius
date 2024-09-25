@@ -1,4 +1,4 @@
-package br.com.finius.transactionList
+package br.com.finius.features.transactionList
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package br.com.finius.bankAccounts
+package br.com.finius.features.bankAccounts
 
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

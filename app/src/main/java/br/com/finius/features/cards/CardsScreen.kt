@@ -1,4 +1,4 @@
-package br.com.finius.cards
+package br.com.finius.features.cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

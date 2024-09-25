@@ -1,4 +1,4 @@
-package br.com.finius.home
+package br.com.finius.features.home
 
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
