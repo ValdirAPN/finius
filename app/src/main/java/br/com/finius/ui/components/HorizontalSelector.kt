@@ -22,10 +22,11 @@ import br.com.finius.ui.theme.FiniusTheme
 import br.com.finius.ui.theme.Onyx
 
 @Composable
-fun HorizontalSelector(
-    vararg items: String,
-    selectedItem: String,
-    onSelectItem: (item: String) -> Unit,
+fun <T> HorizontalSelector(
+    vararg items: T,
+    selectedItem: T,
+    onSelectItem: (item: T) -> Unit,
+    itemToString: (T) -> String,
     modifier: Modifier = Modifier
 ) {
     Row(modifier.padding(horizontal = 24.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -42,7 +43,7 @@ fun HorizontalSelector(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = item,
+                    text = itemToString(item),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = contentColor
                 )
@@ -55,6 +56,6 @@ fun HorizontalSelector(
 @Composable
 private fun HorizontalSelectorPreview() {
     FiniusTheme {
-        HorizontalSelector("Despesa", "Receita", selectedItem = "Despesa", onSelectItem = {})
+        HorizontalSelector("Despesa", "Receita", selectedItem = "Despesa", itemToString = {""}, onSelectItem = {})
     }
 }

@@ -5,6 +5,7 @@ import br.com.finius.bankAccounts.bankAccountsModule
 import br.com.finius.cards.cardsModule
 import br.com.finius.data.repository.repositoryModule
 import br.com.finius.home.homeModule
+import br.com.finius.transaction.newTransactionModule
 import br.com.finius.transactionList.transactionListModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -23,6 +24,7 @@ class FiniusApplication : Application() {
                 transactionListModule,
                 bankAccountsModule,
                 cardsModule,
+                newTransactionModule,
             )
         }
     }

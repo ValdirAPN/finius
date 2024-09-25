@@ -19,13 +19,6 @@ class Database(context: Context) {
             override fun encode(value: TransactionType): String =
                 value.name
         },
-        colorAdapter = object : ColumnAdapter<Colors, String> {
-            override fun decode(databaseValue: String): Colors =
-                Colors.entries.first { it.name == databaseValue }
-
-            override fun encode(value: Colors): String =
-                value.name
-        }
     )
 
     private val paymentAccountEntityAdapter = PaymentAccountEntity.Adapter(

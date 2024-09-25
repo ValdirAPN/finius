@@ -6,7 +6,6 @@ CREATE TABLE transactionEntity(
     name TEXT NOT NULL,
     amount REAL NOT NULL,
     type TEXT AS TransactionType NOT NULL,
-    color TEXT AS Colors NOT NULL,
     paymentAccountId TEXT NOT NULL,
     installments INTEGER NOT NULL,
     dateInMilli INTEGER NOT NULL,
@@ -15,7 +14,7 @@ CREATE TABLE transactionEntity(
 
 insert:
 INSERT INTO transactionEntity
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 list:
 SELECT * FROM transactionEntity;

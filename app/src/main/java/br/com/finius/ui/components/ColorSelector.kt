@@ -5,6 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -19,19 +21,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import br.com.finius.domain.model.Colors
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ColorSelector(
     selectedColor: Colors,
     onSelectColor: (Colors) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.FixedSize(32.dp),
+    FlowRow(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(Colors.entries) { color ->
+        Colors.entries.forEach { color ->
             val borderColor =
                 if (color == selectedColor) MaterialTheme.colorScheme.onBackground else color.color
             Box(

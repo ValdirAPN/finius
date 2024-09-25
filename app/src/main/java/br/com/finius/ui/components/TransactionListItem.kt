@@ -23,6 +23,7 @@ import br.com.finius.domain.model.Transaction
 import br.com.finius.domain.model.TransactionType
 import br.com.finius.ui.theme.FrenchGray
 import br.com.finius.ui.theme.LightGreen2
+import br.com.finius.ui.theme.Melon
 import br.com.finius.ui.theme.Viridian
 
 @Composable
@@ -39,7 +40,7 @@ fun TransactionListItem(transaction: Transaction, modifier: Modifier = Modifier)
                     .clip(
                         RoundedCornerShape(100)
                     )
-                    .background(color.color),
+                    .background(Melon),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

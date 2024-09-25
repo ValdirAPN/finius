@@ -1,8 +1,12 @@
 package br.com.finius.domain.model
 
 data class Transaction(
+    val id: String,
     val name: String,
     val amount: Double,
     val type: TransactionType,
-    val color: Colors,
+    val paymentAccountId: String,
+    val dateInMilli: Long,
+    val installments: Int,
+    val party: String,
 )

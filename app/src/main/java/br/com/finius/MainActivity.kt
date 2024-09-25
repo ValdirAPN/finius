@@ -66,16 +66,16 @@ class MainActivity : ComponentActivity() {
                             onNavigateToNewTransaction = { navController.navigate(route = NewTransactionRoute) },
                             onNavigateToBankAccounts = { navController.navigate(route = BankAccountsRoute) },
                             onNavigateToCards = { navController.navigate(route = CardsRoute) },
-                            onNavigateToTransactions = { navController.navigate(TransactionListRoute) }
+                            onNavigateToTransactions = { navController.navigate(route = TransactionListRoute) }
                         )
                     }
                     composable<NewTransactionRoute> {
-                        NewTransactionScreen(onNavigateBack = navController::popBackStack)
+                        NewTransactionScreen(onNavigateBack = navController::popBackStack, onNavigateToNewCard = { navController.navigate(route = NewCardRoute) })
                     }
                     composable<BankAccountsRoute> {
                         BankAccountsScreen(
                             onNavigateBack = navController::popBackStack,
-                            onNavigateToNewBankAccount = { navController.navigate(NewBankAccountRoute) }
+                            onNavigateToNewBankAccount = { navController.navigate(route = NewBankAccountRoute) }
                         )
                     }
                     composable<NewBankAccountRoute> {
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                     composable<CardsRoute> {
                         CardsScreen(
                             onNavigateBack = navController::popBackStack,
-                            onNavigateToNewCard = { navController.navigate(NewCardRoute) }
+                            onNavigateToNewCard = { navController.navigate(route = NewCardRoute) }
                         )
                     }
                     composable<NewCardRoute> {
@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
                     composable<TransactionListRoute> {
                         TransactionListScreen(
                             onNavigateBack = navController::popBackStack,
-                            onNavigateToNewTransaction = { navController.navigate(NewTransactionRoute) }
+                            onNavigateToNewTransaction = { navController.navigate(route = NewTransactionRoute) }
                         )
                     }
                 }
