@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,10 @@ fun CardsScreen(
 
     val viewModel = koinViewModel<CardsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getAccounts()
+    }
 
     Content(
         uiState = uiState,
@@ -136,9 +141,9 @@ private fun CreditCard(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.End
             ) {
-                Text(text = balance.toString(), style = MaterialTheme.typography.labelMedium)
+                Text(text = balance.format(), style = MaterialTheme.typography.labelMedium)
                 Text(
-                    text = "de $balance",
+                    text = "de ${balance.format()}",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

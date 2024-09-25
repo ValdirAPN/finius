@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.finius.R
 import br.com.finius.domain.model.Colors
+import br.com.finius.domain.model.Money
 import br.com.finius.domain.model.PaymentAccount
 import br.com.finius.domain.model.PaymentAccountType
 import br.com.finius.domain.model.TransactionType
@@ -253,7 +254,7 @@ private fun CardSelectorPreview() {
                 PaymentAccount(
                     id = "id",
                     name = "Nubank",
-                    balance = 3499.99,
+                    balance = Money(349999),
                     type = PaymentAccountType.Card,
                     dueDay = null,
                     color = Colors.Mauve

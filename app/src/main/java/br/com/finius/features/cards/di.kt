@@ -5,4 +5,5 @@ import org.koin.dsl.module
 
 val cardsModule = module {
     viewModelOf(::CardsViewModel)
+    viewModelOf(::NewCardViewModel)
 }

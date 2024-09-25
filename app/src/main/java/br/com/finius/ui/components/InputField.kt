@@ -65,7 +65,7 @@ fun InputField(
         ) {
             BasicTextField(
                 state = state,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
                 readOnly = readOnly,
                 textStyle = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onSurface
@@ -75,7 +75,7 @@ fun InputField(
                 onKeyboardAction = onKeyboardAction,
                 lineLimits = lineLimits,
                 inputTransformation = inputTransformation,
-                outputTransformation = outputTransformation
+                outputTransformation = outputTransformation,
             )
 
             if (trailing != null) {

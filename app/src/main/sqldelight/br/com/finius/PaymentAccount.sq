@@ -4,14 +4,14 @@ import br.com.finius.domain.model.PaymentAccountType;
 CREATE TABLE paymentAccountEntity(
     id TEXT NOT NULL,
     name TEXT NOT NULL,
-    balance REAL NOT NULL,
+    balanceCents INTEGER NOT NULL,
     type TEXT AS PaymentAccountType NOT NULL,
     dueDay INTEGER,
     color TEXT AS Colors NOT NULL
 );
 
-INSERT INTO paymentAccountEntity (id, name, balance, type, color)
-VALUES ("default_account", "Carteira", 0.0, "Bank", "Melon");
+INSERT INTO paymentAccountEntity (id, name, balanceCents, type, color)
+VALUES ("default_account", "Carteira", 0, "Bank", "Melon");
 
 insert:
 INSERT INTO paymentAccountEntity
