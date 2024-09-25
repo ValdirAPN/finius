@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -75,7 +75,10 @@ fun NewTransactionScreen(onNavigateBack: () -> Unit, onNavigateToNewCard: () -> 
         onSetTransactionType = viewModel::setTransactionType,
         onSetPaymentAccountType = viewModel::setPaymentAccountType,
         onSetPaymentAccount = viewModel::setPaymentAccount,
-        onCreateTransaction = viewModel::createTransaction
+        onCreateTransaction = {
+            viewModel.createTransaction()
+            onNavigateBack()
+        }
     )
 
 }
@@ -134,13 +137,13 @@ private fun Content(
 
                 InputField(
                     label = "Título",
-                    state = rememberTextFieldState(),
+                    state = title,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
 
                 InputField(
                     label = "Valor",
-                    state = rememberTextFieldState(),
+                    state = amount,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.NumberPassword,
                         imeAction = ImeAction.Next
@@ -162,13 +165,13 @@ private fun Content(
 
                 Select(
                     label = "Cartão",
-                    state = rememberTextFieldState(),
+                    state = TextFieldState(initialText = paymentAccount?.name ?: ""),
                     onClick = { showBottomSheet = !showBottomSheet }
                 )
 
                 InputField(
                     label = "Parcelas",
-                    state = rememberTextFieldState(),
+                    state = installments,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.NumberPassword,
                         imeAction = ImeAction.Next
@@ -184,7 +187,7 @@ private fun Content(
                     sheetState = sheetState
                 ) {
                     CardSelector(
-                        cards = emptyList(),
+                        cards = cards,
                         onTapCreateNewCard = {
                             showBottomSheet = false
                             onNavigateToNewCard()
@@ -231,7 +234,7 @@ internal fun CardSelector(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .clickable { onSelectCard(it) }
-                    .padding(12.dp),
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {

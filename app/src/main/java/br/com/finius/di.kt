@@ -8,15 +8,15 @@ val appModule = module {
             .database
     }
 
-    single<TransactionQueries> {
+    single<TransactionEntityQueries> {
         inject<FiniusDatabase>()
             .value
-            .transactionQueries
+            .transactionEntityQueries
     }
 
-    single<PaymentAccountQueries> {
+    single<PaymentAccountEntityQueries> {
         inject<FiniusDatabase>()
             .value
-            .paymentAccountQueries
+            .paymentAccountEntityQueries
     }
 }

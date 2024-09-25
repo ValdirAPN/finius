@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package br.com.finius.features.transaction
 
@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.lifecycle.ViewModel
 import br.com.finius.data.repository.PaymentAccountRepository
 import br.com.finius.data.repository.TransactionRepository
+import br.com.finius.domain.model.Money
 import br.com.finius.domain.model.PaymentAccount
 import br.com.finius.domain.model.PaymentAccountType
 import br.com.finius.domain.model.Transaction
@@ -64,7 +65,7 @@ class NewTransactionViewModel(
             Transaction(
                 id = UUID.randomUUID().toString(),
                 name = title.text.toString(),
-                amount = amount.text.toString().toDouble(),
+                amount = Money(amount.text.toString().toLong()),
                 dateInMilli = dateState.selectedDateMillis ?: 0L,
                 installments = installments.text.toString().toInt(),
                 party = party.text.toString(),

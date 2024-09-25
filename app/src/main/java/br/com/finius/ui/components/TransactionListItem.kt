@@ -70,7 +70,7 @@ fun TransactionListItem(transaction: Transaction, modifier: Modifier = Modifier)
             }
 
             Text(
-                text = "R$ $amount",
+                text = amount.format(),
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = amountColor
             )
