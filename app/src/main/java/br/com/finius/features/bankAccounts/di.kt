@@ -5,4 +5,5 @@ import org.koin.dsl.module
 
 val bankAccountsModule = module {
     viewModelOf(::BankAccountsViewModel)
+    viewModelOf(::NewBankAccountViewModel)
 }

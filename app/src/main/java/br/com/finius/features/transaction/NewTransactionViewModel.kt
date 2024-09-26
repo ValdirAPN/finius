@@ -73,7 +73,7 @@ class NewTransactionViewModel(
             Transaction(
                 id = UUID.randomUUID().toString(),
                 name = title.text.toString(),
-                amount = Money(amount.text.toString().toLong()),
+                amount = Money(amount.text.toString().toLongOrNull() ?: 0L),
                 date = Date(dateState.selectedDateMillis ?: 0L),
                 installments = installments.text.toString().toInt(),
                 party = party.text.toString(),

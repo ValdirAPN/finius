@@ -1,4 +1,4 @@
-package br.com.finius.features.cards
+package br.com.finius.features.bankAccounts
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
@@ -12,18 +12,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.util.UUID
 
-data class NewCardUiState(
+data class NewBankAccountUiState(
     val name: TextFieldState = TextFieldState(),
     val balance: TextFieldState = TextFieldState(),
-    val dueDay: TextFieldState = TextFieldState(),
     val color: Colors = Colors.entries.first(),
 )
 
-class NewCardViewModel(
+class NewBankAccountViewModel(
     private val paymentAccountRepository: PaymentAccountRepository,
 ) : ViewModel() {
 
-    private var _uiState = MutableStateFlow(NewCardUiState())
+    private var _uiState = MutableStateFlow(NewBankAccountUiState())
     val uiState = _uiState.asStateFlow()
 
     fun create() = with(_uiState.value) {
@@ -32,8 +31,8 @@ class NewCardViewModel(
                 id = UUID.randomUUID().toString(),
                 name = name.text.toString().trim(),
                 balance = Money(balance.text.toString().toLongOrNull() ?: 0L),
-                type = PaymentAccountType.CARD,
-                dueDay = dueDay.text.toString().toInt(),
+                type = PaymentAccountType.BANK,
+                dueDay = null,
                 color = color,
             )
         )

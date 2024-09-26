@@ -130,7 +130,7 @@ private fun CreditCard(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(100))
-                    .background(Melon)
+                    .background(color.value)
             )
             Text(
                 text = name,
