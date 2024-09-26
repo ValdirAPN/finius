@@ -19,7 +19,7 @@ class CardsViewModel(
     val uiState = _uiState.asStateFlow()
 
     fun getAccounts() {
-        val cards = paymentAccountRepository.getAccountsByType(PaymentAccountType.Card)
+        val cards = paymentAccountRepository.getAccountsByType(PaymentAccountType.CARD)
         _uiState.update { it.copy(cards = cards) }
     }
 }

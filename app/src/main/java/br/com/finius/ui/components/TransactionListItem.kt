@@ -18,12 +18,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import br.com.finius.R
 import br.com.finius.domain.model.Transaction
 import br.com.finius.domain.model.TransactionType
 import br.com.finius.ui.theme.FrenchGray
-import br.com.finius.ui.theme.LightGreen2
-import br.com.finius.ui.theme.Melon
 import br.com.finius.ui.theme.Viridian
 
 @Composable
@@ -40,12 +37,13 @@ fun TransactionListItem(transaction: Transaction, modifier: Modifier = Modifier)
                     .clip(
                         RoundedCornerShape(100)
                     )
-                    .background(Melon),
+                    .background(category.color.value),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.currency_dollar_simple),
-                    contentDescription = null
+                    painter = painterResource(id = category.iconRes),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
 
@@ -58,15 +56,15 @@ fun TransactionListItem(transaction: Transaction, modifier: Modifier = Modifier)
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
                 )
                 Text(
-                    text = "15 de Setembro de 2024",
+                    text = date.format(),
                     style = MaterialTheme.typography.bodySmall,
                     color = FrenchGray
                 )
             }
 
             val amountColor = when (type) {
-                TransactionType.Income -> Viridian
-                TransactionType.Expense -> MaterialTheme.colorScheme.onBackground
+                TransactionType.INCOME -> Viridian
+                TransactionType.EXPENSE -> MaterialTheme.colorScheme.onBackground
             }
 
             Text(

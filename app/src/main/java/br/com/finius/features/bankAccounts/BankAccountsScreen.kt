@@ -93,7 +93,7 @@ private fun BankAccount(account: PaymentAccount, modifier: Modifier = Modifier) 
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(100))
-                    .background(color.color)
+                    .background(color.value)
             )
             Text(
                 text = name,

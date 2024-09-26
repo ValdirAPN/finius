@@ -32,7 +32,7 @@ class NewCardViewModel(
                 id = UUID.randomUUID().toString(),
                 name = name.text.toString().trim(),
                 balance = Money(balance.text.toString().toLong()),
-                type = PaymentAccountType.Card,
+                type = PaymentAccountType.CARD,
                 dueDay = dueDay.text.toString().toInt(),
                 color = color,
             )

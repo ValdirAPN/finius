@@ -1,4 +1,5 @@
 import br.com.finius.domain.model.TransactionType;
+import br.com.finius.domain.model.TransactionCategory;
 import br.com.finius.domain.model.Colors;
 
 CREATE TABLE transactionEntity(
@@ -9,12 +10,13 @@ CREATE TABLE transactionEntity(
     paymentAccountId TEXT NOT NULL,
     installments INTEGER NOT NULL,
     dateInMilli INTEGER NOT NULL,
-    party TEXT NOT NULL
+    party TEXT NOT NULL,
+    category TEXT AS TransactionCategory NOT NULL
 );
 
 insert:
 INSERT INTO transactionEntity
-VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 list:
 SELECT * FROM transactionEntity;

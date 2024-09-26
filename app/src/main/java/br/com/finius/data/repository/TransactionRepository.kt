@@ -10,14 +10,15 @@ class TransactionRepository(
 
     fun create(transaction: Transaction) = with (transaction) {
         transactionQueries.insert(
-            id,
-            name,
-            amount.cents,
-            type,
-            paymentAccountId,
-            dateInMilli,
-            installments.toLong(),
-            party
+            id = id,
+            name = name,
+            amountCents = amount.cents,
+            type = type,
+            paymentAccountId = paymentAccountId,
+            dateInMilli = date.millis,
+            installments = installments.toLong(),
+            party = party,
+            category = category
         )
     }
     fun getTransactions() = transactionQueries.list().executeAsList().map { it.toTransaction() }

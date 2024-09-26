@@ -2,7 +2,7 @@ package br.com.finius.domain.model
 
 import androidx.compose.ui.graphics.Color
 
-enum class Colors(val color: Color) {
+enum class Colors(val value: Color) {
     Melon(Color(0xFFFFABAB)),
     Apricot(Color(0xFFFFC7AB)),
     PeachYellow(Color(0xFFFFE3AB)),

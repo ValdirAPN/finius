@@ -19,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,7 +44,9 @@ import br.com.finius.domain.model.Colors
 import br.com.finius.domain.model.Money
 import br.com.finius.domain.model.PaymentAccount
 import br.com.finius.domain.model.PaymentAccountType
+import br.com.finius.domain.model.TransactionCategory
 import br.com.finius.domain.model.TransactionType
+import br.com.finius.domain.model.getExhibitionName
 import br.com.finius.ui.components.Button
 import br.com.finius.ui.components.HorizontalSelector
 import br.com.finius.ui.components.InputField
@@ -75,6 +78,7 @@ fun NewTransactionScreen(onNavigateBack: () -> Unit, onNavigateToNewCard: () -> 
         onSetTransactionType = viewModel::setTransactionType,
         onSetPaymentAccountType = viewModel::setPaymentAccountType,
         onSetPaymentAccount = viewModel::setPaymentAccount,
+        onSetCategory = viewModel::setCategory,
         onCreateTransaction = {
             viewModel.createTransaction()
             onNavigateBack()
@@ -91,12 +95,16 @@ private fun Content(
     onSetTransactionType: (TransactionType) -> Unit,
     onSetPaymentAccount: (PaymentAccount) -> Unit,
     onSetPaymentAccountType: (PaymentAccountType) -> Unit,
+    onSetCategory: (TransactionCategory) -> Unit,
     onCreateTransaction: () -> Unit
 ) {
     with(uiState) {
 
         val sheetState = rememberModalBottomSheetState()
-        var showBottomSheet by remember {
+        var showCardsBottomSheet by remember {
+            mutableStateOf(false)
+        }
+        var showCategoriesBottomSheet by remember {
             mutableStateOf(false)
         }
 
@@ -128,8 +136,8 @@ private fun Content(
                     selectedItem = type,
                     itemToString = { transactionType ->
                         when (transactionType) {
-                            TransactionType.Expense -> "Despesa"
-                            TransactionType.Income -> "Receita"
+                            TransactionType.EXPENSE -> "Despesa"
+                            TransactionType.INCOME -> "Receita"
                         }
                     },
                     onSelectItem = onSetTransactionType
@@ -156,8 +164,8 @@ private fun Content(
                     selectedItem = paymentAccountType,
                     itemToString = { paymentAccountType ->
                         when (paymentAccountType) {
-                            PaymentAccountType.Bank -> "Débito"
-                            PaymentAccountType.Card -> "Crédito"
+                            PaymentAccountType.BANK -> "Débito"
+                            PaymentAccountType.CARD -> "Crédito"
                         }
                     },
                     onSelectItem = onSetPaymentAccountType
@@ -166,7 +174,7 @@ private fun Content(
                 Select(
                     label = "Cartão",
                     state = TextFieldState(initialText = paymentAccount?.name ?: ""),
-                    onClick = { showBottomSheet = !showBottomSheet }
+                    onClick = { showCardsBottomSheet = !showCardsBottomSheet }
                 )
 
                 InputField(
@@ -178,23 +186,44 @@ private fun Content(
                     )
                 )
 
+                Select(
+                    label = "Categoria",
+                    state = TextFieldState(initialText = category.getExhibitionName()),
+                    onClick = { showCategoriesBottomSheet = !showCategoriesBottomSheet }
+                )
+
                 DatePicker(state = dateState, title = null, headline = null, showModeToggle = false)
             }
 
-            if (showBottomSheet) {
+            if (showCardsBottomSheet) {
                 ModalBottomSheet(
-                    onDismissRequest = { showBottomSheet = false },
+                    onDismissRequest = { showCardsBottomSheet = false },
                     sheetState = sheetState
                 ) {
                     CardSelector(
                         cards = cards,
                         onTapCreateNewCard = {
-                            showBottomSheet = false
+                            showCardsBottomSheet = false
                             onNavigateToNewCard()
                         },
-                        onSelectCard = {
-                            showBottomSheet = false
+                        onTapCard = {
+                            showCardsBottomSheet = false
                             onSetPaymentAccount(it)
+                        }
+                    )
+                }
+            }
+
+            if (showCategoriesBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showCategoriesBottomSheet = false },
+                    sheetState = sheetState
+                ) {
+                    CategoriesSelector(
+                        categories = TransactionCategory.entries,
+                        onTapCategory = {
+                            showCategoriesBottomSheet = false
+                            onSetCategory(it)
                         }
                     )
                 }
@@ -204,10 +233,53 @@ private fun Content(
 }
 
 @Composable
-internal fun CardSelector(
+private fun CategoriesSelector(
+    categories: List<TransactionCategory>,
+    onTapCategory: (TransactionCategory) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+    ) {
+
+        categories.forEach {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onTapCategory(it) }
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(100))
+                        .background(it.color.value),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = it.iconRes),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+                Text(text = it.getExhibitionName())
+            }
+        }
+    }
+}
+
+@Composable
+private fun CardSelector(
     cards: List<PaymentAccount>,
     onTapCreateNewCard: () -> Unit,
-    onSelectCard: (PaymentAccount) -> Unit,
+    onTapCard: (PaymentAccount) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -233,15 +305,17 @@ internal fun CardSelector(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable { onSelectCard(it) }
+                    .clickable { onTapCard(it) }
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Box(modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(100))
-                    .background(it.color.color))
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(100))
+                        .background(it.color.value)
+                )
                 Text(text = it.name)
             }
         }
@@ -258,13 +332,13 @@ private fun CardSelectorPreview() {
                     id = "id",
                     name = "Nubank",
                     balance = Money(349999),
-                    type = PaymentAccountType.Card,
+                    type = PaymentAccountType.CARD,
                     dueDay = null,
                     color = Colors.Mauve
                 )
             ),
             onTapCreateNewCard = {},
-            onSelectCard = {}
+            onTapCard = {}
         )
     }
 }

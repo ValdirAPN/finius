@@ -5,6 +5,7 @@ import app.cash.sqldelight.ColumnAdapter
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import br.com.finius.domain.model.Colors
 import br.com.finius.domain.model.PaymentAccountType
+import br.com.finius.domain.model.TransactionCategory
 import br.com.finius.domain.model.TransactionType
 
 class Database(context: Context) {
@@ -19,6 +20,13 @@ class Database(context: Context) {
             override fun encode(value: TransactionType): String =
                 value.name
         },
+        categoryAdapter = object : ColumnAdapter<TransactionCategory, String> {
+            override fun decode(databaseValue: String): TransactionCategory =
+                TransactionCategory.entries.first { it.name == databaseValue }
+
+            override fun encode(value: TransactionCategory): String =
+                value.name
+        }
     )
 
     private val paymentAccountEntityAdapter = PaymentAccountEntity.Adapter(

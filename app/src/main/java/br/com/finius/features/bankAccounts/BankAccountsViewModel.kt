@@ -20,7 +20,7 @@ class BankAccountsViewModel(
     val uiState = _uiState.asStateFlow()
 
     fun getAccounts() {
-        val accounts = paymentAccountRepository.getAccountsByType(PaymentAccountType.Bank)
+        val accounts = paymentAccountRepository.getAccountsByType(PaymentAccountType.BANK)
         Log.d("FiniusLog", "getAccounts: $accounts")
         _uiState.update { it.copy(accounts = accounts) }
     }

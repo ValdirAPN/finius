@@ -8,10 +8,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.lifecycle.ViewModel
 import br.com.finius.data.repository.PaymentAccountRepository
 import br.com.finius.data.repository.TransactionRepository
+import br.com.finius.domain.model.Date
 import br.com.finius.domain.model.Money
 import br.com.finius.domain.model.PaymentAccount
 import br.com.finius.domain.model.PaymentAccountType
 import br.com.finius.domain.model.Transaction
+import br.com.finius.domain.model.TransactionCategory
 import br.com.finius.domain.model.TransactionType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,13 +24,14 @@ import java.util.UUID
 
 data class NewTransactionUiState(
     val cards: List<PaymentAccount> = emptyList(),
-    val type: TransactionType = TransactionType.Expense,
+    val type: TransactionType = TransactionType.EXPENSE,
     val title: TextFieldState = TextFieldState(),
     val amount: TextFieldState = TextFieldState(),
-    val paymentAccountType: PaymentAccountType = PaymentAccountType.Card,
+    val paymentAccountType: PaymentAccountType = PaymentAccountType.CARD,
     val paymentAccount: PaymentAccount? = null,
     val installments: TextFieldState = TextFieldState(),
     val party: TextFieldState = TextFieldState(),
+    val category: TransactionCategory = TransactionCategory.OTHERS,
     val dateState: DatePickerState = DatePickerState(
         Locale.getDefault(),
         initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds()
@@ -44,7 +47,7 @@ class NewTransactionViewModel(
     val uiState = _uiState.asStateFlow()
 
     fun getCards() {
-        val cards = paymentAccountRepository.getAccountsByType(PaymentAccountType.Card)
+        val cards = paymentAccountRepository.getAccountsByType(PaymentAccountType.CARD)
         _uiState.update { it.copy(cards = cards) }
     }
 
@@ -60,17 +63,22 @@ class NewTransactionViewModel(
         _uiState.update { it.copy(paymentAccount = paymentAccount) }
     }
 
+    fun setCategory(category: TransactionCategory) {
+        _uiState.update { it.copy(category = category) }
+    }
+
     fun createTransaction() = with(_uiState.value) {
         transactionRepository.create(
             Transaction(
                 id = UUID.randomUUID().toString(),
                 name = title.text.toString(),
                 amount = Money(amount.text.toString().toLong()),
-                dateInMilli = dateState.selectedDateMillis ?: 0L,
+                date = Date(dateState.selectedDateMillis ?: 0L),
                 installments = installments.text.toString().toInt(),
                 party = party.text.toString(),
                 type = type,
                 paymentAccountId = paymentAccount?.id ?: "",
+                category = category
             )
         )
     }

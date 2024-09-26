@@ -6,7 +6,8 @@ data class Transaction(
     val amount: Money,
     val type: TransactionType,
     val paymentAccountId: String,
-    val dateInMilli: Long,
+    val date: Date,
     val installments: Int,
     val party: String,
+    val category: TransactionCategory,
 )

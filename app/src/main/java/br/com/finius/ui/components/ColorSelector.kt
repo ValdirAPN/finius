@@ -8,16 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import br.com.finius.domain.model.Colors
 
@@ -35,13 +30,13 @@ fun ColorSelector(
     ) {
         Colors.entries.forEach { color ->
             val borderColor =
-                if (color == selectedColor) MaterialTheme.colorScheme.onBackground else color.color
+                if (color == selectedColor) MaterialTheme.colorScheme.onBackground else color.value
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(100))
                     .clickable { onSelectColor(color) }
                     .size(32.dp)
-                    .background(color.color)
+                    .background(color.value)
                     .border(2.dp, borderColor, shape = RoundedCornerShape(100))
             )
         }
