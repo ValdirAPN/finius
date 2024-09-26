@@ -21,5 +21,8 @@ class TransactionRepository(
             category = category
         )
     }
-    fun getTransactions() = transactionQueries.list().executeAsList().map { it.toTransaction() }
+
+    fun list() = transactionQueries.list().executeAsList().map { it.toTransaction() }
+
+    fun listNewest() = transactionQueries.listNewest().executeAsList().map { it.toTransaction() }
 }

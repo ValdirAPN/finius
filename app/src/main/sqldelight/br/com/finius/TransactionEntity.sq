@@ -19,4 +19,10 @@ INSERT INTO transactionEntity
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 list:
-SELECT * FROM transactionEntity;
+SELECT * FROM transactionEntity
+ORDER BY dateInMilli DESC;
+
+listNewest:
+SELECT * FROM transactionEntity
+ORDER BY dateInMilli DESC
+LIMIT 8;

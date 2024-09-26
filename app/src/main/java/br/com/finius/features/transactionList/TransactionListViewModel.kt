@@ -19,7 +19,7 @@ class TransactionListViewModel(
     val uiState = _uiState.asStateFlow()
 
     fun getTransactions() {
-        val transactions = transactionRepository.getTransactions()
+        val transactions = transactionRepository.list()
         _uiState.update { it.copy(transactions = transactions) }
     }
 }
