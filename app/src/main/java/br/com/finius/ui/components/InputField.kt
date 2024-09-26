@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,9 +42,10 @@ data class InputFieldTrailing(
 
 @Composable
 fun InputField(
-    label: String,
     state: TextFieldState,
     modifier: Modifier = Modifier,
+    label: String? = null,
+    placeholder: String? = null,
     readOnly: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
@@ -52,8 +54,11 @@ fun InputField(
     outputTransformation: OutputTransformation? = null,
     trailing: InputFieldTrailing? = null,
 ) {
-    Column(modifier.padding(horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(text = label, style = MaterialTheme.typography.labelSmall)
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (label != null) {
+            Text(text = label, style = MaterialTheme.typography.labelSmall)
+        }
+
         Row(
             modifier = Modifier
                 .height(48.dp)
@@ -63,20 +68,30 @@ fun InputField(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BasicTextField(
-                state = state,
-                modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
-                readOnly = readOnly,
-                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
-                keyboardOptions = keyboardOptions,
-                onKeyboardAction = onKeyboardAction,
-                lineLimits = lineLimits,
-                inputTransformation = inputTransformation,
-                outputTransformation = outputTransformation,
-            )
+            Box(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
+                if (placeholder != null && state.text.isEmpty()) {
+                    Text(
+                        text = placeholder,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                BasicTextField(
+                    state = state,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    readOnly = readOnly,
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface
+                    ),
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+                    keyboardOptions = keyboardOptions,
+                    onKeyboardAction = onKeyboardAction,
+                    lineLimits = lineLimits,
+                    inputTransformation = inputTransformation,
+                    outputTransformation = outputTransformation,
+                )
+            }
 
             if (trailing != null) {
                 Box(modifier = Modifier
@@ -101,6 +116,7 @@ private fun InputFieldPreview() {
     FiniusTheme {
         InputField(
             label = "Label",
+            placeholder = "Some placeholder goes here",
             state = rememberTextFieldState(),
             trailing = InputFieldTrailing(R.drawable.caretdown)
         )

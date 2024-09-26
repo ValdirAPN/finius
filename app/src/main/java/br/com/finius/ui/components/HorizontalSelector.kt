@@ -29,7 +29,7 @@ fun <T> HorizontalSelector(
     itemToString: (T) -> String,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier.padding(horizontal = 24.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items.forEach { item ->
             val backgroundColor = if (selectedItem == item) Onyx else Color.White
             val contentColor = if (selectedItem == item) Color.White else Onyx

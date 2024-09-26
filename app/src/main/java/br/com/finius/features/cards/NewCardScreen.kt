@@ -77,6 +77,7 @@ private fun Content(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .padding(horizontal = 24.dp)
                     .verticalScroll(rememberScrollState()
                 ),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -95,7 +96,6 @@ private fun Content(
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.padding(horizontal = 24.dp)
                 ) {
                     Text(text = "Cor", style = MaterialTheme.typography.labelSmall)
                     ColorSelector(

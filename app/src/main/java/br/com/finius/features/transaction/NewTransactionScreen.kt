@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -84,6 +86,7 @@ fun NewTransactionScreen(
         onSetTransactionType = viewModel::setTransactionType,
         onSetPaymentAccount = viewModel::setPaymentAccount,
         onSetCategory = viewModel::setCategory,
+        onSetInstallments = viewModel::setInstallments,
         onCreateTransaction = {
             viewModel.createTransaction()
             onNavigateBack()
@@ -101,6 +104,7 @@ private fun Content(
     onSetTransactionType: (TransactionType) -> Unit,
     onSetPaymentAccount: (PaymentAccount) -> Unit,
     onSetCategory: (TransactionCategory) -> Unit,
+    onSetInstallments: (Int) -> Unit,
     onCreateTransaction: () -> Unit
 ) {
     with(uiState) {
@@ -108,6 +112,10 @@ private fun Content(
         val sheetState = rememberModalBottomSheetState()
 
         var showPaymentAccountBottomSheet by remember {
+            mutableStateOf(false)
+        }
+
+        var showInstallmentsBottomSheet by remember {
             mutableStateOf(false)
         }
 
@@ -135,6 +143,7 @@ private fun Content(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .padding(horizontal = 24.dp)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
@@ -172,13 +181,10 @@ private fun Content(
                     onClick = { showPaymentAccountBottomSheet = !showPaymentAccountBottomSheet }
                 )
 
-                InputField(
+                Select(
                     label = "Parcelas",
-                    state = installments,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword,
-                        imeAction = ImeAction.Next
-                    )
+                    state = TextFieldState(initialText = installments.toString()),
+                    onClick = { showInstallmentsBottomSheet = !showInstallmentsBottomSheet }
                 )
 
                 Select(
@@ -209,6 +215,20 @@ private fun Content(
                         onTapItem = {
                             showPaymentAccountBottomSheet = false
                             onSetPaymentAccount(it)
+                        }
+                    )
+                }
+            }
+
+            if (showInstallmentsBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showPaymentAccountBottomSheet = false },
+                    sheetState = sheetState
+                ) {
+                    InstallmentsSelector(
+                        onTapItem = {
+                            showInstallmentsBottomSheet = false
+                            onSetInstallments(it)
                         }
                     )
                 }
@@ -276,6 +296,63 @@ private fun CategoriesSelector(
 }
 
 @Composable
+private fun InstallmentsSelector(
+    onTapItem: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    val installmentsTextFieldState = rememberTextFieldState()
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            InputField(
+                modifier = Modifier.weight(1f),
+                placeholder = "Digite um valor",
+                state = installmentsTextFieldState,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.NumberPassword,
+                    imeAction = ImeAction.Next
+                )
+            )
+            Button(
+                onClick = {
+                    onTapItem(
+                        installmentsTextFieldState.text.toString().toIntOrNull() ?: 1
+                    )
+                },
+                label = "Ok"
+            )
+        }
+
+        Column {
+            (1..12).forEach { number ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { onTapItem(number) }
+                        .padding(vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = number.toString(),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun PaymentAccountSelector(
     cards: List<PaymentAccount>,
     banks: List<PaymentAccount>,
@@ -291,7 +368,9 @@ private fun PaymentAccountSelector(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .padding(vertical = 16.dp, horizontal = 24.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         HorizontalSelector(
             *PaymentAccountType.entries.toTypedArray(),
@@ -305,7 +384,7 @@ private fun PaymentAccountSelector(
             onSelectItem = { selectedPaymentAccountType = it }
         )
 
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column {
             if (selectedPaymentAccountType == PaymentAccountType.CARD) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,

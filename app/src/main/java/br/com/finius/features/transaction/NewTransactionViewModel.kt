@@ -29,7 +29,7 @@ data class NewTransactionUiState(
     val title: TextFieldState = TextFieldState(),
     val amount: TextFieldState = TextFieldState(),
     val paymentAccount: PaymentAccount? = null,
-    val installments: TextFieldState = TextFieldState(),
+    val installments: Int = 1,
     val party: TextFieldState = TextFieldState(),
     val category: TransactionCategory = TransactionCategory.OTHERS,
     val dateState: DatePickerState = DatePickerState(
@@ -68,6 +68,10 @@ class NewTransactionViewModel(
         _uiState.update { it.copy(category = category) }
     }
 
+    fun setInstallments(value: Int) {
+        _uiState.update { it.copy(installments = value) }
+    }
+
     fun createTransaction() = with(_uiState.value) {
         transactionRepository.create(
             Transaction(
@@ -75,7 +79,7 @@ class NewTransactionViewModel(
                 name = title.text.toString(),
                 amount = Money(amount.text.toString().toLongOrNull() ?: 0L),
                 date = Date(dateState.selectedDateMillis ?: 0L),
-                installments = installments.text.toString().toInt(),
+                installments = installments,
                 party = party.text.toString(),
                 type = type,
                 paymentAccountId = paymentAccount?.id ?: "",
