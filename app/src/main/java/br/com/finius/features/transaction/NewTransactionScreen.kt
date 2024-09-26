@@ -62,21 +62,26 @@ import org.koin.compose.viewmodel.koinViewModel
 object NewTransactionRoute
 
 @Composable
-fun NewTransactionScreen(onNavigateBack: () -> Unit, onNavigateToNewCard: () -> Unit) {
+fun NewTransactionScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToNewCard: () -> Unit,
+    onNavigateToNewBank: () -> Unit
+) {
 
     val viewModel = koinViewModel<NewTransactionViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getCards()
+        viewModel.getBanks()
     }
 
     Content(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onNavigateToNewCard = onNavigateToNewCard,
+        onNavigateToNewBank = onNavigateToNewBank,
         onSetTransactionType = viewModel::setTransactionType,
-        onSetPaymentAccountType = viewModel::setPaymentAccountType,
         onSetPaymentAccount = viewModel::setPaymentAccount,
         onSetCategory = viewModel::setCategory,
         onCreateTransaction = {
@@ -92,18 +97,20 @@ private fun Content(
     uiState: NewTransactionUiState,
     onNavigateBack: () -> Unit,
     onNavigateToNewCard: () -> Unit,
+    onNavigateToNewBank: () -> Unit,
     onSetTransactionType: (TransactionType) -> Unit,
     onSetPaymentAccount: (PaymentAccount) -> Unit,
-    onSetPaymentAccountType: (PaymentAccountType) -> Unit,
     onSetCategory: (TransactionCategory) -> Unit,
     onCreateTransaction: () -> Unit
 ) {
     with(uiState) {
 
         val sheetState = rememberModalBottomSheetState()
-        var showCardsBottomSheet by remember {
+
+        var showPaymentAccountBottomSheet by remember {
             mutableStateOf(false)
         }
+
         var showCategoriesBottomSheet by remember {
             mutableStateOf(false)
         }
@@ -159,22 +166,10 @@ private fun Content(
                     outputTransformation = currencyOutputTransformation
                 )
 
-                HorizontalSelector(
-                    *PaymentAccountType.entries.toTypedArray(),
-                    selectedItem = paymentAccountType,
-                    itemToString = { paymentAccountType ->
-                        when (paymentAccountType) {
-                            PaymentAccountType.BANK -> "Débito"
-                            PaymentAccountType.CARD -> "Crédito"
-                        }
-                    },
-                    onSelectItem = onSetPaymentAccountType
-                )
-
                 Select(
-                    label = "Cartão",
+                    label = "Conta/Cartão",
                     state = TextFieldState(initialText = paymentAccount?.name ?: ""),
-                    onClick = { showCardsBottomSheet = !showCardsBottomSheet }
+                    onClick = { showPaymentAccountBottomSheet = !showPaymentAccountBottomSheet }
                 )
 
                 InputField(
@@ -195,19 +190,24 @@ private fun Content(
                 DatePicker(state = dateState, title = null, headline = null, showModeToggle = false)
             }
 
-            if (showCardsBottomSheet) {
+            if (showPaymentAccountBottomSheet) {
                 ModalBottomSheet(
-                    onDismissRequest = { showCardsBottomSheet = false },
+                    onDismissRequest = { showPaymentAccountBottomSheet = false },
                     sheetState = sheetState
                 ) {
-                    CardSelector(
+                    PaymentAccountSelector(
                         cards = cards,
+                        banks = banks,
                         onTapCreateNewCard = {
-                            showCardsBottomSheet = false
+                            showPaymentAccountBottomSheet = false
                             onNavigateToNewCard()
                         },
-                        onTapCard = {
-                            showCardsBottomSheet = false
+                        onTapCreateNewBankAccount = {
+                            showPaymentAccountBottomSheet = false
+                            onNavigateToNewBank()
+                        },
+                        onTapItem = {
+                            showPaymentAccountBottomSheet = false
                             onSetPaymentAccount(it)
                         }
                     )
@@ -276,47 +276,104 @@ private fun CategoriesSelector(
 }
 
 @Composable
-private fun CardSelector(
+private fun PaymentAccountSelector(
     cards: List<PaymentAccount>,
+    banks: List<PaymentAccount>,
     onTapCreateNewCard: () -> Unit,
-    onTapCard: (PaymentAccount) -> Unit,
+    onTapCreateNewBankAccount: () -> Unit,
+    onTapItem: (PaymentAccount) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    var selectedPaymentAccountType by remember {
+        mutableStateOf(PaymentAccountType.entries.first())
+    }
+
     Column(
         modifier = modifier
-            .padding(16.dp)
             .fillMaxWidth()
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .clickable { onTapCreateNewCard() }
-                .padding(12.dp),
-        ) {
-            Text(text = "Criar novo cartão")
-            Icon(painter = painterResource(id = R.drawable.plus), contentDescription = null)
-        }
+        HorizontalSelector(
+            *PaymentAccountType.entries.toTypedArray(),
+            selectedItem = selectedPaymentAccountType,
+            itemToString = { paymentAccountType ->
+                when (paymentAccountType) {
+                    PaymentAccountType.CARD -> "Cartões"
+                    PaymentAccountType.BANK -> "Contas"
+                }
+            },
+            onSelectItem = { selectedPaymentAccountType = it }
+        )
 
-        cards.forEach {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable { onTapCard(it) }
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Box(
+        Column(modifier = Modifier.padding(16.dp)) {
+            if (selectedPaymentAccountType == PaymentAccountType.CARD) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(100))
-                        .background(it.color.value)
-                )
-                Text(text = it.name)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { onTapCreateNewCard() }
+                        .padding(12.dp),
+                ) {
+                    Text(text = "Criar novo cartão")
+                    Icon(painter = painterResource(id = R.drawable.plus), contentDescription = null)
+                }
+
+                cards.forEach {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onTapItem(it) }
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(RoundedCornerShape(100))
+                                .background(it.color.value)
+                        )
+                        Text(text = it.name)
+                    }
+                }
+            }
+
+            if (selectedPaymentAccountType == PaymentAccountType.BANK) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { onTapCreateNewBankAccount() }
+                        .padding(12.dp),
+                ) {
+                    Text(text = "Criar nova conta")
+                    Icon(painter = painterResource(id = R.drawable.plus), contentDescription = null)
+                }
+
+                banks.forEach {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onTapItem(it) }
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(RoundedCornerShape(100))
+                                .background(it.color.value)
+                        )
+                        Text(text = it.name)
+                    }
+                }
             }
         }
     }
@@ -326,8 +383,18 @@ private fun CardSelector(
 @Composable
 private fun CardSelectorPreview() {
     FiniusTheme {
-        CardSelector(
+        PaymentAccountSelector(
             cards = listOf(
+                PaymentAccount(
+                    id = "id",
+                    name = "Nubank",
+                    balance = Money(349999),
+                    type = PaymentAccountType.CARD,
+                    dueDay = 2,
+                    color = Colors.Mauve
+                )
+            ),
+            banks = listOf(
                 PaymentAccount(
                     id = "id",
                     name = "Nubank",
@@ -338,7 +405,8 @@ private fun CardSelectorPreview() {
                 )
             ),
             onTapCreateNewCard = {},
-            onTapCard = {}
+            onTapCreateNewBankAccount = {},
+            onTapItem = {}
         )
     }
 }

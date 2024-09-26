@@ -100,7 +100,7 @@ private fun BankAccount(account: PaymentAccount, modifier: Modifier = Modifier) 
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.weight(1f)
             )
-            Text(text = balance.toString(), style = MaterialTheme.typography.labelMedium)
+            Text(text = balance.format(), style = MaterialTheme.typography.labelMedium)
         }
     }
 }

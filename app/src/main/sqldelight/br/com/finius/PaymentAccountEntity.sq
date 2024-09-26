@@ -11,7 +11,7 @@ CREATE TABLE paymentAccountEntity(
 );
 
 INSERT INTO paymentAccountEntity (id, name, balanceCents, type, color)
-VALUES ("default_account", "Carteira", 0, "Bank", "Melon");
+VALUES ("default_account", "Carteira", 0, "BANK", "Melon");
 
 insert:
 INSERT INTO paymentAccountEntity

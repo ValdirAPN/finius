@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package br.com.finius.features.transaction
 
@@ -24,10 +24,10 @@ import java.util.UUID
 
 data class NewTransactionUiState(
     val cards: List<PaymentAccount> = emptyList(),
+    val banks: List<PaymentAccount> = emptyList(),
     val type: TransactionType = TransactionType.EXPENSE,
     val title: TextFieldState = TextFieldState(),
     val amount: TextFieldState = TextFieldState(),
-    val paymentAccountType: PaymentAccountType = PaymentAccountType.CARD,
     val paymentAccount: PaymentAccount? = null,
     val installments: TextFieldState = TextFieldState(),
     val party: TextFieldState = TextFieldState(),
@@ -51,12 +51,13 @@ class NewTransactionViewModel(
         _uiState.update { it.copy(cards = cards) }
     }
 
-    fun setTransactionType(transactionType: TransactionType) {
-        _uiState.update { it.copy(type = transactionType) }
+    fun getBanks() {
+        val banks = paymentAccountRepository.getAccountsByType(PaymentAccountType.BANK)
+        _uiState.update { it.copy(banks = banks) }
     }
 
-    fun setPaymentAccountType(paymentAccountType: PaymentAccountType) {
-        _uiState.update { it.copy(paymentAccountType = paymentAccountType) }
+    fun setTransactionType(transactionType: TransactionType) {
+        _uiState.update { it.copy(type = transactionType) }
     }
 
     fun setPaymentAccount(paymentAccount: PaymentAccount) {

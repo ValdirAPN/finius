@@ -70,7 +70,10 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable<NewTransactionRoute> {
-                        NewTransactionScreen(onNavigateBack = navController::popBackStack, onNavigateToNewCard = { navController.navigate(route = NewCardRoute) })
+                        NewTransactionScreen(
+                            onNavigateBack = navController::popBackStack,
+                            onNavigateToNewCard = { navController.navigate(route = NewCardRoute) },
+                            onNavigateToNewBank = { navController.navigate(route = NewBankAccountRoute) })
                     }
                     composable<BankAccountsRoute> {
                         BankAccountsScreen(
