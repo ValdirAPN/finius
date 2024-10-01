@@ -33,6 +33,7 @@ class NewBankAccountViewModel(
                 balance = Money(balance.text.toString().toLongOrNull() ?: 0L),
                 type = PaymentAccountType.BANK,
                 dueDay = null,
+                closingDay = null,
                 color = color,
             )
         )

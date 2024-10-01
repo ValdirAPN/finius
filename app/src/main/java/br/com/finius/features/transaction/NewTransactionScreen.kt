@@ -222,7 +222,7 @@ private fun Content(
 
             if (showInstallmentsBottomSheet) {
                 ModalBottomSheet(
-                    onDismissRequest = { showPaymentAccountBottomSheet = false },
+                    onDismissRequest = { showInstallmentsBottomSheet = false },
                     sheetState = sheetState
                 ) {
                     InstallmentsSelector(
@@ -470,6 +470,7 @@ private fun CardSelectorPreview() {
                     balance = Money(349999),
                     type = PaymentAccountType.CARD,
                     dueDay = 2,
+                    closingDay = 28,
                     color = Colors.Mauve
                 )
             ),
@@ -480,6 +481,7 @@ private fun CardSelectorPreview() {
                     balance = Money(349999),
                     type = PaymentAccountType.CARD,
                     dueDay = null,
+                    closingDay = null,
                     color = Colors.Mauve
                 )
             ),

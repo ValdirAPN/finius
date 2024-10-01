@@ -6,5 +6,6 @@ data class PaymentAccount(
     val balance: Money,
     val type: PaymentAccountType,
     val dueDay: Int?,
+    val closingDay: Int?,
     val color: Colors
 )

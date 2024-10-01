@@ -90,6 +90,11 @@ private fun Content(
                     outputTransformation = currencyOutputTransformation
                 )
                 InputField(
+                    label = "Fechamento",
+                    state = closingDay,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                )
+                InputField(
                     label = "Vencimento",
                     state = dueDay,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),

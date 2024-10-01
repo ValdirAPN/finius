@@ -16,6 +16,7 @@ data class NewCardUiState(
     val name: TextFieldState = TextFieldState(),
     val balance: TextFieldState = TextFieldState(),
     val dueDay: TextFieldState = TextFieldState(),
+    val closingDay: TextFieldState = TextFieldState(),
     val color: Colors = Colors.entries.first(),
 )
 
@@ -33,7 +34,8 @@ class NewCardViewModel(
                 name = name.text.toString().trim(),
                 balance = Money(balance.text.toString().toLongOrNull() ?: 0L),
                 type = PaymentAccountType.CARD,
-                dueDay = dueDay.text.toString().toInt(),
+                dueDay = dueDay.text.toString().toIntOrNull(),
+                closingDay = closingDay.text.toString().toIntOrNull(),
                 color = color,
             )
         )

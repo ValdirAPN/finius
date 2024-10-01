@@ -7,6 +7,7 @@ CREATE TABLE paymentAccountEntity(
     balanceCents INTEGER NOT NULL,
     type TEXT AS PaymentAccountType NOT NULL,
     dueDay INTEGER,
+    closingDay INTEGER,
     color TEXT AS Colors NOT NULL
 );
 
@@ -15,7 +16,7 @@ VALUES ("default_account", "Carteira", 0, "BANK", "Melon");
 
 insert:
 INSERT INTO paymentAccountEntity
-VALUES (?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?);
 
 listByType:
 SELECT * FROM paymentAccountEntity

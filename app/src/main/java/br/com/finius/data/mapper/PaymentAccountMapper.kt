@@ -10,5 +10,6 @@ fun PaymentAccountEntity.toPaymentAccount() = PaymentAccount(
     balance = Money(balanceCents),
     type = type,
     dueDay = dueDay?.toInt(),
+    closingDay = closingDay?.toInt(),
     color = color,
 )

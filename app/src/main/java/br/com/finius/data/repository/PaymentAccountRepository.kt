@@ -16,6 +16,7 @@ class PaymentAccountRepository(
             balanceCents = balance.cents,
             type = type,
             dueDay = dueDay?.toLong(),
+            closingDay = closingDay?.toLong(),
             color = color,
         )
     }
