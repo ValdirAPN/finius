@@ -28,12 +28,14 @@ class NewCardViewModel(
     val uiState = _uiState.asStateFlow()
 
     fun create() = with(_uiState.value) {
+        val balance = Money(balance.text.toString().toLongOrNull() ?: 0L)
         paymentAccountRepository.create(
             PaymentAccount(
                 id = UUID.randomUUID().toString(),
                 name = name.text.toString().trim(),
-                balance = Money(balance.text.toString().toLongOrNull() ?: 0L),
+                balance = balance,
                 type = PaymentAccountType.CARD,
+                availableLimit = balance,
                 dueDay = dueDay.text.toString().toIntOrNull(),
                 closingDay = closingDay.text.toString().toIntOrNull(),
                 color = color,

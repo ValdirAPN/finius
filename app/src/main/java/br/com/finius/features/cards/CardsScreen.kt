@@ -141,7 +141,7 @@ private fun CreditCard(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.End
             ) {
-                Text(text = balance.format(), style = MaterialTheme.typography.labelMedium)
+                Text(text = availableLimit?.format() ?: balance.format(), style = MaterialTheme.typography.labelMedium)
                 Text(
                     text = "de ${balance.format()}",
                     style = MaterialTheme.typography.labelSmall,

@@ -2,6 +2,7 @@ package br.com.finius.data.repository
 
 import br.com.finius.PaymentAccountEntityQueries
 import br.com.finius.data.mapper.toPaymentAccount
+import br.com.finius.domain.model.Money
 import br.com.finius.domain.model.PaymentAccount
 import br.com.finius.domain.model.PaymentAccountType
 
@@ -21,12 +22,18 @@ class PaymentAccountRepository(
         )
     }
 
-    fun getBalance() = paymentAccountQueries.getBalance().executeAsOne().totalAmount
+    fun getBalance() = Money(paymentAccountQueries.getBalance().executeAsOne().totalAmount ?: 0)
 
-    fun getAccountsByType(type: PaymentAccountType) =
-        paymentAccountQueries
+    private fun getAvailableLimit(id: String) = paymentAccountQueries.getAvailableLimit(id).executeAsOne().availableLimit ?: 0
+
+    fun getAccountsByType(type: PaymentAccountType): List<PaymentAccount> {
+        return paymentAccountQueries
             .listByType(type)
             .executeAsList()
-            .map { it.toPaymentAccount() }
+            .map {
+                val availableLimit = if (it.type == PaymentAccountType.CARD) Money(getAvailableLimit(it.id)) else null
+                it.toPaymentAccount(availableLimit)
+            }
+    }
 }
 

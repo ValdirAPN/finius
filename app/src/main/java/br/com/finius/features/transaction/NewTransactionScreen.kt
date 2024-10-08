@@ -166,6 +166,12 @@ private fun Content(
                 )
 
                 InputField(
+                    label = "Contraparte",
+                    state = party,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+
+                InputField(
                     label = "Valor",
                     state = amount,
                     keyboardOptions = KeyboardOptions(
@@ -469,6 +475,7 @@ private fun CardSelectorPreview() {
                     name = "Nubank",
                     balance = Money(349999),
                     type = PaymentAccountType.CARD,
+                    availableLimit = Money(319999),
                     dueDay = 2,
                     closingDay = 28,
                     color = Colors.Mauve
@@ -480,6 +487,7 @@ private fun CardSelectorPreview() {
                     name = "Nubank",
                     balance = Money(349999),
                     type = PaymentAccountType.CARD,
+                    availableLimit = Money(349999),
                     dueDay = null,
                     closingDay = null,
                     color = Colors.Mauve

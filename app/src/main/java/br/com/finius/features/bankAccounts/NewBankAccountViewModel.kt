@@ -26,12 +26,14 @@ class NewBankAccountViewModel(
     val uiState = _uiState.asStateFlow()
 
     fun create() = with(_uiState.value) {
+        val balance = Money(balance.text.toString().toLongOrNull() ?: 0L)
         paymentAccountRepository.create(
             PaymentAccount(
                 id = UUID.randomUUID().toString(),
                 name = name.text.toString().trim(),
-                balance = Money(balance.text.toString().toLongOrNull() ?: 0L),
+                balance = balance,
                 type = PaymentAccountType.BANK,
+                availableLimit = null,
                 dueDay = null,
                 closingDay = null,
                 color = color,

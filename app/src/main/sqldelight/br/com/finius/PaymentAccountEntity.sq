@@ -23,6 +23,55 @@ SELECT * FROM paymentAccountEntity
 WHERE type = ?;
 
 getBalance:
-SELECT SUM(balanceCents) AS totalAmount
+SELECT CAST(SUM(balanceCents) AS INTEGER) AS totalAmount
 FROM paymentAccountEntity
 WHERE type = "BANK";
+
+getAvailableLimit:
+WITH DateInfo AS (
+  SELECT
+  t.amountCents / t.installments AS installmentAmount,
+  t.installments,
+  p.closingDay,
+  (strftime('%Y', 'now') * 12 + strftime('%m', 'now')) - ((strftime('%Y', datetime(t.dateInMilli / 1000, 'unixepoch')) * 12) + strftime('%m', datetime(t.dateInMilli / 1000, 'unixepoch'))) AS monthsPassed
+  FROM transactionEntity t
+  JOIN paymentAccountEntity p ON t.paymentAccountId = p.id
+) SELECT
+  monthsPassed,
+  p.balanceCents -
+  IFNULL(SUM(
+    CASE
+      WHEN monthsPassed >= installments THEN 0 -- All installments are paid
+      WHEN monthsPassed < 0 THEN 0 -- Transaction hasn't started (future)
+      ELSE (installments - monthsPassed) * installmentAmount -- Remaining unpaid installments
+    END
+  ), 0) AS availableLimit
+FROM paymentAccountEntity p
+LEFT JOIN DateInfo d
+WHERE p.id = ? AND p.type = "CARD";
+
+selectAvailableCreditLimitWithInstallments:
+WITH installments_due AS (
+  SELECT
+    t.paymentAccountId,
+    t.amountCents / t.installments AS installmentAmount,  -- Installment value per month
+    (strftime('%Y', 'now') * 12 + strftime('%m', 'now') - 1) -  -- Current month in YYYYMM format
+    ((strftime('%Y', datetime(t.dateInMilli / 1000, 'unixepoch')) * 12) + strftime('%m', datetime(t.dateInMilli / 1000, 'unixepoch'))) AS monthsPassed, -- Months since transaction date
+    t.installments,
+    p.closingDay
+  FROM transactionEntity t
+  JOIN paymentAccountEntity p ON t.paymentAccountId = p.id
+  WHERE p.id = ? AND p.type = "CARD"
+)
+SELECT
+  p.balanceCents -
+  IFNULL(SUM(
+    CASE
+      WHEN monthsPassed >= installments THEN 0 -- All installments are paid
+      WHEN monthsPassed < 0 THEN 0 -- Transaction hasn't started (future)
+      ELSE (installments - monthsPassed) * installmentAmount -- Remaining unpaid installments
+    END
+  ), 0) AS availableLimit
+FROM paymentAccountEntity p
+LEFT JOIN installments_due i ON p.id = i.paymentAccountId
+WHERE p.id = ? AND p.type = "CARD";

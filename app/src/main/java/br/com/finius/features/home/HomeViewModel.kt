@@ -26,7 +26,7 @@ class HomeViewModel(
         val transactions = transactionRepository.listNewest()
         _uiState.update {
             it.copy(
-                balance = Money(balance ?: 0),
+                balance = balance,
                 lastTransactions = transactions
             )
         }
