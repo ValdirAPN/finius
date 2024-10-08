@@ -160,11 +160,6 @@ private fun HomeScreenContent(
                             iconRes = R.drawable.credit_card,
                             onClick = onNavigateToCards
                         )
-                        DashboardButton(
-                            label = "Transações",
-                            iconRes = R.drawable.chart_donut,
-                            onClick = onNavigateToTransactions
-                        )
                     }
 
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -174,9 +169,9 @@ private fun HomeScreenContent(
                             onClick = {}
                         )
                         DashboardButton(
-                            label = "Assinaturas",
-                            iconRes = R.drawable.arrows_counter_clock_wise,
-                            onClick = {}
+                            label = "Transações",
+                            iconRes = R.drawable.chart_donut,
+                            onClick = onNavigateToTransactions
                         )
                     }
                 }
