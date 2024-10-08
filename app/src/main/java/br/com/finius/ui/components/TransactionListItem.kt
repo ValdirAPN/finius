@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import br.com.finius.domain.model.Money
 import br.com.finius.domain.model.Transaction
 import br.com.finius.domain.model.TransactionType
 import br.com.finius.ui.theme.FrenchGray
@@ -67,11 +68,19 @@ fun TransactionListItem(transaction: Transaction, modifier: Modifier = Modifier)
                 TransactionType.EXPENSE -> MaterialTheme.colorScheme.onBackground
             }
 
-            Text(
-                text = amount.format(),
-                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = amountColor
-            )
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    text = amount.format(),
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = amountColor
+                )
+
+                Text(
+                    text = "${installments}x de ${Money(amount.cents / installments).format()}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
         }
     }
 }
