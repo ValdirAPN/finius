@@ -21,3 +21,8 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
 listByType:
 SELECT * FROM paymentAccountEntity
 WHERE type = ?;
+
+getBalance:
+SELECT SUM(balanceCents) AS totalAmount
+FROM paymentAccountEntity
+WHERE type = "BANK";

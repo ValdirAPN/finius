@@ -21,6 +21,8 @@ class PaymentAccountRepository(
         )
     }
 
+    fun getBalance() = paymentAccountQueries.getBalance().executeAsOne().totalAmount
+
     fun getAccountsByType(type: PaymentAccountType) =
         paymentAccountQueries
             .listByType(type)
